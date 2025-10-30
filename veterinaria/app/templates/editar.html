@@ -20,17 +20,6 @@
                     Nombre: <input type="text" name="nombre" value="{{ producto.nombre }}" pattern="[A-Za-z\s]+" class="form-control"><br>
                     Precio: <input type="text" name="precio" value="{{ producto.precio }}" pattern="^\d+(\.\d{1,2})?$" class="form-control"><br>
                     Descripción: <textarea type="area" name="descripcion" class="form-control">{{ producto.descripcion }}</textarea><br>
-                    <label for="categoria" class="form-label">Categoría:</label>
-                        <select name="categoria" id="categoria" class="form-select" required>
-                            
-                            {% for cat in categorias %}
-                                <option value="{{ cat.id }}" 
-                                    {% if cat.id == producto.categoria.id %}selected{% endif %}>
-                                    {{ cat.descripcion }}
-                                </option>
-                            {% endfor %}
-
-                        </select>             
                     <button type="submit" class="btn btn-success">Actualizar</button>
                     <a href="{% url 'listar' %}" class="btn btn-secondary mb-4 mt-4">Regresar</a>
                 </div>

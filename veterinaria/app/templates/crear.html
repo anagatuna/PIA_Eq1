@@ -20,14 +20,6 @@
                     Nombre: <input type="text" name="nombre" pattern="[A-Za-z\s]+" class="form-control"><br>
                     Precio: <input type="text" name="precio" pattern="^\d+(\.\d{1,2})?$" class="form-control"><br>
                     Descripción: <textarea  name="descripcion" class="form-control"></textarea><br>
-                    <label for="categoria" class="form-label">Categoría:</label>
-                        <select name="categoria" id="categoria" class="form-select mb-3" required>
-                            <option value="">Selecciona una categoría</option>
-                            
-                            {% for cat in categorias %}
-                                <option value="{{ cat.id }}">{{ cat.descripcion }}</option>
-                            {% endfor %}
-                        </select>
                     <button type="submit" class="btn btn-success">Guardar</button>
                     <button type="reset" class="btn btn-secondary">Cancelar</button>
                 </div>
