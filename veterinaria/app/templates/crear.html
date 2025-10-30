@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,19 +6,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear</title>
+    {% include 'referencias.html' %}
 </head>
 
 <body>
-    <h1>Crear Producto</h1>
-
-    <form method="post">
-        {% csrf_token %}
-        Nombre: <input type="text" name="nombre"><br>
-        Precio: <input type="text" name="precio"><br>
-        Descripción: <textarea name="descripcion"></textarea><br>
-        <button type="submit">Guardar</button>
-
-    </form>
+    {% include 'navbar.html' %}
+    <main class="container p-4 mt-5 rounded-4 shadow-lg bg-white">
+        <h1 class="mb-4 text-center">Crear Producto</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4">
+                    Nombre: <input type="text" name="nombre" pattern="[A-Za-z\s]+" class="form-control"><br>
+                    Precio: <input type="text" name="precio" pattern="^\d+(\.\d{1,2})?$" class="form-control"><br>
+                    Descripción: <textarea  name="descripcion" class="form-control"></textarea><br>
+                    <label for="categoria" class="form-label">Categoría:</label>
+                        <select name="categoria" id="categoria" class="form-select mb-3" required>
+                            <option value="">Selecciona una categoría</option>
+                            
+                            {% for cat in categorias %}
+                                <option value="{{ cat.id }}">{{ cat.descripcion }}</option>
+                            {% endfor %}
+                        </select>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="reset" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </main>
 </body>
 
 </html>
