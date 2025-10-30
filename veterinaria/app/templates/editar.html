@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+</head>
+
+<body>
+    <h1>Editar Producto</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        Nombre: <input type="text" name="nombre" value="{{ producto.nombre }}"><br>
+        Precio: <input type="text" name="precio" value="{{ producto.precio }}"><br>
+        Descripción: <textarea name="descripcion">{{ producto.descripcion }}</textarea><br>
+        <button type="submit">Actualizar</button>
+    </form>
+</body>
+
+</html>
