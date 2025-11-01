@@ -3,7 +3,7 @@
 }
 
 /* --- Logout button --- */
-.Btn {
+.btn-logout {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -46,23 +46,23 @@
   transition: 0.3s;
 }
 
-.Btn:hover {
+.btn-logout:hover {
   width: 130px;
   border-radius: 40px;
 }
 
-.Btn:hover .sign {
+.btn-logout:hover .sign {
   width: 30%;
   padding-left: 20px;
 }
 
-.Btn:hover .text {
+.btn-logout:hover .text {
   opacity: 1;
   width: 70%;
   padding-right: 10px;
 }
 
-.Btn:active {
+.btn-logout:active {
   transform: translate(2px, 2px);
 }
 
