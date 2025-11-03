@@ -1,0 +1,150 @@
+    :root {
+        --blur-img: url("{% static 'img/facpyaImagen.jpg' %}");
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+        background: radial-gradient(circle, rgba(64, 64, 64, 1) 0%, rgba(0, 0, 0, 1) 100%);
+        position: relative;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Fondo borroso */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        opacity: .10;
+        background-image: var(--blur-img);
+        background-size: cover;
+        background-position: center;
+        filter: grayscale(40%) blur(5px);
+        z-index: -1;
+    }
+
+    /* Header opcional (logos/título) */
+    header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        color: #fff;
+    }
+
+    .encabezado {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    /* Sección login */
+    .section-login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(90vh - 200px);
+    }
+
+    .container-login {
+        display: flex;
+        width: 690px;
+        height: 430px;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px;
+        box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
+    }
+
+    .col-logo {
+        flex: 1;
+        background: #f5f5f5;
+        display: none;
+    }
+
+    .col-form {
+        flex: 1;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+    }
+
+    .title {
+        margin-top: 30px;
+        font-weight: 700;
+        color: #353535;
+    }
+
+    /* Logos del header (móviles ocultos) */
+    .logo-imgU,
+    .logo-imgF {
+        margin: 10px;
+        height: 90px;
+        display: none;
+    }
+
+    /* Responsive: mostrar lado izquierdo/ logos desde 600px */
+    @media (min-width: 600px) {
+        .col-logo {
+            display: block;
+        }
+
+        .logo-imgU,
+        .logo-imgF {
+            display: block;
+        }
+    }
+
+    /* Botones */
+    .btn {
+        margin-top: 10px;
+    }
+
+    .btnRed {
+        background-color: #CB0422;
+        border-color: #CB0422;
+    }
+
+    .btnRed:hover {
+        background-color: #AC0C00;
+        border-color: #AC0C00;
+    }
+
+    .btnGris {
+        background-color: #333;
+        border-color: #333;
+    }
+
+    .btnGris:hover {
+        background-color: #1a1a1a;
+        border-color: #1a1a1a;
+    }
+
+    /* Inputs estilo línea */
+    .label {
+        color: var(--bs-secondary-color);
+    }
+
+    .textbox {
+        border: solid transparent;
+        border-bottom: 1px solid #CED4DA;
+        border-radius: 0;
+    }
+
+    .textbox:focus {
+        border: solid transparent;
+        border-bottom: 1px solid #CED4DA;
+        box-shadow: 0 10px 5px -3px #CED4DA;
+    }
+
+    .system-image {
+        max-width: 70%;
+        display: block;
+        margin: 20px auto 0;
+    }

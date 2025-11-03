@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    {% include 'referencias.html' %}
+    <!-- Referencia CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+    <main class="section-login">
+        <div class="container-login">
+
+            <!-- Columna izquierda (imagen/sistema) -->
+            <div class="col-logo d-flex flex-column justify-content-center">
+                <img class="system-image" src="{% static 'img/system.png' %}" alt="Sistema">
+                <p class="text-center px-4 text-muted small mb-4">Accede para continuar</p>
+            </div>
+
+            <!-- Columna del formulario -->
+            <div class="col-form d-flex flex-column">
+                <h2 class="title">Inicio de Sesión</h2>
+
+                <div class="px-4 pt-2">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3 text-start">
+                            <label class="form-label label">Usuario</label>
+                            <input type="text" name="username" class="form-control textbox" required>
+                        </div>
+
+                        <div class="mb-2 text-start">
+                            <label class="form-label label">Contraseña</label>
+                            <input type="password" name="password" class="form-control textbox" required>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btnRed text-white">Entrar</button>
+                            <a href="{% url 'index' %}" class="btn btnGris text-white">Volver</a>
+                        </div>
+
+                        <!-- (Opcional) espacio para mensajes Django -->
+                        {% if messages %}
+                        <div class="mt-3">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags|default:'info' }} py-2 my-2">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if 'error' in message.tags or 'warning' in message.tags %}
+    <script>
+        // Muestra un alert del navegador solo para errores/avisos
+        window.alert('{{ message|escapejs }}');
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>
