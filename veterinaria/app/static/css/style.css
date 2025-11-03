@@ -1,0 +1,82 @@
+html, body {
+  overflow-x: hidden;
+}
+
+/* Reseteo básico */
+body {
+  margin: 0;
+  padding: 0;
+  
+}
+
+/* Hero a pantalla completa */
+.hero-section {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../img/img-default.webp');
+  /* o tu imagen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+}
+
+/* Cards servicios: efecto hover */
+.card {
+  transition: .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
+}
+
+/* Carousel alto cómodo */
+.carousel-img {
+  height: 60vh;
+  object-fit: cover;
+}
+
+/* Testimonios */
+.testimonial-img {
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 28px;
+}
+
+.stars span {
+  font-size: 1.6rem;
+  color: #f7b500;
+  margin: 0 .1rem;
+}
+
+.stars .empty {
+  color: #e2e2e2;
+}
+
+/* FAQ */
+.faq-card {
+  min-height: 140px;
+}
+
+.faq-badge {
+  width: 56px;
+  height: 56px;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #ddd;
+  font-weight: 700;
+}
+
+/* Utilidad */
+.text-justify {
+  text-align: justify;
+}

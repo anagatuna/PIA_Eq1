@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,374 @@
     <!-- Referencia a CSS página principal -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     {% include 'navbar.html' %}
+
+    <!-- Sección principal con fondo completo -->
+    <section class="hero-section">
+        <div class="overlay d-flex flex-column justify-content-center align-items-center text-center">
+            <h1 class="bienvenida">BIENVENIDO A “NOMBRE”</h1>
+        </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section class="container my-5">
+        <div class="row align-items-center justify-content-center">
+
+            <!-- Columna izquierda: Imagen circular -->
+            <div class="col-md-5 text-center mb-4 mb-md-0">
+                <img src="{% static 'img/img-default.webp' %}" alt="Paisaje"
+                    class="img-fluid rounded-circle border border-dark"
+                    style="width: 300px; height: 300px; object-fit: cover;">
+            </div>
+
+            <!-- Columna derecha: Cuadro de texto -->
+            <div class="col-md-6">
+                <div class="p-4 border border-dark rounded">
+                    <h3 class="text-center mb-4">NOSOTROS</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold text-center">MISIÓN</h5>
+                            <p class="text-justify">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="fw-bold text-center">VISIÓN</h5>
+                            <p class="text-justify">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container text-center my-5">
+        <h3 class="mb-5 fw-bold">NUESTROS SERVICIOS</h3>
+
+        <div class="row justify-content-center g-4">
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
+                    <p class="text-muted">Descripción y características</p>
+                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
+                    <p class="text-muted">Descripción y características</p>
+                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
+                    <p class="text-muted">Descripción y características</p>
+                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón principal -->
+        <div class="mt-5">
+            <button class="btn btn-outline-dark rounded-pill px-5 fw-bold">COTIZA AHORA</button>
+        </div>
+    </section>
+
+    {% load static %}
+
+    <section class="container-fluid py-4">
+        <h3 class="text-center fw-bold mb-4">CARRUSEL DE IMÁGENES</h3>
+
+        <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Slides -->
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="4000">
+                    <img src="{% static 'img/slide1.webp' %}" class="d-block w-100 carousel-img" alt="Slide 1">
+                    <!-- Opcional: caption
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Título 1</h5><p>Descripción corta.</p>
+        </div> -->
+                </div>
+
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="{% static 'img/slide2.webp' %}" class="d-block w-100 carousel-img" alt="Slide 2">
+                </div>
+
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="{% static 'img/slide3.webp' %}" class="d-block w-100 carousel-img" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Controles -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h3 class="text-center fw-bold mb-4">FORMULARIO DE COTIZACIÓN</h3>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table align-middle text-center">
+                <thead class="text-white" style="background-color: #2f2fd1;">
+                    <tr>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="badge bg-success bg-opacity-25 text-success">Vacunas</span>
+                        </td>
+                        <td>1</td>
+                        <td>Lorem</td>
+                        <td>$250.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="badge bg-warning bg-opacity-25 text-warning">Baño</span>
+                        </td>
+                        <td>2</td>
+                        <td>Lorem</td>
+                        <td>$50.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="badge bg-danger bg-opacity-25 text-danger">Desparasitada</span>
+                        </td>
+                        <td></td>
+                        <td><em>Lorem</em></td>
+                        <td>$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="badge bg-success bg-opacity-25 text-success">Consulta</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="badge bg-primary bg-opacity-25 text-primary">Otros</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <!-- Fila descuento -->
+                    <tr>
+                        <td colspan="3" class="text-end fw-semibold">
+                            % Descuento (se habilita un campo)
+                        </td>
+                        <td>
+                            <input type="checkbox" class="form-check-input">
+                        </td>
+                    </tr>
+
+                    <!-- Fila total -->
+                    <tr style="background-color: #dcdcff;">
+                        <td colspan="2" class="fw-bold">ENVIAR</td>
+                        <td class="fw-bold">TOTAL</td>
+                        <td class="fw-bold">$300.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="container my-5 text-center">
+        <h3 class="fw-bold mb-5">TESTIMONIOS</h3>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Testimonio 1 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card border-0 h-100">
+                    <img src="{% static 'img/img-default.webp' %}" alt="Cliente 1" class="testimonial-img mx-auto mt-2">
+                    <div class="card-body">
+                        <h5 class="fw-bold">COMENTARIO</h5>
+                        <p class="text-muted small px-3">
+                            Los testimonios son breves comentarios de las personas a quienes les encanta tu marca.
+                            Son una buena forma de persuadir a los clientes para que prueben tus servicios.
+                        </p>
+                        <div class="stars" aria-label="5 de 5">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonio 2 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card border-0 h-100">
+                    <img src="{% static 'img/img-default.webp' %}" alt="Cliente 2" class="testimonial-img mx-auto mt-2">
+                    <div class="card-body">
+                        <h5 class="fw-bold">COMENTARIO</h5>
+                        <p class="text-muted small px-3">
+                            Los testimonios son breves comentarios de las personas a quienes les encanta tu marca.
+                            Son una buena forma de persuadir a los clientes para que prueben tus servicios.
+                        </p>
+                        <div class="stars" aria-label="4 de 5">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span class="empty">☆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonio 3 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card border-0 h-100">
+                    <img src="{% static 'img/img-default.webp' %}" alt="Cliente 3" class="testimonial-img mx-auto mt-2">
+                    <div class="card-body">
+                        <h5 class="fw-bold">COMENTARIO</h5>
+                        <p class="text-muted small px-3">
+                            Los testimonios son breves comentarios de las personas a quienes les encanta tu marca.
+                            Son una buena forma de persuadir a los clientes para que prueben tus servicios.
+                        </p>
+                        <div class="stars" aria-label="5 de 5">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5 text-center">
+        <h5 class="mb-4">Preguntas Frecuentes</h5>
+
+        <div class="row g-4 justify-content-center">
+            {% for i in "123" %}
+            <div class="col-12 col-md-4">
+                <div class="faq-card position-relative p-4 border rounded-4">
+                    <div
+                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                        ?
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="fw-semibold">Título de la pregunta</h6>
+                        <p class="small text-muted mb-0">Respuesta breve o enlace a detalle.</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h5 class="text-center mb-4">FORMULARIO</h5>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table align-middle">
+                <thead class="text-white" style="background: #1f26b8;">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Mensaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Tu nombre">
+                        </td>
+                        <td>
+                            <input type="email" class="form-control form-control-sm" placeholder="tu@correo.com">
+                        </td>
+                        <td rowspan="2">
+                            <textarea class="form-control" rows="5" placeholder="Escribe aquí"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Teléfono</th>
+                        <th class="bg-light">Fecha</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="tel" class="form-control form-control-sm" placeholder="(55) 1234 5678">
+                        </td>
+                        <td>
+                            <input type="date" class="form-control form-control-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center bg-light">
+                            <button class="btn btn-outline-dark rounded-pill px-5">ENVIAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h5 class="text-center mb-4">CONTACTO</h5>
+
+        <div class="row g-4 align-items-center">
+            <div class="col-12 col-md-3 text-center">
+                <img src="{% static 'img/img-default.webp' %}" class="img-fluid rounded-3 border" alt="Mapa">
+            </div>
+
+            <div class="col-12 col-md-3">
+                <h6 class="fw-semibold">Dirección</h6>
+                <p class="small text-muted mb-0">
+                    Calle 123, Colonia,<br>Ciudad, Estado C.P. 12345
+                </p>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <h6 class="fw-semibold">Correo electrónico</h6>
+                <p class="small text-muted mb-0">hola@sitioincreible.com</p>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <h6 class="fw-semibold">Teléfono</h6>
+                <p class="small text-muted mb-0">(55) 1234 5678</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-3 text-center small text-muted">
+        © Elaborado por Equipo 1
+    </footer>
+
 </body>
+
 </html>
