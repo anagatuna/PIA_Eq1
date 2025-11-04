@@ -1,61 +1,117 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
+    <title>Servicios</title>
     {% include 'referencias.html' %}
-    <!-- Referencia CSS -->
     <link rel="stylesheet" href="{% static 'css/panel.css' %}">
 </head>
 
 <body>
     {% include 'navbar-panel.html' %}
-    <main class="container p-5 mt-5 rounded-4 shadow-lg bg-white">
-        <h1 class="mb-4 text-center">Lista de Servicios</h1>
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Descripción</th>
-                    <th colspan="2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for producto in productos %}
-                <tr>
-                    <td>{{producto.nombre}}</td>
-                    <td>{{producto.precio}}</td>
-                    <td>{{producto.descripcion}}</td>
-                    <td class="text-end">
-                        <div class="d-inline-flex align-items-center gap-2">
-                            <a href="{% url 'editar' producto.id %}" class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <!-- Variante compacta del botón delete para tablas -->
-                            <a href="{% url 'eliminar' producto.id %}" class="delete-button delete-button--compact"
-                                onclick="return confirmarEliminacion()" title="Eliminar">
-                                <svg viewBox="0 0 448 512" class="svgIcon" aria-hidden="true">
-                                    <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 
-                                            0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 
-                                            0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 
-                                            467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 
-                                            47.9-45L416 128z"></path>
-                                </svg>
-                            </a>
+
+    <main class="container mt-5">
+        <div class="row g-4">
+            <!-- Columna izquierda: Formulario crear/editar -->
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            {% if editando %}Editar servicio{% else %}Crear servicio{% endif %}
+                        </h5>
+
+                        <form method="post"
+                            action="{% if editando %}{% url 'listar_edit' servicio.id %}{% else %}{% url 'listar' %}{% endif %}">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" required
+                                    value="{{ servicio.nombre|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Precio</label>
+                                <input type="number" step="0.01" min="0" name="precio" class="form-control" required
+                                    value="{{ servicio.precio|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                <textarea name="descripcion" rows="4"
+                                    class="form-control">{{ servicio.descripcion }}</textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-success">
+                                    {% if editando %}Actualizar{% else %}Guardar{% endif %}
+                                </button>
+                                {% if editando %}
+                                <a href="{% url 'listar' %}" class="btn btn-secondary">Cancelar</a>
+                                {% else %}
+                                <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Buscador + Lista -->
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="m-0">Lista de Servicios</h4>
+                            <form class="d-flex" method="get" action="{% url 'listar' %}">
+                                <input class="form-control me-2" type="search" placeholder="Buscar…" name="q"
+                                    value="{{ q }}">
+                                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                            </form>
                         </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center text-muted">Sin información disponible</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Descripción</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for servicio in servicios %}
+                                <tr>
+                                    <td>{{ servicio.nombre }}</td>
+                                    <td>{{ servicio.precio }}</td>
+                                    <td>{{ servicio.descripcion }}</td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-2">
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{% url 'listar_edit' servicio.id %}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a class="btn btn-dark btn-sm" href="{% url 'eliminar' servicio.id %}"
+                                                onclick="return confirm('¿Eliminar este servicio?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Sin información disponible</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 

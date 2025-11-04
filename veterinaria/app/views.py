@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+# Create your views here.
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username', '')
@@ -31,33 +32,41 @@ def logout_view(request):
 def index(request):
     return render(request, 'index.html')
 
-# Create your views here.
-def listar_productos(request):
-    productos = SERVICIO.objects.all()
-    return render(request, 'listar.html', {'productos': productos})
+@login_required
+def servicios_panel(request, id=None):
+    servicio = get_object_or_404(SERVICIO, id=id) if id else None
 
-def crear_producto(request):
-    if request.method == 'POST':
-        nombre = request.POST['nombre']
-        precio = request.POST['precio']
-        descripcion = request.POST['descripcion']
-        SERVICIO.objects.create(nombre=nombre, precio=precio, descripcion=descripcion)
-        return redirect('listar')
-    return render(request, 'crear.html')
+    # Crear o actualizar según si viene id en la URL
+    if request.method == "POST":
+        nombre = request.POST.get("nombre", "").strip()
+        precio = request.POST.get("precio", "").strip()
+        descripcion = request.POST.get("descripcion", "").strip()
 
-def editar_producto(request, id):
-    producto = get_object_or_404(SERVICIO, id=id)
-    if request.method == 'POST':
-        producto.nombre = request.POST['nombre']
-        producto.precio = request.POST['precio']
-        producto.descripcion = request.POST['descripcion']
-        producto.save()
-        return redirect('listar')
+        if servicio:  # editar
+            servicio.nombre = nombre
+            servicio.precio = precio or 0
+            servicio.descripcion = descripcion
+            servicio.save()
+        else:        
+            SERVICIO.objects.create(
+                nombre=nombre,
+                precio=precio or 0,
+                descripcion=descripcion
+            )
+        return redirect("listar")
 
-    return render(request, 'editar.html', {'producto': producto})
+    servicios = SERVICIO.objects.all().order_by("nombre")
+    ctx = {"servicios": servicios, "servicio": servicio, "editando": bool(servicio)}
 
-def eliminar_producto(request, id):
-    producto = get_object_or_404(SERVICIO, id=id)
-    producto.delete()
+    return render(request, "listar.html", ctx)
+
+def eliminar_servicio(request, id):
+    servicio = get_object_or_404(SERVICIO, id=id)
+    servicio.delete()
 
     return redirect('listar')
+
+def listar_servicios(request):
+    servicios = SERVICIO.objects.all()
+    return render(request, 'listar.html', {'servicios': servicios})
+

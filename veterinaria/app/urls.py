@@ -8,11 +8,9 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),  # Página de login
     path('logout/', views.logout_view, name='logout'), # Página para cerrar sesión
 
-    path('listar/', views.listar_productos, name='listar'), # Panel o dashboard
+    path('listar/', views.servicios_panel, name='listar'), # Panel o dashboard
+    path('listar/<int:id>/', views.servicios_panel, name='listar_edit'),  # <- NUEVA
     #path('marcar-listo/<int:pk>/', views.marcar_listo, name='marcar_listo'),
 
-    path('crear/', views.crear_producto, name='crear'),
-    path('editar/<int:id>/', views.editar_producto, name='editar'),
-    path('eliminar/<int:id>/', views.eliminar_producto, name='eliminar'),
-    
+    path('eliminar/<int:id>/', views.eliminar_servicio, name='eliminar'),
 ]
