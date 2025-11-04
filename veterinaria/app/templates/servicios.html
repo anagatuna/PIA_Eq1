@@ -22,26 +22,26 @@
                             {% if editando %}Editar servicio{% else %}Crear servicio{% endif %}
                         </h5>
 
-                        <form method="post"
+                        <form method="post" autocomplete="off"
                             action="{% if editando %}{% url 'servicios_edit' servicio.id %}{% else %}{% url 'servicios' %}{% endif %}">
                             {% csrf_token %}
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
-                                <input type="text" name="nombre" class="form-control" required
+                                <input type="text" name="nombre" class="form-control" pattern="[A-Za-z]+" maxlength="100" required
                                     value="{{ servicio.nombre|default_if_none:'' }}">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Precio</label>
-                                <input type="number" step="0.01" min="0" name="precio" class="form-control" required
+                                <input type="number" step="0.01" min="0" name="precio" pattern="^\d+(\.\d{1,2})?$" class="form-control" required
                                     value="{{ servicio.precio|default_if_none:'' }}">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Descripción</label>
                                 <textarea name="descripcion" rows="4"
-                                    class="form-control">{{ servicio.descripcion }}</textarea>
+                                    class="form-control" maxlength="250">{{ servicio.descripcion }}</textarea>
                             </div>
 
                             <div class="d-flex gap-2">
