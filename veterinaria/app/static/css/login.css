@@ -111,8 +111,8 @@ header {
 }
 
 .btnRed:hover {
-    background-color: #AC0C00;
-    border-color: #AC0C00;
+    background-color: #f1665c;
+    border-color: #f1665c;
 }
 
 .btnGris {
@@ -121,8 +121,8 @@ header {
 }
 
 .btnGris:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
+    background-color: #045463;
+    border-color: #045463;
 }
 
 /* Inputs estilo línea */
