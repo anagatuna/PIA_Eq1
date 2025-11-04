@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Citas</title>
+    {% include 'referencias.html' %}
+    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+
+<body>
+    {% include 'navbar-panel.html' %}
+
+    <main class="container mt-5">
+        <div class="row g-4">
+            <!-- Columna izquierda: Formulario crear/editar -->
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            {% if editando %}Editar cita{% else %}Crear cita{% endif %}
+                        </h5>
+
+                        <form method="post" autocomplete="off"
+                            action="{% if editando %}{% url 'citas_edit' cita.id %}{% else %}{% url 'citas' %}{% endif %}">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label">Nombre del Dueño</label>
+                                <input type="text" name="nombre_dueño" class="form-control" pattern="[A-Za-z]+"
+                                    maxlength="100" required value="{{ cita.nombre_dueño|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nombre de la Mascota</label>
+                                <input type="text" name="nombre_mascota" class="form-control" pattern="[A-Za-z]+"
+                                    maxlength="100" required value="{{ cita.nombre_mascota|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Especie</label>
+                                <input type="text" name="especie" class="form-control" pattern="[A-Za-z]+"
+                                    maxlength="100" required value="{{ cita.especie|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="id_fecha_cita">Fecha Cita</label>
+                                <input type="datetime-local" name="fecha_cita" class="form-control" required
+                                    id="id_fecha_cita"
+                                    value="{{ cita.fecha_cita|date:'Y-m-d\TH:i'|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Motivo</label>
+                                <textarea name="motivo" class="form-control" maxlength="100"
+                                    required>{{ cita.motivo|default_if_none:'' }}</textarea>
+                            </div>
+
+                            {% if editando %}
+                            <div class="mb-3">
+                                <label class="form-label">Estatus</label>
+                                <input type="text" name="estatus" class="form-control"
+                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}">
+                            </div>
+                            {% else %}
+                            <!-- Lo mandamos en oculto para el POST -->
+                            <input type="hidden" name="estatus" value="Pendiente">
+                            <!-- Solo mostrar (deshabilitado) para que el usuario lo vea -->
+                            <div class="mb-3">
+                                <label class="form-label">Estatus</label>
+                                <input type="text" class="form-control" value="Pendiente" disabled>
+                                <small class="text-muted">Se asigna automáticamente al crear.</small>
+                            </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <label for="servicio" class="form-label">Servicio</label>
+                                <select name="servicio" id="servicio" class="form-control">
+                                    <option value="">Selecciona un servicio</option>
+                                    {% for servicio in servicios %}
+                                    <option value="{{ servicio.id }}" {% if cita and cita.servicio_id == servicio.id %}
+                                        selected{% endif %}>
+                                        {{ servicio.nombre }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-success">
+                                    {% if editando %}Actualizar{% else %}Guardar{% endif %}
+                                </button>
+                                {% if editando %}
+                                <a href="{% url 'citas' %}" class="btn btn-secondary">Cancelar</a>
+                                {% else %}
+                                <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Buscador + Lista -->
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="m-0">Lista de Citas</h4>
+                            <form class="d-flex" method="get" action="{% url 'citas' %}">
+                                <input class="form-control me-2" type="search" placeholder="Buscar…" name="q"
+                                    value="{{ q }}">
+                                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                            </form>
+                        </div>
+
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Dueño</th>
+                                    <th>Nombre Mascota</th>
+                                    <th>Especie</th>
+                                    <th>Fecha Cita</th>
+                                    <th>Motivo</th>
+                                    <th>Estatus</th>
+                                    <th>Servicio</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cita in citas %}
+                                <tr>
+                                    <td>{{ cita.nombre_dueño }}</td>
+                                    <td>{{ cita.nombre_mascota }}</td>
+                                    <td>{{ cita.especie }}</td>
+                                    <td>{{ cita.fecha_cita }}</td>
+                                    <td>{{ cita.motivo }}</td>
+                                    <td>{{ cita.estatus }}</td>
+                                    <td>{{ cita.servicio }}</td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-2">
+                                            <a class="btn btn-warning btn-sm" href="{% url 'citas_edit' cita.id %}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a class="btn btn-dark btn-sm" href="{% url 'citas_eliminar' cita.id %}"
+                                                onclick="return confirm('¿Eliminar este cita?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Sin información disponible</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

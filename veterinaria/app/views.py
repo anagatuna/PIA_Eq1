@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from datetime import datetime
 
-from .models import SERVICIO
+from .models import SERVICIO, CITA_VETERINARIA
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -70,3 +72,77 @@ def listar_servicios(request):
     servicios = SERVICIO.objects.all()
     return render(request, 'servicios.html', {'servicios': servicios})
 
+@login_required
+def citas_panel(request, id=None):
+    cita = get_object_or_404(CITA_VETERINARIA, pk=id) if id else None
+    servicios = SERVICIO.objects.all()  # <- NECESARIO para el ddl
+
+    if request.method == "POST":
+        nombre_dueño = (request.POST.get("nombre_dueño") or "").strip()
+        nombre_mascota = (request.POST.get("nombre_mascota") or "").strip()
+        especie = (request.POST.get("especie") or "").strip()
+        fecha_cita_raw = (request.POST.get("fecha_cita") or "").strip()
+        motivo = (request.POST.get("motivo") or "").strip()
+        estatus = (request.POST.get("estatus") or "Pendiente").strip()
+        servicio_id = (request.POST.get("servicio") or "").strip()
+
+        # Validaciones básicas
+        if not servicio_id:
+            # re-render con error y el ddl poblado
+            ctx = {
+                "citas": CITA_VETERINARIA.objects.all(),
+                "cita": cita,
+                "editando": bool(cita),
+                "servicios": servicios,
+                "error": "Selecciona un servicio.",
+            }
+            return render(request, "citas.html", ctx)
+
+        ser_obj = get_object_or_404(SERVICIO, pk=servicio_id)
+
+        # Parseo del datetime-local (YYYY-MM-DDTHH:MM)
+        # Si usas zona horaria, conviértelo a aware
+        fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
+        if timezone.is_naive(fecha_cita_dt):
+            fecha_cita_dt = timezone.make_aware(fecha_cita_dt, timezone.get_current_timezone())
+
+        if cita:
+            # editar
+            cita.nombre_dueño = nombre_dueño
+            cita.nombre_mascota = nombre_mascota
+            cita.especie = especie
+            cita.fecha_cita = fecha_cita_dt
+            cita.motivo = motivo
+            cita.estatus = estatus
+            cita.servicio = ser_obj
+            cita.save()
+        else:
+            # crear
+            CITA_VETERINARIA.objects.create(
+                nombre_dueño=nombre_dueño,
+                nombre_mascota=nombre_mascota,
+                especie=especie,
+                fecha_cita=fecha_cita_dt,
+                motivo=motivo,
+                estatus="Pendiente",
+                servicio=ser_obj,
+            )
+
+        return redirect("citas")  # <- sin pasar contexto al redirect
+
+    # GET
+    citas = CITA_VETERINARIA.objects.all()
+    ctx = {
+        "citas": citas,
+        "cita": cita,
+        "editando": bool(cita),
+        "servicios": servicios,   # <- para poblar el ddl
+    }
+    return render(request, "citas.html", ctx)
+
+
+def eliminar_cita(request, id):
+    cita = get_object_or_404(CITA_VETERINARIA, id=id)
+    cita.delete()
+
+    return redirect('citas')

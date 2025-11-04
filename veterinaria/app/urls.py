@@ -10,7 +10,10 @@ urlpatterns = [
 
     path('servicios/', views.servicios_panel, name='servicios'), # Panel o dashboard
     path('servicios/<int:id>/', views.servicios_panel, name='servicios_edit'),  # <- NUEVA
+    path('eliminar/<int:id>/', views.eliminar_servicio, name='eliminar'),
     #path('marcar-listo/<int:pk>/', views.marcar_listo, name='marcar_listo'),
 
-    path('eliminar/<int:id>/', views.eliminar_servicio, name='eliminar'),
+    path('citas/', views.citas_panel, name='citas'),
+    path('citas/<int:id>/', views.citas_panel, name='citas_edit'),
+    path('citas/<int:id>/eliminar/', views.eliminar_cita, name='citas_eliminar'),
 ]
