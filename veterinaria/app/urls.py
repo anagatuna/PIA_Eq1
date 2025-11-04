@@ -8,8 +8,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),  # Página de login
     path('logout/', views.logout_view, name='logout'), # Página para cerrar sesión
 
-    path('listar/', views.servicios_panel, name='listar'), # Panel o dashboard
-    path('listar/<int:id>/', views.servicios_panel, name='listar_edit'),  # <- NUEVA
+    path('servicios/', views.servicios_panel, name='servicios'), # Panel o dashboard
+    path('servicios/<int:id>/', views.servicios_panel, name='servicios_edit'),  # <- NUEVA
     #path('marcar-listo/<int:pk>/', views.marcar_listo, name='marcar_listo'),
 
     path('eliminar/<int:id>/', views.eliminar_servicio, name='eliminar'),

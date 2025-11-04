@@ -23,7 +23,7 @@
                         </h5>
 
                         <form method="post"
-                            action="{% if editando %}{% url 'listar_edit' servicio.id %}{% else %}{% url 'listar' %}{% endif %}">
+                            action="{% if editando %}{% url 'servicios_edit' servicio.id %}{% else %}{% url 'servicios' %}{% endif %}">
                             {% csrf_token %}
 
                             <div class="mb-3">
@@ -49,7 +49,7 @@
                                     {% if editando %}Actualizar{% else %}Guardar{% endif %}
                                 </button>
                                 {% if editando %}
-                                <a href="{% url 'listar' %}" class="btn btn-secondary">Cancelar</a>
+                                <a href="{% url 'servicios' %}" class="btn btn-secondary">Cancelar</a>
                                 {% else %}
                                 <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
                                 {% endif %}
@@ -65,7 +65,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 class="m-0">Lista de Servicios</h4>
-                            <form class="d-flex" method="get" action="{% url 'listar' %}">
+                            <form class="d-flex" method="get" action="{% url 'servicios' %}">
                                 <input class="form-control me-2" type="search" placeholder="Buscar…" name="q"
                                     value="{{ q }}">
                                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
@@ -90,7 +90,7 @@
                                     <td class="text-end">
                                         <div class="d-inline-flex gap-2">
                                             <a class="btn btn-warning btn-sm"
-                                                href="{% url 'listar_edit' servicio.id %}">
+                                                href="{% url 'servicios_edit' servicio.id %}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <a class="btn btn-dark btn-sm" href="{% url 'eliminar' servicio.id %}"

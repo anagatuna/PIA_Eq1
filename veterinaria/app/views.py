@@ -17,7 +17,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, f'Bienvenido {user.username}')
-            return redirect('/listar')  # 👈 tu panel principal
+            return redirect('/servicios')  # panel principal
         else:
             messages.error(request, 'Usuario o contraseña incorrectos')
 
@@ -27,7 +27,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.info(request, 'Sesión cerrada correctamente.')
-    return redirect('index')  # 👈 o la página principal pública
+    return redirect('index')  # página principal pública
 
 def index(request):
     return render(request, 'index.html')
@@ -53,20 +53,20 @@ def servicios_panel(request, id=None):
                 precio=precio or 0,
                 descripcion=descripcion
             )
-        return redirect("listar")
+        return redirect("servicios")
 
     servicios = SERVICIO.objects.all().order_by("nombre")
     ctx = {"servicios": servicios, "servicio": servicio, "editando": bool(servicio)}
 
-    return render(request, "listar.html", ctx)
+    return render(request, "servicios.html", ctx)
 
 def eliminar_servicio(request, id):
     servicio = get_object_or_404(SERVICIO, id=id)
     servicio.delete()
 
-    return redirect('listar')
+    return redirect('servicios')
 
 def listar_servicios(request):
     servicios = SERVICIO.objects.all()
-    return render(request, 'listar.html', {'servicios': servicios})
+    return render(request, 'servicios.html', {'servicios': servicios})
 
