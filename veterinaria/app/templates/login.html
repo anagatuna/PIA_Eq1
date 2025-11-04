@@ -16,8 +16,8 @@
 
             <!-- Columna izquierda (imagen/sistema) -->
             <div class="col-logo d-flex flex-column justify-content-center">
-                <img class="system-image" src="{% static 'img/system.png' %}" alt="Sistema">
-                <p class="text-center px-4 text-muted small mb-4">Accede para continuar</p>
+                <img class="system-image" src="{% static 'img/logo.jpeg' %}" alt="Sistema">
+                <p class="text-center px-4 text-muted small mb-4">PetCare</p>
             </div>
 
             <!-- Columna del formulario -->
@@ -25,17 +25,23 @@
                 <h2 class="title">Inicio de Sesión</h2>
 
                 <div class="px-4 pt-2">
-                    <form method="POST" novalidate>
+                    <form method="POST" novalidate autocomplete="off">
                         {% csrf_token %}
 
+                        <!-- Usuario -->
                         <div class="mb-3 text-start">
                             <label class="form-label label">Usuario</label>
                             <input type="text" name="username" class="form-control textbox" required>
                         </div>
 
-                        <div class="mb-2 text-start">
+                        <!-- Contraseña con botón de ojo -->
+                        <div class="mb-2 text-start position-relative">
                             <label class="form-label label">Contraseña</label>
-                            <input type="password" name="password" class="form-control textbox" required>
+                            <input type="password" name="password" id="password" class="form-control textbox pe-5"
+                                required>
+                            <button type="button" id="togglePassword" class="btn-eye">
+                                <i class="bi bi-eye-slash" id="eyeIcon"></i>
+                            </button>
                         </div>
 
                         <!-- Acciones -->
@@ -44,13 +50,15 @@
                             <a href="{% url 'index' %}" class="btn btnGris text-white">Volver</a>
                         </div>
 
-                        <!-- (Opcional) espacio para mensajes Django -->
+                        <!-- Alertas (solo errores o warnings) -->
                         {% if messages %}
-                        <div class="mt-3">
-                            {% for message in messages %}
-                            <div class="alert alert-{{ message.tags|default:'info' }} py-2 my-2">{{ message }}</div>
-                            {% endfor %}
-                        </div>
+                        {% for message in messages %}
+                        {% if 'error' in message.tags or 'warning' in message.tags %}
+                        <script>
+                            window.alert('{{ message|escapejs }}');
+                        </script>
+                        {% endif %}
+                        {% endfor %}
                         {% endif %}
                     </form>
                 </div>
@@ -58,16 +66,19 @@
         </div>
     </main>
 
-    {% if messages %}
-    {% for message in messages %}
-    {% if 'error' in message.tags or 'warning' in message.tags %}
+    <!-- Script para mostrar/ocultar contraseña -->
     <script>
-        // Muestra un alert del navegador solo para errores/avisos
-        window.alert('{{ message|escapejs }}');
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+
+        togglePassword.addEventListener("click", () => {
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+            eyeIcon.classList.toggle("bi-eye");
+            eyeIcon.classList.toggle("bi-eye-slash");
+        });
     </script>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
 </body>
 
 </html>
