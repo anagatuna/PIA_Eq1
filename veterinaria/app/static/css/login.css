@@ -17,7 +17,7 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    opacity: .10;
+    opacity: .4;
     background-image: url("../img/banner.jpg");
     background-size: cover;
     background-position: center;
@@ -49,10 +49,10 @@ header {
 
 .container-login {
     display: flex;
-    width: 690px;
+    width: 800px;
     height: 430px;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 5px;
     overflow: hidden;
     margin: 20px;
     box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
