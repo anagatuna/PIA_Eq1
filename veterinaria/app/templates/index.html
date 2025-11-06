@@ -147,79 +147,76 @@
         </div>
     </section>
 
-    <section class="container my-5">
-        <h3 class="text-center fw-bold mb-4">FORMULARIO DE COTIZACIÓN</h3>
+    <section class="container my-5 text-center">
+        <h3 class="text-center fw-bold mb-4">Cotización de Servicios</h3>
 
-        <div class="table-responsive shadow-sm rounded">
-            <table class="table align-middle text-center">
-                <thead class="text-white" style="background-color: #2f2fd1;">
+        <div class="row g-2 align-items-end mb-3">
+            <div class="col-auto">
+                <label class="form-label mb-1">¿Cuántos servicios vas a cotizar?</label>
+                <input type="number" id="num-servicios" class="form-control" min="1">
+            </div>
+            <div class="col-auto">
+                <button type="button" id="btn-generar" class="btn btn-primary">Generar</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" id="btn-agregar" class="btn btn-outline-primary">Agregar servicio</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" id="btn-limpiar" class="btn btn-outline-secondary">Limpiar</button>
+            </div>
+        </div>
+
+        <!-- plantilla oculta con tus servicios -->
+        <select id="plantilla-servicio" class="form-select d-none">
+            <option value="">Selecciona un servicio</option>
+            {% for servicio in servicios %}
+            <option value="{{ servicio.id }}" data-precio="{{ servicio.precio|floatformat:2 }}"
+                data-desc="{{ servicio.descripcion|default_if_none:''|escape }}">
+                {{ servicio.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <!-- tabla oculta hasta generar -->
+        <div id="tabla-wrap" class="table-responsive d-none">
+            <table class="table align-middle" id="tabla-resultados">
+                <thead class="table-light">
                     <tr>
-                        <th scope="col">Servicio</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Precio</th>
+                        <th style="width:30%">Servicio</th>
+                        <th style="width:10%">Cantidad</th>
+                        <th style="width:30%">Descripción</th>
+                        <th class="text-end" style="width:15%">Precio</th>
+                        <th class="text-end" style="width:15%">Subtotal</th>
+                        <th style="width:1%"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody></tbody>
+                <tfoot>
                     <tr>
-                        <td>
-                            <span class="badge bg-success bg-opacity-25 text-success">Vacunas</span>
+                        <td colspan="3"></td>
+                        <td class="text-end">
+                            <div class="form-check d-inline-flex align-items-center gap-2">
+                                <input class="form-check-input" type="checkbox" id="chk-desc">
+                                <label class="form-check-label" for="chk-desc">% Descuento</label>
+                            </div>
                         </td>
-                        <td>1</td>
-                        <td>Lorem</td>
-                        <td>$250.00</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="badge bg-warning bg-opacity-25 text-warning">Baño</span>
-                        </td>
-                        <td>2</td>
-                        <td>Lorem</td>
-                        <td>$50.00</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="badge bg-danger bg-opacity-25 text-danger">Desparasitada</span>
+                        <td class="text-end">
+                            <input type="number" id="pct-desc" class="form-control form-control-sm text-end" min="0"
+                                max="100" value="0" disabled>
                         </td>
                         <td></td>
-                        <td><em>Lorem</em></td>
-                        <td>$0.00</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <span class="badge bg-success bg-opacity-25 text-success">Consulta</span>
-                        </td>
-                        <td></td>
-                        <td></td>
+                    <tr class="table-secondary">
+                        <td colspan="4" class="text-end fw-bold">TOTAL</td>
+                        <td class="text-end fw-bold" id="total">$0.00</td>
                         <td></td>
                     </tr>
-                    <tr>
-                        <td>
-                            <span class="badge bg-primary bg-opacity-25 text-primary">Otros</span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <!-- Fila descuento -->
-                    <tr>
-                        <td colspan="3" class="text-end fw-semibold">
-                            % Descuento (se habilita un campo)
-                        </td>
-                        <td>
-                            <input type="checkbox" class="form-check-input">
-                        </td>
-                    </tr>
-
-                    <!-- Fila total -->
-                    <tr style="background-color: #dcdcff;">
-                        <td colspan="2" class="fw-bold">ENVIAR</td>
-                        <td class="fw-bold">TOTAL</td>
-                        <td class="fw-bold">$300.00</td>
-                    </tr>
-                </tbody>
+                </tfoot>
             </table>
+        </div>
+
+        <div class="text-end mt-3">
+            <button type="button" id="btn-calcular" class="btn btn-success">Calcular total</button>
         </div>
     </section>
 

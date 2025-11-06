@@ -146,3 +146,7 @@ def eliminar_cita(request, id):
     cita.delete()
 
     return redirect('citas')
+
+def index(request):
+    servicios = SERVICIO.objects.all().order_by('nombre')
+    return render(request, 'index.html', {'servicios': servicios})
