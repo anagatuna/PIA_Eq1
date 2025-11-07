@@ -40,9 +40,9 @@ def servicios_panel(request, id=None):
 
     # Crear o actualizar según si viene id en la URL
     if request.method == "POST":
-        nombre = request.POST.get("nombre", "").strip()
+        nombre = request.POST.get("nombre", "").strip().capitalize()
         precio = request.POST.get("precio", "").strip()
-        descripcion = request.POST.get("descripcion", "").strip()
+        descripcion = request.POST.get("descripcion", "").strip().capitalize()
 
         if servicio:  # editar
             servicio.nombre = nombre
@@ -78,13 +78,13 @@ def citas_panel(request, id=None):
     servicios = SERVICIO.objects.all()  # <- NECESARIO para el ddl
 
     if request.method == "POST":
-        nombre_dueño = (request.POST.get("nombre_dueño") or "").strip()
-        nombre_mascota = (request.POST.get("nombre_mascota") or "").strip()
-        especie = (request.POST.get("especie") or "").strip()
+        nombre_dueño = (request.POST.get("nombre_dueño") or "").strip().title()
+        nombre_mascota = (request.POST.get("nombre_mascota") or "").strip().title()
+        especie = (request.POST.get("especie") or "").strip().capitalize()
         fecha_cita_raw = (request.POST.get("fecha_cita") or "").strip()
-        motivo = (request.POST.get("motivo") or "").strip()
-        estatus = (request.POST.get("estatus") or "Pendiente").strip()
-        servicio_id = (request.POST.get("servicio") or "").strip()
+        motivo = (request.POST.get("motivo") or "").strip().capitalize()
+        estatus = (request.POST.get("estatus") or "Pendiente").strip().capitalize()
+        servicio_id = (request.POST.get("servicio") or "").strip().capitalize()
 
         # Validaciones básicas
         if not servicio_id:

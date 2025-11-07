@@ -28,8 +28,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre del Dueño</label>
-                                <input type="text" name="nombre_dueño" class="form-control" pattern="[A-Za-z]+"
-                                    maxlength="100" required value="{{ cita.nombre_dueño|default_if_none:'' }}">
+                                <input type="text" name="nombre_dueño" class="form-control" pattern="[A-Za-z\s]+"
+                                    maxlength="200" required value="{{ cita.nombre_dueño|default_if_none:'' }}">
                             </div>
 
                             <div class="mb-3">
