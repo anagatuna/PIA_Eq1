@@ -28,13 +28,13 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre del Dueño</label>
-                                <input type="text" name="nombre_dueño" class="form-control" pattern="[A-Za-z\s]+"
+                                <input type="text" name="nombre_dueño" class="form-control" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
                                     maxlength="200" required value="{{ cita.nombre_dueño|default_if_none:'' }}">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre de la Mascota</label>
-                                <input type="text" name="nombre_mascota" class="form-control" pattern="[A-Za-z]+"
+                                <input type="text" name="nombre_mascota" class="form-control" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
                                     maxlength="100" required value="{{ cita.nombre_mascota|default_if_none:'' }}">
                             </div>
 
@@ -64,7 +64,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Motivo</label>
-                                <textarea name="motivo" class="form-control" maxlength="100"
+                                <textarea name="motivo" class="form-control" maxlength="255"
                                     required>{{ cita.motivo|default_if_none:'' }}</textarea>
                             </div>
 
@@ -72,7 +72,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Estatus</label>
                                 <input type="text" name="estatus" class="form-control"
-                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}">
+                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}" maxlength="50">
                             </div>
                             {% else %}
                             <!-- Lo mandamos en oculto para el POST -->
@@ -186,7 +186,7 @@
         const select = document.getElementById("especie_select");
         const otroDiv = document.getElementById("otro_especie_div");
         const otroInput = document.getElementById("especie_otro");
-    
+
         function toggleOtro() {
             if (select.value === "Otro") {
                 otroDiv.style.display = "block";
@@ -197,7 +197,7 @@
                 otroInput.value = "";
             }
         }
-    
+
         select.addEventListener("change", toggleOtro);
         toggleOtro(); // ejecutar al cargar la página por si ya hay valor
     });

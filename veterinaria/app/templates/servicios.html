@@ -28,7 +28,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
-                                <input type="text" name="nombre" class="form-control" pattern="[A-Za-z\s]+"
+                                <input type="text" name="nombre" class="form-control" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
                                     maxlength="100" required value="{{ servicio.nombre|default_if_none:'' }}">
                             </div>
 
