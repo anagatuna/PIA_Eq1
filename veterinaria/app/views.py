@@ -125,11 +125,21 @@ def citas_panel(request, id=None):
         
         ser_obj = get_object_or_404(SERVICIO, pk=servicio_id) 
 
-        # Parseo del datetime-local (YYYY-MM-DDTHH:MM), si usas zona horaria, conviértelo a aware 
-        fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M") 
-        if timezone.is_naive(fecha_cita_dt): 
-            fecha_cita_dt = timezone.make_aware(fecha_cita_dt, 
-            timezone.get_current_timezone())
+        # Parseo del datetime-local (YYYY-MM-DDTHH:MM) y hacerlo aware
+        fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
+        if timezone.is_naive(fecha_cita_dt):
+            fecha_cita_dt = timezone.make_aware(fecha_cita_dt, timezone.get_current_timezone())
+
+        # No permitir fechas anteriores al dia
+        ahora = timezone.now()
+        if fecha_cita_dt <= ahora:
+            messages.error(request, "La fecha y hora de la cita no puede ser anterior a HOY.")
+            return render(request, "citas.html", {
+                "citas": CITA_VETERINARIA.objects.all(),
+                "cita": cita,
+                "editando": bool(cita),
+                "servicios": servicios,
+            })
 
         # Evitar dos citas del MISMO servicio a la MISMA fecha/hora
         validacionCita = CITA_VETERINARIA.objects.filter(
@@ -179,9 +189,10 @@ def citas_panel(request, id=None):
         "cita": cita,
         "editando": bool(cita),
         "servicios": servicios,
+        "ahora_str": timezone.localtime().strftime("%Y-%m-%dT%H:%M"),
     }
     return render(request, "citas.html", ctx)
-
+    
 @login_required
 def eliminar_cita(request, id):
     cita = get_object_or_404(CITA_VETERINARIA, id=id)

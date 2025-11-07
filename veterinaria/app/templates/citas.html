@@ -58,7 +58,7 @@
                             <div class="mb-3">
                                 <label class="form-label" for="id_fecha_cita">Fecha Cita</label>
                                 <input type="datetime-local" name="fecha_cita" class="form-control" required
-                                    id="id_fecha_cita"
+                                    id="id_fecha_cita" min="{{ ahora_str }}"
                                     value="{{ cita.fecha_cita|date:'Y-m-d\TH:i'|default_if_none:'' }}">
                             </div>
 
