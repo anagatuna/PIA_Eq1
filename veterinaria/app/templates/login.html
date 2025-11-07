@@ -50,22 +50,15 @@
                             <a href="{% url 'index' %}" class="btn btnGris text-white">Volver</a>
                         </div>
 
-                        <!-- Alertas (solo errores o warnings) -->
-                        {% if messages %}
-                        {% for message in messages %}
-                        {% if 'error' in message.tags or 'warning' in message.tags %}
-                        <script>
-                            window.alert('{{ message|escapejs }}');
-                        </script>
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
                     </form>
                 </div>
             </div>
         </div>
     </main>
 
+    {% include 'alertas.html' %}
+    {% block content %}{% endblock %}
+    
     <!-- Script para mostrar/ocultar contraseña -->
     <script>
         const togglePassword = document.getElementById("togglePassword");

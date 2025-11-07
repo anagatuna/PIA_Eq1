@@ -62,12 +62,14 @@ def servicios_panel(request, id=None):
 
     return render(request, "servicios.html", ctx)
 
+@login_required
 def eliminar_servicio(request, id):
     servicio = get_object_or_404(SERVICIO, id=id)
     servicio.delete()
 
     return redirect('servicios')
 
+@login_required
 def listar_servicios(request):
     servicios = SERVICIO.objects.all()
     return render(request, 'servicios.html', {'servicios': servicios})
@@ -140,7 +142,7 @@ def citas_panel(request, id=None):
     }
     return render(request, "citas.html", ctx)
 
-
+@login_required
 def eliminar_cita(request, id):
     cita = get_object_or_404(CITA_VETERINARIA, id=id)
     cita.delete()

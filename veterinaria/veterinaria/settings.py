@@ -121,3 +121,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Para poder usar las clases de bootstrap en las alertas
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',  
+}
+
+# Redirecciones de autenticación
+LOGIN_URL = 'login'          # nombre de tu vista de login
+LOGIN_REDIRECT_URL = 'servicios'  # a dónde enviar tras iniciar sesión
+LOGOUT_REDIRECT_URL = 'index'     # a dónde enviar tras cerrar sesión
