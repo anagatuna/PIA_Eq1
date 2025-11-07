@@ -131,6 +131,23 @@ def citas_panel(request, id=None):
             fecha_cita_dt = timezone.make_aware(fecha_cita_dt, 
             timezone.get_current_timezone())
 
+        # Evitar dos citas del MISMO servicio a la MISMA fecha/hora
+        validacionCita = CITA_VETERINARIA.objects.filter(
+            servicio=ser_obj,
+            fecha_cita=fecha_cita_dt
+        )
+        if cita:  # si estás editando, excluye la misma cita
+            validacionCita = validacionCita.exclude(pk=cita.pk)
+
+        if validacionCita.exists():
+            messages.error(request, "Ese servicio ya tiene una cita en esa fecha y hora.")
+            return render(request, "citas.html", {
+                "citas": CITA_VETERINARIA.objects.all(),
+                "cita": cita,
+                "editando": bool(cita),
+                "servicios": servicios,
+            })
+        
         # Editar 
         if cita:
             cita.nombre_dueño   = nombre_dueño

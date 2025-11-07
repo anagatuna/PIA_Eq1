@@ -72,7 +72,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Estatus</label>
                                 <input type="text" name="estatus" class="form-control"
-                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}" maxlength="50">
+                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}" maxlength="100">
                             </div>
                             {% else %}
                             <!-- Lo mandamos en oculto para el POST -->
