@@ -40,8 +40,19 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Especie</label>
-                                <input type="text" name="especie" class="form-control" pattern="[A-Za-z]+"
-                                    maxlength="100" required value="{{ cita.especie|default_if_none:'' }}">
+                                <select name="especie_select" id="especie_select" class="form-select" required>
+                                    <option value="">Seleccione una especie</option>
+                                    <option value="Perro" {% if cita.especie == "Perro" %}selected{% endif %}>Perro</option>
+                                    <option value="Gato" {% if cita.especie == "Gato" %}selected{% endif %}>Gato</option>
+                                    <option value="Ave" {% if cita.especie == "Ave" %}selected{% endif %}>Ave</option>
+                                    <option value="Otro" {% if cita.especie not in "Perro,Gato,Ave" %}selected{% endif %}>Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3" id="otro_especie_div" style="display: none;">
+                                <label class="form-label">Especifique la especie</label>
+                                <input type="text" name="especie_otro" id="especie_otro" class="form-control"
+                                    pattern="[A-Za-z\s]+" maxlength="100" value="{% if cita.especie not in 'Perro,Gato,Ave' %}{{ cita.especie }}{% endif %}">
                             </div>
 
                             <div class="mb-3">
@@ -170,6 +181,27 @@
         {% block content %}{% endblock %}
     </body>
 
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const select = document.getElementById("especie_select");
+        const otroDiv = document.getElementById("otro_especie_div");
+        const otroInput = document.getElementById("especie_otro");
+    
+        function toggleOtro() {
+            if (select.value === "Otro") {
+                otroDiv.style.display = "block";
+                otroInput.required = true;
+            } else {
+                otroDiv.style.display = "none";
+                otroInput.required = false;
+                otroInput.value = "";
+            }
+        }
+    
+        select.addEventListener("change", toggleOtro);
+        toggleOtro(); // ejecutar al cargar la página por si ya hay valor
+    });
+</script>
 </body>
 
 </html>

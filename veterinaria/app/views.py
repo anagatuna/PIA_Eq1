@@ -77,68 +77,90 @@ def listar_servicios(request):
 @login_required
 def citas_panel(request, id=None):
     cita = get_object_or_404(CITA_VETERINARIA, pk=id) if id else None
-    servicios = SERVICIO.objects.all()  # <- NECESARIO para el ddl
+    servicios = SERVICIO.objects.all() # Necesario para traer los servicios al ddl
 
     if request.method == "POST":
-        nombre_dueño = (request.POST.get("nombre_dueño") or "").strip().title()
+        nombre_dueño   = (request.POST.get("nombre_dueño") or "").strip().title()
         nombre_mascota = (request.POST.get("nombre_mascota") or "").strip().title()
-        especie = (request.POST.get("especie") or "").strip().capitalize()
         fecha_cita_raw = (request.POST.get("fecha_cita") or "").strip()
-        motivo = (request.POST.get("motivo") or "").strip().capitalize()
-        estatus = (request.POST.get("estatus") or "Pendiente").strip().capitalize()
-        servicio_id = (request.POST.get("servicio") or "").strip().capitalize()
+        motivo         = (request.POST.get("motivo") or "").strip().capitalize()
+        estatus        = (request.POST.get("estatus") or "Pendiente").strip().capitalize()
+        servicio_id    = (request.POST.get("servicio") or "").strip()
 
-        # Validaciones básicas
-        if not servicio_id:
-            # re-render con error y el ddl poblado
-            ctx = {
+        # Sacar la especie del ddl y validar si selecciona o no 'otro'
+        especie_select = (request.POST.get("especie_select") or "").strip()
+        especie_otro   = (request.POST.get("especie_otro") or "").strip()
+        if not especie_select:
+            messages.error(request, "Selecciona una especie.")
+            return render(request, "citas.html", {
                 "citas": CITA_VETERINARIA.objects.all(),
                 "cita": cita,
                 "editando": bool(cita),
                 "servicios": servicios,
-                "error": "Selecciona un servicio.",
-            }
-            return render(request, "citas.html", ctx)
-
-        ser_obj = get_object_or_404(SERVICIO, pk=servicio_id)
-
-        # Parseo del datetime-local (YYYY-MM-DDTHH:MM)
-        # Si usas zona horaria, conviértelo a aware
-        fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
-        if timezone.is_naive(fecha_cita_dt):
-            fecha_cita_dt = timezone.make_aware(fecha_cita_dt, timezone.get_current_timezone())
-
-        if cita:
-            # editar
-            cita.nombre_dueño = nombre_dueño
-            cita.nombre_mascota = nombre_mascota
-            cita.especie = especie
-            cita.fecha_cita = fecha_cita_dt
-            cita.motivo = motivo
-            cita.estatus = estatus
-            cita.servicio = ser_obj
-            cita.save()
+            })
+        elif especie_select == "Otro":
+            if not especie_otro:
+                messages.error(request, "Indica la especie en el campo 'Especifique la especie'.")
+                return render(request, "citas.html", {
+                    "citas": CITA_VETERINARIA.objects.all(),
+                    "cita": cita,
+                    "editando": bool(cita),
+                    "servicios": servicios,
+                })
+            especie_final = especie_otro.capitalize()
         else:
-            # crear
+            especie_final = especie_select.capitalize()
+
+        # Validaciones básicas 
+        if not servicio_id: # re-render con error y el ddl poblado 
+            ctx = { 
+                "citas": CITA_VETERINARIA.objects.all(), 
+                "cita": cita, 
+                "editando": bool(cita), 
+                "servicios": servicios, 
+                "error": "Selecciona un servicio.", 
+            } 
+            return render(request, "citas.html", ctx) 
+        
+        ser_obj = get_object_or_404(SERVICIO, pk=servicio_id) 
+        
+        # Parseo del datetime-local (YYYY-MM-DDTHH:MM), si usas zona horaria, conviértelo a aware 
+        fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M") 
+        if timezone.is_naive(fecha_cita_dt): 
+            fecha_cita_dt = timezone.make_aware(fecha_cita_dt, 
+            timezone.get_current_timezone())
+
+        # Editar 
+        if cita:
+            cita.nombre_dueño   = nombre_dueño
+            cita.nombre_mascota = nombre_mascota
+            cita.especie        = especie_final
+            cita.fecha_cita     = fecha_cita_dt
+            cita.motivo         = motivo
+            cita.estatus        = estatus
+            cita.servicio       = ser_obj
+            cita.save()
+            messages.success(request, "La cita se actualizó correctamente.")
+        else: # Crear
             CITA_VETERINARIA.objects.create(
                 nombre_dueño=nombre_dueño,
                 nombre_mascota=nombre_mascota,
-                especie=especie,
+                especie=especie_final,
                 fecha_cita=fecha_cita_dt,
                 motivo=motivo,
                 estatus="Pendiente",
                 servicio=ser_obj,
             )
+            messages.success(request, "La cita se registró correctamente.")
 
-        return redirect("citas")  # <- sin pasar contexto al redirect
+        return redirect("citas")
 
-    # GET
     citas = CITA_VETERINARIA.objects.all()
     ctx = {
         "citas": citas,
         "cita": cita,
         "editando": bool(cita),
-        "servicios": servicios,   # <- para poblar el ddl
+        "servicios": servicios,
     }
     return render(request, "citas.html", ctx)
 
