@@ -66,6 +66,7 @@ def servicios_panel(request, id=None):
 def eliminar_servicio(request, id):
     servicio = get_object_or_404(SERVICIO, id=id)
     servicio.delete()
+    messages.error(request, "Se eliminó correctamente el servicio.")
 
     return redirect('servicios')
 
@@ -123,7 +124,7 @@ def citas_panel(request, id=None):
             return render(request, "citas.html", ctx) 
         
         ser_obj = get_object_or_404(SERVICIO, pk=servicio_id) 
-        
+
         # Parseo del datetime-local (YYYY-MM-DDTHH:MM), si usas zona horaria, conviértelo a aware 
         fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M") 
         if timezone.is_naive(fecha_cita_dt): 
@@ -168,7 +169,7 @@ def citas_panel(request, id=None):
 def eliminar_cita(request, id):
     cita = get_object_or_404(CITA_VETERINARIA, id=id)
     cita.delete()
-
+    messages.error(request, "Se eliminó correctamente la cita.")
     return redirect('citas')
 
 def index(request):
