@@ -300,7 +300,8 @@
 
     <section class="container my-5">
         <h5 class="text-center mb-4">FORMULARIO</h5>
-
+        
+        <form action="" id="formulario_datos">
         <div class="table-responsive shadow-sm rounded">
             <table class="table align-middle">
                 <thead class="text-white" style="background: #1f26b8;">
@@ -313,13 +314,14 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input type="text" class="form-control form-control-sm" placeholder="Tu nombre">
+                            <input type="text" id="campoNombre" class="form-control form-control-sm" placeholder="Ej. Juan García" required pattern="^[A-Za-z]+(\s[A-Za-z]+)+$">
                         </td>
                         <td>
-                            <input type="email" class="form-control form-control-sm" placeholder="tu@correo.com">
+                            <input type="email" id="campoCorreo" class="form-control form-control-sm" placeholder="tu@correo.com" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-
+                            ]+\.[A-Za-z]{2,}$">
                         </td>
                         <td rowspan="2">
-                            <textarea class="form-control" rows="5" placeholder="Escribe aquí"></textarea>
+                            <textarea class="form-control" id="campoMensaje" rows="5" required placeholder="Escribe aquí"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -328,21 +330,22 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="tel" class="form-control form-control-sm" placeholder="(55) 1234 5678">
+                            <input type="tel" id="campoTelefono" class="form-control form-control-sm" pattern="^\d{10}$" required placeholder="10 dígitos sin espacios">
                         </td>
                         <td>
-                            <input type="date" class="form-control form-control-sm">
+                            <input type="date" id="campoFecha" class="form-control form-control-sm" required>
                         </td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan="3" class="text-center bg-light">
-                            <button class="btn btn-outline-dark rounded-pill px-5">ENVIAR</button>
+                            <button type="submit" class="btn btn-outline-dark rounded-pill px-5">ENVIAR</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        </form>
     </section>
 
     <section class="container my-5">
@@ -378,6 +381,7 @@
 
     {% include 'alertas.html' %}
     {% block content %}{% endblock %}
+    <script src="{% static 'js/envioFormulario.js' %}"></script>
 </body>
 
 </html>
