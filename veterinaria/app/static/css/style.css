@@ -80,3 +80,34 @@ body {
 .text-justify {
   text-align: justify;
 }
+
+.tarjeta-nosotros {
+    background: #FFFDFA;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out; 
+}
+
+.tarjeta-nosotros:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    border-color: #4EC4E9; 
+}
+
+.tarjeta-nosotros h5 {
+    color: #056272;
+    font-weight: bold;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #F47F76; 
+}
+
+.tarjeta-nosotros p {
+    text-align: justify;
+    color: #333;
+    margin-bottom: 0;
+}
