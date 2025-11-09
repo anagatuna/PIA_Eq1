@@ -111,3 +111,50 @@ body {
     color: #333;
     margin-bottom: 0;
 }
+
+/* --- Estilos para el Formulario de Contacto --- */
+
+.form-titulo {
+    color: #056272;
+    font-weight: bold;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid #F47F76; 
+}
+
+.formulario-card {
+    background-color: #FFFDFA;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E0E0E0;
+}
+
+.formulario-card .form-label {
+    color: #056272;
+    font-weight: bold;
+}
+
+#formulario_datos .form-control:focus {
+    border-color: #4EC4E9;
+    box-shadow: 0 0 0 0.25rem rgba(78, 196, 233, 0.25);
+}
+
+.btn-vet-submit {
+    background-color: #4EC4E9;
+    color: white;
+    border: none;
+    padding: 0.6rem 2.5rem;
+    border-radius: 50rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-vet-submit:hover {
+    background-color: #056272;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
