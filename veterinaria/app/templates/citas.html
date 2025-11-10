@@ -71,13 +71,13 @@
                             {% if editando %}
                             <div class="mb-3">
                                 <label class="form-label">Estatus</label>
-                                <input type="text" name="estatus" class="form-control"
-                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}" maxlength="100">
+                                <select name="estatus" class="form-select" required>
+                                    <option value="Pendiente"  {% if cita.estatus == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                                    <option value="Completado" {% if cita.estatus == "Completado" %}selected{% endif %}>Completado</option>
+                                </select>
                             </div>
                             {% else %}
-                            <!-- Lo mandamos en oculto para el POST -->
                             <input type="hidden" name="estatus" value="Pendiente">
-                            <!-- Solo mostrar (deshabilitado) para que el usuario lo vea -->
                             <div class="mb-3">
                                 <label class="form-label">Estatus</label>
                                 <input type="text" class="form-control" value="Pendiente" disabled>
