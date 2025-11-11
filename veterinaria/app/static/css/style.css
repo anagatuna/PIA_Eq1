@@ -1,4 +1,7 @@
-html, body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -6,23 +9,154 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  
+  font-family: "Poppins", sans-serif !important;
 }
 
 /* Hero a pantalla completa */
 .hero-section {
   width: 100vw;
   height: 100vh;
+  background-image: url("../img/banner_bienvenida.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: relative;
 }
 
 .overlay {
   width: 100%;
   height: 100%;
 }
+
+:root{
+  --primary:#056272;
+  --accent:#4EC4E9;
+  --accent-light:#8FE6F7;
+  --coral:#F47F76;
+  --paper:#FFFDFa; /* A mayúscula en HEX es ok */
+  --ink:#333333;
+}
+
+/* ====== Cards Nosotros ====== */
+#nosotros{
+  border-bottom: 3px solid #F47F76;
+  color: #404040;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
+}
+
+/* centrado */
+.section-nosotros {
+  text-align: center;
+}
+
+.card-nosotros{
+  position:relative;
+  background:
+    radial-gradient(178.94% 106.41% at 26.42% 106.41%,
+      color-mix(in srgb, var(--accent-light) 55%, white) 0%,
+      rgba(255,255,255,0) 72%),
+    var(--paper);
+  box-shadow:
+    0 100px 62px rgba(0,0,0,0.02),
+    0 60px 52px rgba(0,0,0,0.05),
+    0 25px 30px rgba(0,0,0,0.10),
+    0 5px 10px rgba(0,0,0,0.15);
+  border-radius:23px;
+  padding:2rem 1.5rem 1.7rem;
+  transition:transform .6s cubic-bezier(0.15,0.83,0.66,1), box-shadow .3s ease;
+  cursor:pointer;
+  color:var(--ink);
+}
+.card-nosotros:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 25px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.card-nosotros h5{ color:var(--primary); margin-bottom:.5rem; }
+.card-nosotros p{ font-size:.95rem; text-align:justify; }
+
+/* Variante por card */
+.card-nosotros--mision .icon-wrapper{
+  background:linear-gradient(135deg, var(--accent), var(--accent-light));
+  box-shadow:0 4px 15px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.card-nosotros--vision .icon-wrapper{
+  /* usa la misma paleta coral, aclarada con color-mix para el degradado */
+  background:linear-gradient(135deg,
+    var(--coral),
+    color-mix(in srgb, var(--coral) 70%, white));
+  box-shadow:0 4px 15px color-mix(in srgb, var(--coral) 40%, transparent);
+}
+
+/* Icono */
+.icon-wrapper{
+  width:70px; height:70px; border-radius:50%;
+  display:grid; place-items:center;
+  margin:-60px auto 18px;
+  animation:floatIcon 4s ease-in-out infinite;
+}
+.icon-wrapper i{ color:#fff; font-size:2rem; }
+
+@keyframes floatIcon{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-8px); }
+}
+
+/* ====== Avatar circular con aro según paleta ====== */
+/* ====== Avatar circular con aro estático elegante ====== */
+.avatar-circle {
+  --ring-size: 12px;
+  position: relative;
+  width: clamp(260px, 38vw, 420px);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  padding: var(--ring-size);
+  background: conic-gradient(
+    from 0deg,
+    var(--accent) 0%,
+    var(--accent-light) 25%,
+    var(--primary) 75%,
+    var(--accent) 100%
+  );
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+  transition: transform 0.4s ease;
+}
+
+.avatar-circle::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: radial-gradient(
+      120% 120% at 20% 100%,
+      color-mix(in srgb, var(--accent-light) 40%, white),
+      transparent 70%
+    ),
+    #fff;
+  z-index: 0;
+}
+
+.avatar-img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease, box-shadow 0.3s ease;
+}
+
+.avatar-circle:hover .avatar-img {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(78, 196, 233, 0.3);
+}
+
+
+/* ====== Accesibilidad básica ====== */
+h3, .fw-bold{ color:var(--primary); }
 
 /* Cards servicios: efecto hover */
 .card {
@@ -35,28 +169,144 @@ body {
 }
 
 /* Carousel alto cómodo */
+#imagenes h3 {
+  color: #404040;
+  text-transform: uppercase;
+  border-bottom: 3px solid #F47F76;
+  display: inline-block;
+  padding-bottom: 0.4rem;
+}
+
 .carousel-img {
   height: 80vh;
   object-fit: cover;
 }
 
-/* Testimonios */
+/* ===== Sección testimonios ===== */
+.testimonios {
+  width: 100%;
+  margin: 0;
+  padding-inline: 0;
+  overflow-x: hidden;
+}
+
+.testimonios h3 {
+  color: #404040;
+  text-transform: uppercase;
+  border-bottom: 3px solid #F47F76;
+  display: inline-block;
+  padding-bottom: 0.4rem;
+}
+
+/* ===== Fila tipo cinta ===== */
+.testimonios-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch; /* ✅ todas las tarjetas misma altura */
+  gap: 4rem;
+  row-gap: 5rem;
+}
+
+/* ===== Cada testimonio ===== */
+.testimonio {
+  max-width: 280px;
+  flex: 1 1 260px; /* ✅ se adaptan sin romper */
+  text-align: center;
+  margin-inline: 1rem;
+  display: flex;
+  flex-direction: column; /* ✅ permite distribuir contenido verticalmente */
+  justify-content: space-between;
+}
+
+/* ===== Imagen ===== */
 .testimonial-img {
   width: 180px;
   height: 220px;
   object-fit: cover;
   border-radius: 28px;
+  transition: all 0.5s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
-.stars span {
-  font-size: 1.6rem;
-  color: #f7b500;
-  margin: 0 .1rem;
+.testimonial-img:hover {
+  transform: scale(1.07);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  filter: brightness(1.05);
 }
 
-.stars .empty {
-  color: #e2e2e2;
+/* ===== Texto ===== */
+.testimonio p {
+  color: #404040;
+  font-size: 0.95rem;
+  margin: 1rem auto;
+  max-width: 240px;
+  flex-grow: 1; /* ✅ ocupa espacio para igualar alturas */
 }
+
+/* ===== Estrellas SVG ===== */
+/* ===== Estrellas SVG (estable y sin recortes) ===== */
+.stars-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  /* carril fijo para que el hover no cambie el alto de la card */
+  height: 40px;           /* 28px icono + ~12px para el glow */
+  padding: 6px 0;         /* espacio extra para que no se “corte” abajo */
+  overflow: visible;      /* permite que el brillo se renderice fuera del bbox */
+  line-height: 0;         /* elimina espacios fantasma */
+}
+
+.stars-svg svg {
+  width: 28px;
+  height: 28px;
+
+  /* OJO: el <path> usa fill="currentColor" en el <symbol> */
+  color: #e2e2e2;         /* gris base */
+  fill: currentColor;
+
+  display: block;         /* quita espacios extra */
+  transform-origin: center;
+  will-change: transform, filter, color;
+  transition: transform .2s ease, filter .2s ease, color .2s ease;
+}
+
+/* Hover decorativo sin afectar layout */
+.stars-svg svg:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(255,158,11,.9));
+}
+
+/* Activas: 4 o 5 (no cambian tamaño del contenedor) */
+.stars-4 svg:nth-child(-n+4),
+.stars-5 svg:nth-child(-n+5) {
+  color: #ffa723;
+  filter: drop-shadow(0 0 6px rgba(255,158,11,.6));
+}
+
+/* (Opcional) pulso MUY sutil sin recortes */
+@keyframes glowPulse {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(255,158,11,.3)); }
+  50%     { filter: drop-shadow(0 0 12px rgba(255,158,11,.8)); }
+}
+/* si quieres activarlo, descomenta: */
+
+/* ===== Responsivo ===== */
+@media (max-width: 768px) {
+  .testimonios-row {
+    gap: 2.5rem;
+    row-gap: 3.5rem;
+  }
+
+  .testimonial-img {
+    width: 160px;
+    height: 200px;
+  }
+}
+
 
 /* FAQ */
 .faq-card {
@@ -80,88 +330,88 @@ body {
 }
 
 .tarjeta-nosotros {
-    background: #FFFDFA;
-    border: 1px solid #E0E0E0;
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease-in-out; 
+  background: #FFFDFA;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
 }
 
 .tarjeta-nosotros:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
-    border-color: #4EC4E9; 
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #4EC4E9;
 }
 
 .tarjeta-nosotros h5 {
-    color: #056272;
-    font-weight: bold;
-    display: inline-block;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid #F47F76; 
+  color: #056272;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
 }
 
 .tarjeta-nosotros p {
-    text-align: justify;
-    color: #333;
-    margin-bottom: 0;
+  text-align: justify;
+  color: #333;
+  margin-bottom: 0;
 }
 
 /* --- Estilos para el Formulario de Contacto --- */
 
 .form-titulo {
-    color: #056272;
-    font-weight: bold;
-    display: inline-block;
-    padding-bottom: 0.5rem;
-    border-bottom: 4px solid #F47F76; 
+  color: #056272;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  border-bottom: 4px solid #F47F76;
 }
 
 .formulario-card {
-    background-color: #FFFDFA;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid #E0E0E0;
+  background-color: #FFFDFA;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E0E0E0;
 }
 
 .formulario-card .form-label {
-    color: #056272;
-    font-weight: bold;
+  color: #056272;
+  font-weight: bold;
 }
 
 #formulario_datos .form-control:focus {
-    border-color: #4EC4E9;
-    box-shadow: 0 0 0 0.25rem rgba(78, 196, 233, 0.25);
+  border-color: #4EC4E9;
+  box-shadow: 0 0 0 0.25rem rgba(78, 196, 233, 0.25);
 }
 
 .btn-vet-submit {
-    background-color: #4EC4E9;
-    color: white;
-    border: none;
-    padding: 0.6rem 2.5rem;
-    border-radius: 50rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease-in-out;
+  background-color: #4EC4E9;
+  color: white;
+  border: none;
+  padding: 0.6rem 2.5rem;
+  border-radius: 50rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn-vet-submit:hover {
-    background-color: #056272;
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  background-color: #056272;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 #formulario_datos .form-control:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
-    box-shadow: 0 0 0 1000px #FFFFFF inset;
-    -webkit-text-fill-color: #212529;
-    transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+  box-shadow: 0 0 0 1000px #FFFFFF inset;
+  -webkit-text-fill-color: #212529;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 #formulario_datos .form-control:-webkit-autofill:focus {
