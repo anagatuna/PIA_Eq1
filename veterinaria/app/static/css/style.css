@@ -302,23 +302,7 @@ body {
   box-shadow: 0 0 25px rgba(78, 196, 233, 0.3);
 }
 
-
-/* ====== Accesibilidad básica ====== */
-h3,
-.fw-bold {
-  color: var(--primary);
-}
-
-/* Cards servicios: efecto hover */
-.card {
-  transition: .2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
-}
-
+/* Sección Servicios */
 #servicios {
   color: #404040;
   font-weight: bold;
@@ -326,7 +310,118 @@ h3,
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 3px solid #F47F76;
+  margin-top: 2rem;
 }
+
+.nav-servicios .list-group-item {
+  border: 0;
+  border-left: 4px solid transparent;
+  border-radius: .75rem;
+  margin-bottom: .4rem;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+  padding: .9rem 1rem;
+  transition: .2s ease;
+  color: #36454f;
+}
+
+.nav-servicios .list-group-item .nombre {
+  font-weight: 600;
+}
+
+.nav-servicios .list-group-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .1);
+}
+
+.nav-servicios .list-group-item.active {
+  background: linear-gradient(90deg, #E8F8FD, #fff);
+  border-left-color: var(--accent);
+  color: var(--primary);
+}
+
+/* Panel derecho */
+.detalle-servicio {
+  border: 0;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  overflow: hidden;
+}
+
+.icono-serv-md {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #E8F8FD;
+  color: var(--primary);
+  box-shadow: 0 6px 14px rgba(78, 196, 233, .25);
+}
+
+.text-vet {
+  color: #056272;
+}
+
+.precio-xl {
+  font-size: 1.25rem;
+  color: #056272;
+}
+
+/* Responsive: la lista se vuelve carrusel horizontal */
+@media (max-width: 992px) {
+  .nav-servicios {
+    display: flex;
+    overflow-x: auto;
+    gap: .6rem;
+    padding-bottom: .25rem;
+  }
+
+  .nav-servicios .list-group-item {
+    flex: 0 0 auto;
+    min-width: 260px;
+  }
+}
+
+/* Botones fuera de la card */
+.botones-servicios {
+  text-align: center;
+}
+
+.btn-servicio {
+  padding: 0.7rem 2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+/* Botón Agendar */
+.btn-agendar {
+  background: var(--primary, #056272);
+  color: #fff;
+}
+
+.btn-agendar:hover {
+  background: #034750;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón Cotizar */
+.btn-cotizar {
+  background: var(--accent, #4EC4E9);
+  color: #fff;
+}
+
+.btn-cotizar:hover {
+  background: #2fa0c3;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
 
 /* Carousel alto cómodo */
 #imagenes h3 {
@@ -845,7 +940,7 @@ textarea.textarea:-webkit-autofill {
   border-bottom: 3px solid #F47F76;
 }
 
-.faq-card{
+.faq-card {
   transition: .2s ease;
 }
 
@@ -854,7 +949,7 @@ textarea.textarea:-webkit-autofill {
   box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
 }
 
-.faq-badge{
+.faq-badge {
   transition: .2s ease;
 }
 
@@ -864,9 +959,9 @@ textarea.textarea:-webkit-autofill {
 }
 
 summary {
-  list-style: none; 
+  list-style: none;
   cursor: pointer;
-  color:#056272;
+  color: #056272;
 }
 
 summary::-webkit-details-marker {
@@ -878,12 +973,12 @@ summary::marker {
   content: "";
 }
 
-.faq2 { 
-  padding: 30px 20px; 
+.faq2 {
+  padding: 30px 20px;
 }
 
-.faq2__toggle { 
-  display: none; 
+.faq2__toggle {
+  display: none;
 }
 
 .faq2__summary {
@@ -891,7 +986,7 @@ summary::marker {
   font-weight: 600;
   user-select: none;
   display: block;
-  border:none;
+  border: none;
 }
 
 /* Animar respuesta */
@@ -903,7 +998,8 @@ summary::marker {
 }
 
 /* Abierto */
-.faq2__toggle:checked ~ .faq2__content {
-  max-height: 600px;  /* ajusta al tamaño de tu contenido */
+.faq2__toggle:checked~.faq2__content {
+  max-height: 600px;
+  /* ajusta al tamaño de tu contenido */
   opacity: 1;
 }
