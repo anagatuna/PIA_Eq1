@@ -343,8 +343,12 @@ body {
 /* Panel derecho */
 .detalle-servicio {
   border: 0;
-  border-radius: 2rem;
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  box-shadow:
+    0 100px 62px rgba(0, 0, 0, 0.02),
+    0 60px 52px rgba(0, 0, 0, 0.05),
+    0 25px 30px rgba(0, 0, 0, 0.10),
+    0 5px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 23px;
   overflow: hidden;
 }
 
@@ -437,6 +441,7 @@ body {
   object-fit: cover;
 }
 
+/* ===== Título de sección ===== */
 #cotizacion {
   color: #404040;
   font-weight: bold;
@@ -444,7 +449,154 @@ body {
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 3px solid #F47F76;
-  text-transform: uppercase;
+}
+
+/* Inputs */
+.coti-input,
+.coti-toolbar .form-control {
+  border-radius: 10px !important;
+  border: 1px solid rgba(5, 98, 114, .25) !important;
+}
+
+.coti-input:focus,
+.coti-toolbar .form-control:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 .2rem rgba(78, 196, 233, .25) !important;
+}
+
+/* ——— Botones ——— */
+.btn-coti-primary {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  border: none !important;
+  padding: .5rem 1rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 8px 18px rgba(5, 98, 114, .25) !important;
+}
+
+.btn-coti-primary:hover {
+  background: #045661 !important;
+}
+
+.btn-coti-accent {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  border: none !important;
+  padding: .5rem 1rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 8px 18px rgba(78, 196, 233, .28) !important;
+}
+
+.btn-coti-accent:hover {
+  background: #39bde2 !important;
+}
+
+.btn-coti-outline {
+  background: #fff !important;
+  color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
+  border-radius: 999px !important;
+  padding: .5rem 1rem !important;
+  font-weight: 600 !important;
+}
+
+.btn-coti-outline:hover {
+  background: rgba(142, 230, 247, .25) !important;
+}
+
+.btn-coti-success {
+  background: linear-gradient(135deg, var(--primary), #088ba0) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: .6rem 1rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 10px 24px rgba(5, 98, 114, .28) !important;
+}
+
+.btn-coti-success:hover {
+  filter: brightness(1.05);
+}
+
+/* ——— Tabla ——— */
+.coti-table-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+  background: #fff;
+}
+
+/* Cabecera con gradiente (quita .table-light del thead) */
+.coti-table thead th {
+  background: var(--primary);
+  color: #fff !important;
+  border-bottom: none !important;
+}
+
+/* Celdas */
+.coti-table tbody td,
+.coti-table tfoot td {
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.coti-table tbody tr:hover {
+  background: rgba(142, 230, 247, .14);
+}
+
+/* Controles dentro de la tabla */
+.coti-table select.form-select,
+.coti-table input[type="number"].form-control {
+  border-radius: 10px;
+  padding: .25rem .5rem;
+  border: 1px solid rgba(5, 98, 114, .25);
+}
+
+.coti-table select:focus,
+.coti-table input[type="number"].form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 .2rem rgba(78, 196, 233, .2);
+}
+
+/* Fila descuento / total */
+.coti-desc-row {
+  background: rgba(142, 230, 247, .12);
+}
+
+.coti-total-row {
+  background: linear-gradient(135deg, var(--primary), #088ba0);
+  color: #fff;
+  position: sticky;
+  bottom: 0;
+}
+
+.coti-total-row td {
+  border-top: none !important;
+}
+
+/* Icono eliminar */
+.coti-table .del {
+  color: var(--coral) !important;
+}
+
+/* ——— Animación de entrada coherente con el resto ——— */
+.anim-rise {
+  animation: rise .45s ease both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ===== Sección testimonios ===== */

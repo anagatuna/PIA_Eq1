@@ -191,26 +191,34 @@
         </div>
     </section>
 
-    <section class="container my-5 text-center">
-        <h3 class="text-center mb-4" id="cotizacion">Cotización de Servicios</h3>
+    <section class="container my-5 text-center section-cotizacion">
+        <h3 class="mb-5" id="cotizacion">COTIZACIÓN DE SERVICIOS</h3>
 
-        <div class="row g-2 align-items-end mb-3">
+        <!-- Controles -->
+        <div class="row g-2 align-items-end mb-5 justify-content-center coti-toolbar anim-rise">
             <div class="col-auto">
                 <label class="form-label mb-1">¿Cuántos servicios vas a cotizar?</label>
-                <input type="number" id="num-servicios" class="form-control" min="1">
+                <input type="number" id="num-servicios" class="form-control form-control-sm coti-input" min="1"
+                    placeholder="Ej. 3">
             </div>
             <div class="col-auto">
-                <button type="button" id="btn-generar" class="btn btn-primary">Generar</button>
+                <button type="button" id="btn-generar" class="btn btn-coti-primary">
+                    <i class="bi bi-magic"></i> Generar
+                </button>
             </div>
             <div class="col-auto">
-                <button type="button" id="btn-agregar" class="btn btn-outline-primary">Agregar servicio</button>
+                <button type="button" id="btn-agregar" class="btn btn-coti-accent">
+                    <i class="bi bi-plus-circle"></i> Agregar servicio
+                </button>
             </div>
             <div class="col-auto">
-                <button type="button" id="btn-limpiar" class="btn btn-outline-secondary">Limpiar</button>
+                <button type="button" id="btn-limpiar" class="btn btn-coti-outline">
+                    <i class="bi bi-eraser"></i> Limpiar
+                </button>
             </div>
         </div>
 
-        <!-- plantilla oculta con tus servicios -->
+        <!-- plantilla oculta -->
         <select id="plantilla-servicio" class="form-select d-none">
             <option value="">Selecciona un servicio</option>
             {% for servicio in servicios %}
@@ -221,10 +229,10 @@
             {% endfor %}
         </select>
 
-        <!-- tabla oculta hasta generar -->
-        <div id="tabla-wrap" class="table-responsive d-none">
-            <table class="table align-middle" id="tabla-resultados">
-                <thead class="table-light">
+        <!-- tabla -->
+        <div id="tabla-wrap" class="table-responsive d-none coti-table-wrap anim-rise">
+            <table class="table align-middle coti-table" id="tabla-resultados">
+                <thead>
                     <tr>
                         <th style="width:30%">Servicio</th>
                         <th style="width:10%">Cantidad</th>
@@ -236,7 +244,7 @@
                 </thead>
                 <tbody></tbody>
                 <tfoot>
-                    <tr>
+                    <tr class="coti-desc-row">
                         <td colspan="3"></td>
                         <td class="text-end">
                             <div class="form-check d-inline-flex align-items-center gap-2">
@@ -245,22 +253,18 @@
                             </div>
                         </td>
                         <td class="text-end">
-                            <input type="number" id="pct-desc" class="form-control form-control-sm text-end" min="0"
-                                max="100" value="0" disabled>
+                            <input type="number" id="pct-desc" class="form-control form-control-sm text-end coti-input"
+                                min="0" max="100" value="0" disabled>
                         </td>
                         <td></td>
                     </tr>
-                    <tr class="table-secondary">
+                    <tr class="coti-total-row">
                         <td colspan="4" class="text-end fw-bold">TOTAL</td>
                         <td class="text-end fw-bold" id="total">$0.00</td>
                         <td></td>
                     </tr>
                 </tfoot>
             </table>
-        </div>
-
-        <div class="text-end mt-3">
-            <button type="button" id="btn-calcular" class="btn btn-success">Calcular total</button>
         </div>
     </section>
 
