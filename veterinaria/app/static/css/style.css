@@ -837,3 +837,75 @@ textarea.textarea:-webkit-autofill {
   color: var(--primary);
   border-color: var(--primary);
 }
+
+/* ===== Preguntas Frecuentes ===== */
+#preguntas_titulo {
+    color: #056272;
+    font-weight: bold;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid #F47F76; 
+}
+
+.faq-card{
+  transition: .2s ease;
+}
+
+.faq-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
+}
+
+.faq-badge{
+  transition: .2s ease;
+}
+
+.faq-card:hover .faq-badge {
+  background-color: #056272;
+  color: #ddd;
+}
+
+summary {
+  list-style: none; 
+  cursor: pointer;
+  color:#056272;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::marker {
+  display: none;
+  content: "";
+}
+
+.faq2 { 
+  padding: 30px 20px; 
+}
+
+.faq2__toggle { 
+  display: none; 
+}
+
+.faq2__summary {
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  display: block;
+  border:none;
+}
+
+/* Animar respuesta */
+.faq2__content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .2s ease, opacity .3s ease;
+}
+
+/* Abierto */
+.faq2__toggle:checked ~ .faq2__content {
+  max-height: 600px;  /* ajusta al tamaño de tu contenido */
+  opacity: 1;
+}

@@ -77,33 +77,15 @@
         <h3 class="mb-5 fw-bold ">NUESTROS SERVICIOS</h3>
 
         <div class="row justify-content-center g-4">
-            <!-- Card 1 -->
+            {% for servicio in servicios %}
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm p-4 h-100">
-                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
-                    <p class="text-muted">Descripción y características</p>
-                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
+                    <h5 class="fw-bold text-warning mb-2">"{{ servicio.nombre }}"</h5>
+                    <p class="text-muted">"{{ servicio.descripcion|default_if_none:''|escape }}"</p>
+                    <button class="btn btn-outline-dark rounded-pill px-4">"{{ servicio.precio|floatformat:2 }}"</button>
                 </div>
             </div>
-
-            <!-- Card 2 -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
-                    <p class="text-muted">Descripción y características</p>
-                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <h5 class="fw-bold text-warning mb-2">NOMBRE</h5>
-                    <p class="text-muted">Descripción y características</p>
-                    <button class="btn btn-outline-dark rounded-pill px-4">$</button>
-                </div>
-            </div>
-        </div>
+            {% endfor %}
 
         <!-- Botón principal -->
         <div class="mt-5">
@@ -393,8 +375,7 @@
             <div class="testimonio">
                 <img src="{% static 'img/vet6.jpg' %}" alt="Cliente 3" class="testimonial-img">
                 <p class="text-muted small mt-3">
-                    "El personal es muy profesional y amable. Siempre atienden a mi gato con dedicación y explican todo
-                    con detalle. Confío plenamente en ellos para su salud."
+                    "El personal es muy profesional y amable. Siempre atienden a mi gordinflon casi con tanto amor como yo le doy. Confío plenamente en ellos para su salud."
                 </p>
                 <div class="stars-svg stars-4">
                     <svg>
@@ -445,7 +426,7 @@
                         <input id="q1" type="checkbox" class="faq2__toggle ">
                         <label for="q1" class="faq2__summary h6 fw-semibold">¿Atienden animales exóticos?</label>
                         <div class="faq2__content">
-                            <p class="small text-muted p-1 mb-0">Sí, también podemos atender algunas especies pequeñas o
+                            <p class="small text-muted mb-0">Sí, también podemos atender algunas especies pequeñas o
                                 exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu
                                 mascota.</p>
                         </div>
@@ -464,7 +445,7 @@
                         <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya
                             agendé?</label>
                         <div class="faq2__content">
-                            <p class="small text-muted mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio
+                            <p class="small text-muted p-2 mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio
                                     web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24 horas de
                                 anticipación&#41;.</p>
                         </div>
