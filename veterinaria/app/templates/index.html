@@ -278,23 +278,57 @@
     </section>
 
     <section class="container my-5 text-center">
-        <h5 class="mb-4">Preguntas Frecuentes</h5>
+        <h5 class="mb-5" id="preguntas_titulo">PREGUNTAS FRECUENTES</h5>
 
-        <div class="row g-4 justify-content-center">
-            {% for i in "123" %}
+        <div class="row g-3 justify-content-center">
+            <!--Pregunta 1-->
             <div class="col-12 col-md-4">
-                <div class="faq-card position-relative p-4 border rounded-4">
+                <div class="faq-card position-relative p-2 border rounded-4">
                     <div
                         class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
                         ?
                     </div>
-                    <div class="mt-4">
-                        <h6 class="fw-semibold">Título de la pregunta</h6>
-                        <p class="small text-muted mb-0">Respuesta breve o enlace a detalle.</p>
+                    <div class="faq2">
+                        <input id="q1" type="checkbox" class="faq2__toggle ">
+                        <label for="q1" class="faq2__summary h6 fw-semibold">¿Atienden animales exóticos?</label>
+                        <div class="faq2__content">
+                            <p class="small text-muted p-1 mb-0">Sí, también podemos atender algunas especies pequeñas o exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu mascota.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            <!--Pregunta 2-->
+            <div class="col-12 col-md-4">
+                <div class="faq-card position-relative p-2 border rounded-4">
+                    <div
+                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                        ?
+                    </div>
+                    <div class="faq2">
+                        <input id="q2" type="checkbox" class="faq2__toggle ">
+                        <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya agendé?</label>
+                        <div class="faq2__content">
+                            <p class="small text-muted mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24 horas de anticipación&#41;.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Pregunta 3-->
+            <div class="col-12 col-md-4">
+                <div class="faq-card position-relative p-2 border rounded-4">
+                    <div
+                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                        ?
+                    </div>
+                    <div class="faq2">
+                        <input id="q3" type="checkbox" class="faq2__toggle ">
+                        <label for="q3" class="faq2__summary h6 fw-semibold">¿Qué debo llevar a la primera consulta de mi mascota?</label>
+                        <div class="faq2__content">
+                            <p class="small text-muted mb-0">Trae su cartilla de vacunación y su historial médico &#40;si lo tienes&#41; y de preferencia tu mascota en un transportador.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
