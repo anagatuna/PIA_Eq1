@@ -16,10 +16,8 @@
     {% include 'navbar.html' %}
 
     <!-- Sección principal con fondo completo -->
-    <section class="hero-section">
-        <div class="overlay d-flex flex-column justify-content-center align-items-center text-center">
-            <h1 class="bienvenida">Bienvenido a PetCare</h1>
-        </div>
+    <section class="hero-section"
+        style="background-image: url({% static 'img/banner_bienvenida.png' %});">
     </section>
 
     <!-- Nosotros -->
@@ -357,24 +355,33 @@
 
         <div class="row g-4 align-items-center">
             <div class="col-12 col-md-3 text-center">
-                <img src="{% static 'img/img-default.webp' %}" class="img-fluid rounded-3 border" alt="Mapa">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx" 
+                    alt="mapa"
+                    width="100%" 
+                    height="250" 
+                    style="border:0; border-radius: 10px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
 
             <div class="col-12 col-md-3">
                 <h6 class="fw-semibold">Dirección</h6>
                 <p class="small text-muted mb-0">
-                    Calle 123, Colonia,<br>Ciudad, Estado C.P. 12345
+                    Ave. Universidad, Ciudad Universitaria.<br>San Nicolás de los Garza, Nuevo León. C.P. 66455.
                 </p>
             </div>
 
             <div class="col-12 col-md-3">
                 <h6 class="fw-semibold">Correo electrónico</h6>
-                <p class="small text-muted mb-0">hola@sitioincreible.com</p>
+                <p class="small text-muted mb-0">contactopcare@petcare.com.mx</p><br><br>
             </div>
 
             <div class="col-12 col-md-3">
                 <h6 class="fw-semibold">Teléfono</h6>
-                <p class="small text-muted mb-0">(55) 1234 5678</p>
+                <p class="small text-muted mb-0">(55) 1234-5678 Ext. 01 y 02</p><br><br>
             </div>
         </div>
     </section>
