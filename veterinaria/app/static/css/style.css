@@ -319,6 +319,15 @@ h3,
   box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
 }
 
+#servicios {
+  color: #404040;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
+}
+
 /* Carousel alto cómodo */
 #imagenes h3 {
   color: #404040;
@@ -541,7 +550,7 @@ h3,
 
 /* --- Estilos para el Formulario de Contacto --- */
 
-.form-titulo {
+#contacto {
   color: #404040;
   font-weight: bold;
   display: inline-block;
@@ -722,25 +731,13 @@ textarea.textarea:-webkit-autofill {
 }
 
 /* ====== CONTACTO elegante ====== */
-.contact-title {
+#encuentranos {
   color: #404040;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: bold;
   display: inline-block;
-  position: relative;
-  padding-bottom: .4rem;
-}
-
-.contact-title::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -6px;
-  width: 60px;
-  height: 3px;
-  background: var(--coral);
-  border-radius: 2px;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
 }
 
 /* Mapa */
@@ -840,11 +837,12 @@ textarea.textarea:-webkit-autofill {
 
 /* ===== Preguntas Frecuentes ===== */
 #preguntas_titulo {
-    color: #056272;
-    font-weight: bold;
-    display: inline-block;
-    padding-bottom: 0.5rem;
-    border-bottom: 4px solid #F47F76; 
+  color: #404040;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
 }
 
 .faq-card{
