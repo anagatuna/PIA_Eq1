@@ -57,9 +57,11 @@
 
                             <div class="mb-3">
                                 <label class="form-label" for="id_fecha_cita">Fecha Cita</label>
-                                <input type="datetime-local" name="fecha_cita" class="form-control" required
-                                    id="id_fecha_cita" min="{{ ahora_str }}"
-                                    value="{{ cita.fecha_cita|date:'Y-m-d\TH:i'|default_if_none:'' }}">
+                                <input type="datetime-local" name="fecha_cita" class="form-control" 
+                                    id="id_fecha_cita" 
+                                    value="{{ cita.fecha_cita|date:'Y-m-d\TH:i'|default_if_none:'' }}"
+                                    {% if not editando %}min="{{ ahora_str }}"{% endif %}
+                                    {% if editando and cita_pasada %}readonly{% endif %} required>
                             </div>
 
                             <div class="mb-3">
@@ -69,20 +71,33 @@
                             </div>
 
                             {% if editando %}
-                            <div class="mb-3">
+                                <div class="mb-3">
                                 <label class="form-label">Estatus</label>
-                                <input type="text" name="estatus" class="form-control"
-                                    value="{{ cita.estatus|default_if_none:'Pendiente' }}" maxlength="100">
-                            </div>
-                            {% else %}
-                            <!-- Lo mandamos en oculto para el POST -->
-                            <input type="hidden" name="estatus" value="Pendiente">
-                            <!-- Solo mostrar (deshabilitado) para que el usuario lo vea -->
-                            <div class="mb-3">
-                                <label class="form-label">Estatus</label>
-                                <input type="text" class="form-control" value="Pendiente" disabled>
-                                <small class="text-muted">Se asigna automáticamente al crear.</small>
-                            </div>
+                                
+                                {% if cita_pasada %}
+                                    {# La cita ya pasó: solo No asistió o Completada #}
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>Completada</option>
+                                        <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No asistió</option>
+                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
+                                    </select>
+                                    <small class="text-muted">La fecha de la cita ya pasó. Solo puedes marcar Completada, No asistió o Cancelada.</small>
+                                {% else %}
+                                    {# La cita aún no pasa: solo Pendiente o Cancelada #}
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
+                                    </select>
+                                    <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y Cancelada.</small>
+                                {% endif %}
+                                </div>
+                                {% else %}
+                                <input type="hidden" name="estatus" value="Pendiente">
+                                <div class="mb-3">
+                                    <label class="form-label">Estatus</label>
+                                    <input type="text" class="form-control" value="Pendiente" disabled>
+                                    <small class="text-muted">Se asigna automáticamente al crear.</small>
+                                </div>
                             {% endif %}
 
                             <div class="mb-3">
@@ -164,7 +179,7 @@
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">Sin información disponible</td>
+                                    <td colspan="8" class="text-center text-muted">Sin información disponible</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

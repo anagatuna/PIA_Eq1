@@ -125,14 +125,15 @@ def citas_panel(request, id=None):
         
         ser_obj = get_object_or_404(SERVICIO, pk=servicio_id) 
 
-        # Parseo del datetime-local (YYYY-MM-DDTHH:MM) y hacerlo aware
+        # Parseo y awareness de la fecha
         fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
         if timezone.is_naive(fecha_cita_dt):
             fecha_cita_dt = timezone.make_aware(fecha_cita_dt, timezone.get_current_timezone())
 
-        # No permitir fechas anteriores al dia
         ahora = timezone.now()
-        if fecha_cita_dt <= ahora:
+
+        # Crear: no permitir fecha pasada
+        if fecha_cita_dt <= ahora and not cita:
             messages.error(request, "La fecha y hora de la cita no puede ser anterior a HOY.")
             return render(request, "citas.html", {
                 "citas": CITA_VETERINARIA.objects.all(),
@@ -141,6 +142,29 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
             })
 
+        # --- Validación de estatus según la fecha de la cita ---
+        if cita:
+            if fecha_cita_dt <= ahora:
+                permitidos = ["Completada", "No asistió"]
+                mensaje_regla = "Solo puedes elegir Completada o No asistió (la cita ya pasó)."
+            else:
+                permitidos = ["Pendiente", "Cancelada"]
+                mensaje_regla = "Solo puedes elegir Pendiente o Cancelada (la cita aún no ocurre)."
+
+            if estatus not in permitidos:
+                messages.error(request, mensaje_regla)
+                return render(request, "citas.html", {
+                    "citas": CITA_VETERINARIA.objects.all(),
+                    "cita": cita,
+                    "editando": True,
+                    "servicios": servicios,
+                })
+            estatus_final = estatus
+        else:
+            estatus_final = "Pendiente"  # al crear, siempre Pendiente
+        # --- Fin validación de estatus ---
+
+        # Validación fecha cita
         # Evitar dos citas del MISMO servicio a la MISMA fecha/hora
         validacionCita = CITA_VETERINARIA.objects.filter(
             servicio=ser_obj,
@@ -165,7 +189,7 @@ def citas_panel(request, id=None):
             cita.especie        = especie_final
             cita.fecha_cita     = fecha_cita_dt
             cita.motivo         = motivo
-            cita.estatus        = estatus
+            cita.estatus        = estatus_final   # <- usar el validado
             cita.servicio       = ser_obj
             cita.save()
             messages.success(request, "La cita se actualizó correctamente.")
@@ -176,7 +200,7 @@ def citas_panel(request, id=None):
                 especie=especie_final,
                 fecha_cita=fecha_cita_dt,
                 motivo=motivo,
-                estatus="Pendiente",
+                estatus=estatus_final,  # "Pendiente"
                 servicio=ser_obj,
             )
             messages.success(request, "La cita se registró correctamente.")
@@ -190,6 +214,7 @@ def citas_panel(request, id=None):
         "editando": bool(cita),
         "servicios": servicios,
         "ahora_str": timezone.localtime().strftime("%Y-%m-%dT%H:%M"),
+        "cita_pasada": bool(cita and timezone.localtime(cita.fecha_cita) <= timezone.localtime()),
     }
     return render(request, "citas.html", ctx)
     
