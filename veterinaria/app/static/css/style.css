@@ -509,3 +509,112 @@ textarea.textarea:-webkit-autofill{
   from{ transform: translateY(.08em); }
   to{   transform: translateY(-.08em); }
 }
+
+/* ====== CONTACTO elegante ====== */
+.contact-title{
+  color:#404040;
+  font-weight:700;
+  text-transform:uppercase;
+  display:inline-block;
+  position:relative;
+  padding-bottom:.4rem;
+}
+.contact-title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-6px;
+  width:60px;
+  height:3px;
+  background:var(--coral);
+  border-radius:2px;
+}
+
+/* Mapa */
+.contact-map{
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  filter: grayscale(.15) brightness(1.02);
+  transition: filter .4s ease;
+}
+.contact-map:hover{ filter: none; }
+
+/* ===== Mini-cards ===== */
+.contact-card-item{
+  background:#fff;
+  border:1px solid #e9edf1;
+  border-radius:14px;
+  padding:1.3rem 1rem;
+  height:100%;
+  text-align:left;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+  transition: transform .2s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.contact-card-item:hover{
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 35%, #e9edf1);
+  box-shadow: 0 8px 18px rgba(78,196,233,.15);
+}
+
+/* Iconos */
+.contact-icon{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:color-mix(in srgb, var(--accent-light) 35%, white);
+  color:var(--primary);
+  box-shadow:0 3px 8px rgba(78,196,233,.2);
+  margin-bottom:.8rem;
+}
+
+/* Texto y links */
+.contact-card-item h6{
+  color:var(--primary);
+  font-weight:600;
+  margin-bottom:.3rem;
+}
+.contact-link{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(0,0,0,.25);
+  transition: color .2s ease, border-color .2s ease;
+}
+.contact-link:hover{
+  color:var(--primary);
+  border-color:var(--primary);
+}
+
+/* Footer */
+.site-footer{
+  color:#7c8a96;
+  border-top:1px solid #eef1f4;
+  background:linear-gradient(to bottom,#fff,#fbfcfd);
+}
+/* Evita que se salga el texto del correo */
+.contact-card-item {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* Para el enlace del correo específicamente */
+.contact-card-item a.contact-link {
+  display: inline-block;
+  max-width: 100%;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.25);
+  color: inherit;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-card-item a.contact-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}

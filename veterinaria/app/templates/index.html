@@ -445,7 +445,9 @@
                         <input id="q1" type="checkbox" class="faq2__toggle ">
                         <label for="q1" class="faq2__summary h6 fw-semibold">¿Atienden animales exóticos?</label>
                         <div class="faq2__content">
-                            <p class="small text-muted p-1 mb-0">Sí, también podemos atender algunas especies pequeñas o exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu mascota.</p>
+                            <p class="small text-muted p-1 mb-0">Sí, también podemos atender algunas especies pequeñas o
+                                exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu
+                                mascota.</p>
                         </div>
                     </div>
                 </div>
@@ -459,9 +461,12 @@
                     </div>
                     <div class="faq2">
                         <input id="q2" type="checkbox" class="faq2__toggle ">
-                        <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya agendé?</label>
+                        <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya
+                            agendé?</label>
                         <div class="faq2__content">
-                            <p class="small text-muted mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24 horas de anticipación&#41;.</p>
+                            <p class="small text-muted mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio
+                                    web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24 horas de
+                                anticipación&#41;.</p>
                         </div>
                     </div>
                 </div>
@@ -475,9 +480,11 @@
                     </div>
                     <div class="faq2">
                         <input id="q3" type="checkbox" class="faq2__toggle ">
-                        <label for="q3" class="faq2__summary h6 fw-semibold">¿Qué debo llevar a la primera consulta de mi mascota?</label>
+                        <label for="q3" class="faq2__summary h6 fw-semibold">¿Qué debo llevar a la primera consulta de
+                            mi mascota?</label>
                         <div class="faq2__content">
-                            <p class="small text-muted mb-0">Trae su cartilla de vacunación y su historial médico &#40;si lo tienes&#41; y de preferencia tu mascota en un transportador.</p>
+                            <p class="small text-muted mb-0">Trae su cartilla de vacunación y su historial médico
+                                &#40;si lo tienes&#41; y de preferencia tu mascota en un transportador.</p>
                         </div>
                     </div>
                 </div>
@@ -547,38 +554,78 @@
     </section>
 
 
-    <section class="container my-5">
-        <h5 class="text-center mb-4">CONTACTO</h5>
+    <section class="container my-5 contact-section">
+        <h5 class="text-center mb-4 contact-title">CONTACTO</h5>
 
-        <div class="row g-4 align-items-center">
-            <div class="col-12 col-md-3 text-center">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx"
-                    alt="mapa" width="100%" height="250" style="border:0; border-radius: 10px;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+        <div class="row g-4 align-items-start justify-content-center">
+            <!-- Mapa -->
+            <div class="col-12 col-lg-4 text-center">
+                <div class="contact-map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx"
+                        width="100%" height="260" style="border:0;" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" aria-label="Mapa ubicación">
+                    </iframe>
+                </div>
             </div>
 
-            <div class="col-12 col-md-3">
-                <h6 class="fw-semibold">Dirección</h6>
-                <p class="small text-muted mb-0">
-                    Ave. Universidad, Ciudad Universitaria.<br>San Nicolás de los Garza, Nuevo León. C.P. 66455.
-                </p>
-            </div>
+            <!-- Datos -->
+            <div class="col-12 col-lg-8">
+                <div class="row g-4">
+                    <!-- Dirección -->
+                    <div class="col-12 col-md-4">
+                        <div class="contact-card-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+                                </svg>
+                            </div>
+                            <h6>Dirección</h6>
+                            <p class="small text-muted mb-0">
+                                Ave. Universidad, Ciudad Universitaria.<br>
+                                San Nicolás de los Garza, Nuevo León. C.P. 66455.
+                            </p>
+                        </div>
+                    </div>
 
-            <div class="col-12 col-md-3">
-                <h6 class="fw-semibold">Correo electrónico</h6>
-                <p class="small text-muted mb-0">contactopcare@petcare.com.mx</p><br><br>
-            </div>
+                    <!-- Correo -->
+                    <div class="col-12 col-md-4">
+                        <div class="contact-card-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5z" />
+                                </svg>
+                            </div>
+                            <h6>Correo</h6>
+                            <a href="mailto:contactopcare@petcare.com.mx" class="contact-link">
+                                contactopcare@petcare.com.mx
+                            </a>
+                        </div>
+                    </div>
 
-            <div class="col-12 col-md-3">
-                <h6 class="fw-semibold">Teléfono</h6>
-                <p class="small text-muted mb-0">(55) 1234-5678 Ext. 01 y 02</p><br><br>
+                    <!-- Teléfono -->
+                    <div class="col-12 col-md-4">
+                        <div class="contact-card-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.25 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.25 1.01l-2.2 2.2z" />
+                                </svg>
+                            </div>
+                            <h6>Teléfono</h6>
+                            <p class="small text-muted mb-0">
+                                <a href="tel:+525512345678" class="contact-link">(55) 1234-5678</a> Ext. 01 y 02
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-3 text-center small text-muted">
+    <footer class="site-footer py-3 text-center small">
         © Elaborado por Equipo 1
     </footer>
 
