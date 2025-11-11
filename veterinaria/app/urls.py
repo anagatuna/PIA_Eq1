@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
 from app import views
 
 urlpatterns = [
@@ -7,6 +9,10 @@ urlpatterns = [
     path('', views.index, name='index'),  # Página principal
     path('login/', views.login_view, name='login'),  # Página de login
     path('logout/', views.logout_view, name='logout'), # Página para cerrar sesión
+    path(
+        "favicon.ico",
+        RedirectView.as_view(url=staticfiles_storage.url("img/logo.png")),
+    ),
 
     path('servicios/', views.servicios_panel, name='servicios'), # Panel o dashboard
     path('servicios/<int:id>/', views.servicios_panel, name='servicios_edit'),  # <- NUEVA
