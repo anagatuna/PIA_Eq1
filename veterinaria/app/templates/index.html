@@ -22,37 +22,54 @@
 
     <!-- Nosotros -->
     <section class="container my-5">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-md-5 text-center mb-4 mb-md-0">
-                <img src="{% static 'img/nosotros_vet.avif' %}" alt="Instalaciones de la veterinaria"
-                    class="img-fluid rounded-circle border border-dark"
-                    style="width: 400px; height: 400px; object-fit: cover;">
+        <div class="row align-items-center justify-content-center g-4">
+            <!-- Imagen con aro degradado -->
+            <div class="col-lg-5 text-center">
+                <div class="avatar-circle mx-auto">
+                    <img src="{% static 'img/nosotros_vet.avif' %}" alt="Instalaciones de la veterinaria"
+                        class="avatar-img" />
+                </div>
             </div>
-            <div class="col-md-6">
-                <h3 class="text-center mb-4">NOSOTROS</h3>
-                <div class="tarjeta-nosotros mb-4">
-                    <h5 class="fw-bold">MISIÓN</h5>
-                    <p class="text-justify">
-                        "Brindar un servicio veterinario integral de la más alta calidad, 
-                        centrado en la salud y el bienestar de las mascotas. Nos comprometemos 
-                        a tratar a cada paciente con profesionalismo, ética y profunda compasión, 
-                        reconociendo que son miembros valiosos de sus familias y merecen el mejor 
-                        cuidado posible."
-                    </p>
-                </div>
 
-                <div class="tarjeta-nosotros">
-                    <h5 class="fw-bold">VISIÓN</h5>
-                    <p class="text-justify">
-                        "Ser la clínica veterinaria de referencia en nuestra comunidad, reconocida 
-                        por nuestra excelencia médica, innovación constante y, sobre todo, por el 
-                        vínculo de confianza inquebrantable que construimos con nuestros clientes.
-                        Aspiramos a ser un pilar para el bienestar animal, promoviendo una cultura 
-                        de tenencia responsable para que más mascotas vivan vidas largas, plenas 
-                        y felices."
-                    </p>
-                </div>
+            <!-- Tarjetas Misión / Visión lado a lado -->
+            <div class="col-lg-7">
+                <h3 class="text-center mb-5 fw-bold">NOSOTROS</h3>
 
+                <div class="row g-4">
+                    <!-- Misión -->
+                    <div class="col-12 col-md-6">
+                        <div class="card-nosotros card-nosotros--mision h-100">
+                            <div class="icon-wrapper">
+                                <i class="bi bi-heart-pulse-fill"></i>
+                            </div>
+                            <h5 class="fw-bold">MISIÓN</h5>
+                            <p>
+                                "Brindar un servicio veterinario integral de la más alta calidad,
+                                centrado en la salud y el bienestar de las mascotas. Nos comprometemos
+                                a tratar a cada paciente con profesionalismo, ética y compasión,
+                                reconociendo que son miembros valiosos de sus familias y merecen el mejor
+                                cuidado posible."
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Visión -->
+                    <div class="col-12 col-md-6">
+                        <div class="card-nosotros card-nosotros--vision h-100">
+                            <div class="icon-wrapper">
+                                <i class="bi bi-stars"></i>
+                            </div>
+                            <h5 class="fw-bold">VISIÓN</h5>
+                            <p>
+                                "Ser la clínica veterinaria de referencia en nuestra comunidad, reconocida
+                                por nuestra excelencia médica, innovación constante y por el vínculo de
+                                confianza que construimos con nuestros clientes. Aspiramos a ser un pilar
+                                para el bienestar animal y promover una cultura de tenencia responsable
+                                para que más mascotas vivan vidas largas, plenas y felices."
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -124,7 +141,7 @@
                 <div class="carousel-item" data-bs-interval="4000">
                     <img src="{% static 'img/carrusel3.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 3">
                 </div>
-                
+
                 <div class="carousel-item" data-bs-interval="4000">
                     <img src="{% static 'img/carrusel4.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 4">
                 </div>
@@ -230,7 +247,8 @@
                     <div class="card-body">
                         <h5 class="fw-bold">COMENTARIO</h5>
                         <p class="text-muted small px-3">
-                            Excelente servicio, mucha experiencia del personal, tienen estancia y buen equipo de trabajo, 
+                            Excelente servicio, mucha experiencia del personal, tienen estancia y buen equipo de
+                            trabajo,
                             atendieron excelente a mi perrita y quedó muy bien después de su accidente.
                         </p>
                         <div class="stars" aria-label="5 de 5">
@@ -247,7 +265,7 @@
                     <div class="card-body">
                         <h5 class="fw-bold">COMENTARIO</h5>
                         <p class="text-muted small px-3">
-                            Me ayudaron con la esterilización de mi cachorrita y todo salió de maravilla, 
+                            Me ayudaron con la esterilización de mi cachorrita y todo salió de maravilla,
                             ella regresó a casa como si nada hubiera pasado, la recomendaría 100%.
                         </p>
                         <div class="stars" aria-label="4 de 5">
@@ -264,8 +282,10 @@
                     <div class="card-body">
                         <h5 class="fw-bold">COMENTARIO</h5>
                         <p class="text-muted small px-3">
-                            Excelente veterinaria. El personal es muy amable y profesional. Explican detalladamente los procedimientos 
-                            y las advertencias necesarias, sobre todo cuando la mascota se encuentra en una condición delicada, a mi me
+                            Excelente veterinaria. El personal es muy amable y profesional. Explican detalladamente los
+                            procedimientos
+                            y las advertencias necesarias, sobre todo cuando la mascota se encuentra en una condición
+                            delicada, a mi me
                             ayudaron a operar a mi gatita y todo salió como lo esperabamos, servicio 10/10.
                         </p>
                         <div class="stars" aria-label="5 de 5">
@@ -299,37 +319,42 @@
     </section>
 
     <section class="container my-5">
-    
+
         <div class="text-center">
             <h5 class="mb-4 form-titulo">FORMULARIO</h5>
         </div>
-        
+
         <div class="formulario-card">
-            
+
             <form action="" id="formulario_datos">
                 <div class="row">
 
                     <div class="col-md-6">
-                        
+
                         <div class="mb-3"> <label for="campoNombre" class="form-label">Nombre</label>
-                            <input type="text" id="campoNombre" class="form-control form-control-sm" placeholder="Ej. Juan García" required pattern="^[A-Za-z]+(\s[A-Za-z]+)+$">
+                            <input type="text" id="campoNombre" class="form-control form-control-sm"
+                                placeholder="Ej. Juan García" required pattern="^[A-Za-z]+(\s[A-Za-z]+)+$">
                         </div>
 
                         <div class="mb-3">
                             <label for="campoCorreo" class="form-label">Correo</label>
-                            <input type="email" id="campoCorreo" class="form-control form-control-sm" placeholder="tu@correo.com" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$">
+                            <input type="email" id="campoCorreo" class="form-control form-control-sm"
+                                placeholder="tu@correo.com" required
+                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$">
                         </div>
 
                         <div class="mb-3">
                             <label for="campoTelefono" class="form-label">Teléfono</label>
-                            <input type="tel" id="campoTelefono" class="form-control form-control-sm" pattern="^\d{10}$" required placeholder="10 dígitos sin espacios">
+                            <input type="tel" id="campoTelefono" class="form-control form-control-sm" pattern="^\d{10}$"
+                                required placeholder="10 dígitos sin espacios">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3 h-100 d-flex flex-column">
                             <label for="campoMensaje" class="form-label">Mensaje</label>
-                            <textarea class="form-control" id="campoMensaje" required placeholder="Escribe aquí" style="flex-grow: 1; min-height: 200px;"></textarea>
+                            <textarea class="form-control" id="campoMensaje" required placeholder="Escribe aquí"
+                                style="flex-grow: 1; min-height: 200px;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -339,7 +364,7 @@
                         <button type="submit" class="btn-vet-submit">ENVIAR</button>
                     </div>
                 </div>
-                
+
             </form>
         </div>
     </section>
@@ -349,15 +374,10 @@
 
         <div class="row g-4 align-items-center">
             <div class="col-12 col-md-3 text-center">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx" 
-                    alt="mapa"
-                    width="100%" 
-                    height="250" 
-                    style="border:0; border-radius: 10px;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx"
+                    alt="mapa" width="100%" height="250" style="border:0; border-radius: 10px;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
 
