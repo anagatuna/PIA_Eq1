@@ -147,7 +147,7 @@ html {
   width: 100%;
   height: clamp(400px, 70vh, 740px);
   /* 🔼 más alto para mostrar completo */
-  background-image: url("../img/banner_bienvenida.jpg");
+  background-image: url("../img/banner_bienvenidaPetCare.png");
   background-size: cover;
   background-repeat: no-repeat;
 
