@@ -21,7 +21,7 @@ body::before {
     position: fixed;
     inset: 0;
     opacity: .4;
-    background-image: url("../img/banner_login.jpeg");
+    background-image: url("../img/Fondo_bannerBienvenida.png");
     background-size: cover;
     background-position: center;
     filter: grayscale(40%) blur(5px);
