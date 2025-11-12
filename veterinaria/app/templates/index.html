@@ -16,7 +16,7 @@
 
 <body>
     {% include 'navbar.html' %}
-
+    <main id="page-content-wrapper">
     <!-- Sección principal con fondo completo -->
     <section class="hero-section"></section>
 
@@ -269,7 +269,7 @@
     </section>
 
     <section class="container-fluid my-5 text-center testimonios">
-        <h3 class="fw-bold mb-5">TESTIMONIOS</h3>
+        <h3 class="fw-bold mb-5" id="testimonios">TESTIMONIOS</h3>
 
         <div class="testimonios-row d-flex flex-wrap justify-content-center gap-4">
             <!-- Testimonio 1 -->
@@ -444,7 +444,7 @@
     </section>
 
     <section class="container my-5 text-center">
-        <h3 class="mb-5" id="preguntas_titulo">PREGUNTAS FRECUENTES</h3>
+        <h3 class="mb-5" id="fqa">PREGUNTAS FRECUENTES</h3>
 
         <div class="row g-3 justify-content-center">
             <!--Pregunta 1-->
@@ -507,68 +507,75 @@
 
     <section class="container my-5">
         <div class="text-center">
-            <h3 class="mb-4" id="contacto">AGENDA TU CITA</h3>
+            <h3 class="mb-4" id="contacto">CONTÁCTANOS</h3>
         </div>
 
-        <div class="formulario-card">
-            <form id="formulario_datos" autocomplete="off">
-                <div class="row">
-                    <!-- Columna izquierda -->
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="campoNombre" class="label">Nombre</label>
-                            <input type="text" id="campoNombre" class="input" placeholder="Ej. Juan García" required
-                                pattern="^[A-Za-z]+(\s[A-Za-z]+)+$" maxlength="100" />
-                        </div>
+        <div class="postal-container">
 
-                        <div class="mb-3">
-                            <label for="campoCorreo" class="label">Correo</label>
-                            <input type="email" id="campoCorreo" class="input" placeholder="tu@correo.com" required
-                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" maxlength="250" />
-                        </div>
+            <img src="{% static 'img/postal.png' %}" 
+                alt="Fondo de postal" 
+                class="postal-imagen-fondo">
 
-                        <div class="mb-3">
-                            <label for="campoTelefono" class="label">Teléfono</label>
-                            <input type="tel" id="campoTelefono" class="input" pattern="^\d{10}$" required
-                                placeholder="10 dígitos sin espacios" maxlength="10" />
-                        </div>
-                    </div>
-
-                    <!-- Columna derecha -->
-                    <div class="col-md-6">
-                        <div class="mb-3 h-100 d-flex flex-column">
-                            <label for="campoMensaje" class="label">Mensaje</label>
-                            <textarea id="campoMensaje" class="textarea" required placeholder="Escribe aquí..."
-                                style="flex-grow: 1; min-height: 200px;"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botón enviar -->
-                <div class="row mt-4">
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn-vet-send">
-                            <div class="svg-wrapper-1">
-                                <div class="svg-wrapper">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path fill="currentColor"
-                                            d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
-                                        </path>
-                                    </svg>
-                                </div>
+            <div class="formulario-card">
+                <form id="formulario_datos" autocomplete="off">
+                    <div class="row">
+                        <!-- Columna izquierda -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="campoNombre" class="label">Nombre</label>
+                                <input type="text" id="campoNombre" class="input" placeholder="Ej. Juan García" required
+                                    pattern="^[A-Za-z]+(\s[A-Za-z]+)+$" maxlength="100" />
                             </div>
-                            <span>Enviar</span>
-                        </button>
+
+                            <div class="mb-3">
+                                <label for="campoCorreo" class="label">Correo</label>
+                                <input type="email" id="campoCorreo" class="input" placeholder="tu@correo.com" required
+                                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" maxlength="250" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="campoTelefono" class="label">Teléfono</label>
+                                <input type="tel" id="campoTelefono" class="input" pattern="^\d{10}$" required
+                                    placeholder="10 dígitos sin espacios" maxlength="10" />
+                            </div>
+                        </div>
+
+                        <!-- Columna derecha -->
+                        <div class="col-md-6">
+                            <div class="mb-3 h-100 d-flex flex-column">
+                                <label for="campoMensaje" class="label">Mensaje</label>
+                                <textarea id="campoMensaje" class="textarea" required placeholder="Escribe aquí..."
+                                    style="flex-grow: 1; min-height: 200px;"></textarea>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
+
+                    <!-- Botón enviar -->
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn-vet-send">
+                                <div class="svg-wrapper-1">
+                                    <div class="svg-wrapper">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                            <path fill="currentColor"
+                                                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <span>Enviar</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 
 
     <section class="container my-5 contact-section">
-        <h3 class="text-center mb-4" id="encuentranos">DONDE ENCONTRARNOS</h3>
+        <h3 class="text-center mb-4" id="contacto">DONDE ENCONTRARNOS</h3>
 
         <div class="row g-4 align-items-start justify-content-center">
             <!-- Mapa -->
@@ -661,6 +668,17 @@
         });
     </script>
 
+    </main>
+
+    <div class="zoom-controls">
+        <button id="btn-zoom-in" class="zoom-btn" aria-label="Aumentar zoom"><i class="bi bi-zoom-in"></i></button>
+        <button id="btn-zoom-out" class="zoom-btn" aria-label="Reducir zoom"><i class="bi bi-zoom-out"></i></button></button>
+        <button id="btn-zoom-reset" class="zoom-btn" aria-label="Reiniciar zoom">
+            &#x21BB;
+        </button>
+    </div>
+
+<script src="{% static 'js/zoomPagina.js' %}"></script>
 </body>
 
 </html>

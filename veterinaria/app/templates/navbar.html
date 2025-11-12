@@ -14,7 +14,11 @@
 <body >
     <nav class="navbar navbar-sticky navbar-expand-lg navbar-petcare">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'index' %}">PetCare</a>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'img/logo.png' %}" 
+                alt="logo"
+                class="logo-navbar">
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +32,7 @@
                     <li class="nav-item"><a class="nav-link" href="#imagenes">Imágenes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#cotizacion">Cotización</a></li>
                     <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#preguntasFrecuentes">FQA</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fqa">FQA</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
                 </ul>
 
