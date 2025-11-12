@@ -11,33 +11,22 @@
     {% include 'referencias.html' %}
 </head>
 
-<body data-bs-theme="dark">
-    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body">
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-petcare navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'img/logo.png' %}" 
-                alt="logo"
-                class="logo-navbar">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'img/logo.png' %}" alt="logo" class="logo-navbar">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Ver página
-                            principal</a>
-                    </li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'servicios' %}">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'citas' %}">Citas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'nosotros' %}">Nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'imagenes' %}">Imágenes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'testimonios' %}">Testimonios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'fqa' %}">FQA</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
                 </ul>
 
                 <!-- derecha -->
@@ -94,22 +83,61 @@
     </nav>
     <script>
         (function () {
-            const STORAGE_KEY = "petcare-theme";
-            const htmlEl = document.documentElement; // or document.body
-            const switchEl = document.getElementById("theme-switch");
+            // ===== Altura real de la navbar -> CSS var para padding-top
+            const nav = document.querySelector('.navbar-petcare');
+            const setNavbarVar = () => {
+                const h = nav ? nav.offsetHeight : 64;
+                document.documentElement.style.setProperty('--navbar-h', h + 'px');
+            };
+            setNavbarVar();
+            window.addEventListener('resize', setNavbarVar);
 
-            // Inicial: preferencia guardada o media query
+            // ===== Activo por URL (no por anclas; Admin navega por vistas)
+            const navLinks = Array.from(document.querySelectorAll('.navbar-petcare .nav-link'));
+            const path = location.pathname.replace(/\/+$/, ''); // sin trailing slash
+            const norm = (url) => {
+                try {
+                    const u = new URL(url, location.origin);
+                    return u.pathname.replace(/\/+$/, '');
+                } catch { return url; }
+            };
+
+            let marked = false;
+            navLinks.forEach(a => {
+                const hrefPath = norm(a.getAttribute('href'));
+                if (hrefPath && hrefPath === path) {
+                    a.classList.add('active');
+                    marked = true;
+                } else {
+                    a.classList.remove('active');
+                }
+            });
+
+            // Si ninguna coincidió exactamente, intenta startsWith por sección
+            if (!marked) {
+                navLinks.some(a => {
+                    const hrefPath = norm(a.getAttribute('href'));
+                    if (hrefPath !== '/' && path.startsWith(hrefPath)) {
+                        a.classList.add('active');
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            // ===== Tema claro/oscuro (reusa tu lógica y storage)
+            const STORAGE_KEY = "petcare-theme";
+            const switchEl = document.getElementById("theme-switch");
             const saved = localStorage.getItem(STORAGE_KEY);
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             const initialTheme = saved || (prefersDark ? "dark" : "light");
 
             setTheme(initialTheme);
-
-            // Marcar el switch según tema actual
-            switchEl.checked = (initialTheme === "light"); // porque el check muestra el sol
+            // En tu switch: checked = muestra sol cuando es "light"
+            if (switchEl) switchEl.checked = (initialTheme === "light");
             updateNavbarClasses(initialTheme);
 
-            switchEl.addEventListener("change", () => {
+            switchEl?.addEventListener("change", () => {
                 const newTheme = switchEl.checked ? "light" : "dark";
                 setTheme(newTheme);
                 updateNavbarClasses(newTheme);
@@ -117,12 +145,10 @@
             });
 
             function setTheme(theme) {
-                // Bootstrap 5.3 usa data-bs-theme
-                document.body.setAttribute("data-bs-theme", theme);
+                document.body.setAttribute("data-bs-theme", theme); // Bootstrap 5.3
             }
 
             function updateNavbarClasses(theme) {
-                // Alterna clases para fondo/contraste del navbar
                 const nav = document.querySelector("nav.navbar");
                 if (!nav) return;
                 nav.classList.remove("bg-dark", "navbar-dark", "bg-light", "navbar-light");
@@ -134,6 +160,7 @@
             }
         })();
     </script>
+
 </body>
 
 </html>

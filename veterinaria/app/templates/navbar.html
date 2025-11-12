@@ -7,17 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NavBar - Panel</title>
     <!-- Referencia CSS -->
-    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% include 'referencias.html' %}
 </head>
 
-<body >
-    <nav class="navbar navbar-sticky navbar-expand-lg navbar-petcare">
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-petcare">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="{% static 'img/logo.png' %}" 
-                alt="logo"
-                class="logo-navbar">
+                <img src="{% static 'img/logo.png' %}" alt="logo" class="logo-navbar">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -29,10 +27,9 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#imagenes">Imágenes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#cotizacion">Cotización</a></li>
                     <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#fqa">FQA</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#preguntas_titulo">Preguntas frecuentes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
                 </ul>
 
@@ -71,6 +68,98 @@
             </div>
         </div>
     </nav>
+
+    <!-- Subrayado en la seccion activa -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nav = document.querySelector('.navbar-petcare');
+            const navLinks = Array.from(document.querySelectorAll('.navbar-petcare .nav-link[href^="#"]'));
+
+            // --- Medir altura real de la navbar y guardarla en la CSS var ---
+            const setNavbarVar = () => {
+                const h = nav ? nav.offsetHeight : 72;
+                document.documentElement.style.setProperty('--navbar-h', h + 'px');
+            };
+            setNavbarVar();
+            window.addEventListener('resize', setNavbarVar);
+
+            // --- Mapeo de enlaces -> target real ---
+            const targets = navLinks
+                .map(a => {
+                    try {
+                        const id = a.getAttribute('href').trim();
+                        if (!id || id === '#') return null;
+                        const el = document.querySelector(id);
+                        return el ? { link: a, el, id } : null;
+                    } catch (_) { return null; }
+                })
+                .filter(Boolean);
+
+            // --- Smooth scroll nativo (evita que el título quede tapado) ---
+            navLinks.forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const hash = a.getAttribute('href');
+                    if (!hash || hash === '#') return;
+                    const target = document.querySelector(hash);
+                    if (!target) return;
+
+                    e.preventDefault();
+                    // Cerrar el collapse de Bootstrap en móvil si está abierto
+                    const bsCollapseEl = document.querySelector('#navbarNav.show');
+                    if (bsCollapseEl) {
+                        const collapse = bootstrap.Collapse.getOrCreateInstance(bsCollapseEl);
+                        collapse.hide();
+                    }
+
+                    // Hacer scroll suave; el offset lo maneja scroll-padding-top del CSS
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Actualizar la URL sin saltos bruscos
+                    history.replaceState(null, '', hash);
+                });
+            });
+
+            // --- Subrayado activo al hacer scroll (IntersectionObserver) ---
+            let currentActive = null;
+            const updateActive = (id) => {
+                if (currentActive === id) return;
+                currentActive = id;
+                navLinks.forEach(l => l.classList.remove('active'));
+                const match = navLinks.find(l => l.getAttribute('href') === `#${id}`);
+                if (match) match.classList.add('active');
+            };
+
+            const makeObserver = () => {
+                const h = nav ? nav.offsetHeight : 72;
+                // margen superior negativo ≈ altura navbar + un respiro
+                const topMargin = -(h + 12);
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) updateActive(entry.target.id);
+                    });
+                }, { rootMargin: `${topMargin}px 0px -60% 0px`, threshold: 0 });
+
+                targets.forEach(t => observer.observe(t.el));
+            };
+            makeObserver();
+
+            // --- Estado inicial (arranque en top o con hash) ---
+            if (location.hash) {
+                const el = document.querySelector(location.hash);
+                if (el && el.id) updateActive(el.id);
+            } else {
+                // Si estás arriba del todo, marca "nosotros" por defecto si existe
+                const def = targets.find(t => t.id === '#' || t.id === '');
+                if (def && window.scrollY < 120) updateActive('');
+            }
+
+            // --- Si el hash cambia manualmente ---
+            window.addEventListener('hashchange', () => {
+                const el = document.querySelector(location.hash);
+                if (el && el.id) updateActive(el.id);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

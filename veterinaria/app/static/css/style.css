@@ -12,7 +12,23 @@ body {
   font-family: "Poppins", sans-serif !important;
 }
 
-/* ===== Navbar PetCare ===== */
+/* Offset para que la nav no tape los títulos anclados  */
+:root {
+  --navbar-h: 72px;
+}
+
+/* Empuja automáticamente el scroll por la altura de la navbar */
+html {
+  scroll-padding-top: var(--navbar-h);
+  scroll-behavior: smooth;
+}
+
+/* Cuando el id está en un heading, aplica margen de scroll */
+:is(h1, h2, h3, h4, h5, h6, [id]) {
+  scroll-margin-top: calc(var(--navbar-h) + 3px);
+}
+
+/* Navbar */
 .navbar-petcare {
   position: fixed;
   width: 100%;
@@ -70,6 +86,10 @@ body {
   transform: scaleX(1);
 }
 
+.navbar-petcare .nav-link.active {
+  color: #404040 !important;
+}
+
 /* Toggler */
 .navbar-petcare .navbar-toggler {
   border: 1px solid #d9e2ea;
@@ -81,68 +101,52 @@ body {
   box-shadow: 0 0 0 3px rgba(78, 196, 233, .2);
 }
 
-/* Tema switch (botón redondo) */
+/* --- Toggle theme --- */
 .toggle {
-  --size: 36px;
-  width: var(--size);
-  height: var(--size);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent-light) 25%, #fff);
-  color: var(--primary);
-  box-shadow: 0 6px 14px rgba(78, 196, 233, .25);
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  line-height: 1;
 }
 
-.toggle .input {
+.input {
   display: none;
 }
 
-.toggle .icon {
-  position: absolute;
-  transition: transform .35s ease, opacity .25s ease;
+.icon {
+  grid-column: 1/1;
+  grid-row: 1/1;
+  transition: transform 500ms;
+  line-height: 0.1;
 }
 
-.toggle .icon--sun {
-  opacity: 0;
-  transform: translateY(8px) rotate(-20deg);
+.icon--moon {
+  transition-delay: 200ms;
+  color: #b4b4b4;
 }
 
-.toggle .icon--moon {
-  opacity: 1;
+.icon--sun {
+  transform: scale(0);
+  color: #ffa500;
 }
 
-.toggle .input:checked~.icon--sun {
-  opacity: 1;
-  transform: translateY(0) rotate(0deg);
+#theme-switch:checked+.icon--moon {
+  transform: rotate(360deg) scale(0);
 }
 
-.toggle .input:checked~.icon--moon {
-  opacity: 0;
-  transform: translateY(-8px) rotate(20deg);
+#theme-switch:checked~.icon--sun {
+  transition-delay: 200ms;
+  transform: scale(1) rotate(360deg);
 }
 
-/* Modo oscuro básico opcional */
-[data-theme="dark"] .navbar-petcare {
-  background: color-mix(in srgb, #0e1a1f 88%, var(--primary) 2%);
-  border-bottom-color: rgba(255, 255, 255, .08);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .45);
-}
-
-[data-theme="dark"] .navbar-petcare .nav-link {
-  color: #d0dee6;
-}
-
-[data-theme="dark"] .navbar-petcare .nav-link:hover {
-  color: var(--accent-light);
-}
 /* Banner ajustado para mostrar todo el texto */
 .hero-section {
   width: 100%;
-  height: clamp(400px, 70vh, 740px); /* 🔼 más alto para mostrar completo */
+  height: clamp(400px, 70vh, 740px);
+  /* 🔼 más alto para mostrar completo */
   background-image: url("../img/banner_bienvenida.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -162,6 +166,7 @@ body {
     height: 55vh;
   }
 }
+
 @media (max-width: 576px) {
   .hero-section {
     --focal-y: 54%;
@@ -310,7 +315,7 @@ body {
   z-index: 0;
 }
 
-.logo-navbar{
+.logo-navbar {
   width: 60px;
   height: auto;
 }
@@ -837,23 +842,24 @@ body {
 
 /* ===== Tarjeta formulario (contactanos) ===== */
 .formulario-card {
-    position: relative;
-    z-index: 2;
-    width: 70%;
-    height: auto;
-    margin: 50px auto 0 auto;
-    background: var(--paper);
-    box-shadow:
-        0 80px 60px rgba(0, 0, 0, 0.03),
-        0 50px 40px rgba(0, 0, 0, 0.06),
-        0 20px 25px rgba(0, 0, 0, 0.12),
-        0 4px 8px rgba(0, 0, 0, 0.18);
-    border-radius: 23px;
-    padding: 2rem 2rem 1.7rem 1.5rem; /* Tu padding original */
-    transition: transform 0.6s cubic-bezier(0.15, 0.83, 0.66, 1),
-        box-shadow 0.3s ease;
-    cursor: pointer;
-    color: var(--ink);
+  position: relative;
+  z-index: 2;
+  width: 70%;
+  height: auto;
+  margin: 50px auto 0 auto;
+  background: var(--paper);
+  box-shadow:
+    0 80px 60px rgba(0, 0, 0, 0.03),
+    0 50px 40px rgba(0, 0, 0, 0.06),
+    0 20px 25px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.18);
+  border-radius: 23px;
+  padding: 2rem 2rem 1.7rem 1.5rem;
+  /* Tu padding original */
+  transition: transform 0.6s cubic-bezier(0.15, 0.83, 0.66, 1),
+    box-shadow 0.3s ease;
+  cursor: pointer;
+  color: var(--ink);
 }
 
 /* Efecto hover suave */
@@ -940,42 +946,42 @@ textarea.textarea:-webkit-autofill {
 }
 
 .postal-container {
-    position: relative;
-    margin: 0 auto;
-    max-width: 1000px;
-    aspect-ratio: 3 / 2;
-    min-height: 650px;
-    overflow: hidden;
-    background-image: url('{% static "img/postal.png" %}');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f0e9;
+  position: relative;
+  margin: 0 auto;
+  max-width: 1000px;
+  aspect-ratio: 3 / 2;
+  min-height: 650px;
+  overflow: hidden;
+  background-image: url('{% static "img/postal.png" %}');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f0e9;
 }
 
 .postal-imagen-fondo {
-    position: absolute;
-    z-index: 1; 
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    object-fit: contain;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    user-select: none;
-    pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  user-select: none;
+  pointer-events: none;
 }
 
 #campoMensaje {
-    resize: vertical;
-    max-height: 400px; 
+  resize: vertical;
+  max-height: 400px;
 }
 
 /* ===== Botón avión (misma paleta, solo animación) ===== */
@@ -1229,29 +1235,29 @@ summary::marker {
 }
 
 .zoom-controls {
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px;    
-    z-index: 1000;   
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .zoom-btn {
-    width: 45px;
-    height: 45px;
-    background-color: #056272;
-    color: #FFFDFA;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 45px;
+  height: 45px;
+  background-color: #056272;
+  color: #FFFDFA;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .zoom-btn:hover {
-    background-color: #4EC4E9;
-    transform: scale(1.1);
+  background-color: #4EC4E9;
+  transform: scale(1.1);
 }

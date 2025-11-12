@@ -1,11 +1,161 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
-body{
+:root {
+  --primary: #056272;
+  --accent: #4EC4E9;
+  --accent-light: #8FE6F7;
+  --coral: #F47F76;
+  --paper: #FFFDFa;
+  --light_coral: #e4a5a1;
+  /* A mayúscula en HEX es ok */
+  --ink: #333333;
+}
+
+body {
   font-family: "Poppins", sans-serif !important;
+}
+
+/* Offset para que no tape contenido */
+:root {
+  --navbar-h: 72px;
+}
+
+/* ajusta si tu logo es más alto */
+body {
+  padding-top: var(--navbar-h);
+}
+
+/* Subrayado animado visible en dark */
+.navbar-petcare .nav-link::after {
+  background: currentColor;
+}
+
+/* Comportamiento suave al navegar por el panel */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Tamaño del logo para que no crezca la barra */
+.logo-navbar {
+  height: 60px;
+  width: auto;
+}
+
+/* Navbar */
+.navbar-petcare {
+  width: 100%;
+  top: 0;
+  z-index: 1030;
+  background: color-mix(in srgb, var(--paper) 88%, #fff);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eef1f4;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+  padding-block: .35rem;
+}
+
+/* Brand */
+.navbar-petcare .navbar-brand {
+  color: var(--primary);
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.navbar-petcare .navbar-brand:hover {
+  color: color-mix(in srgb, var(--primary) 85%, var(--accent));
+}
+
+/* Links */
+.navbar-petcare .nav-link {
+  position: relative;
+  color: #4a5965;
+  font-weight: 600;
+  margin-right: .25rem;
+  padding: .65rem .75rem;
+  transition: color .2s ease;
+}
+
+.navbar-petcare .nav-link:hover {
+  color: var(--light_coral);
+}
+
+/* subrayado animado */
+.navbar-petcare .nav-link::after {
+  content: "";
+  position: absolute;
+  left: .75rem;
+  right: .75rem;
+  bottom: .35rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .25s ease;
+}
+
+.navbar-petcare .nav-link:hover::after,
+.navbar-petcare .nav-link.active::after {
+  transform: scaleX(1);
+}
+
+.navbar-petcare .nav-link.active {
+  color: #404040 !important;
+}
+
+/* Toggler */
+.navbar-petcare .navbar-toggler {
+  border: 1px solid #d9e2ea;
+  border-radius: .55rem;
+  padding: .35rem .55rem;
+}
+
+.navbar-petcare .navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(78, 196, 233, .2);
+}
+
+/* --- Toggle theme --- */
+.toggle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.input {
+  display: none;
+}
+
+.icon {
+  grid-column: 1/1;
+  grid-row: 1/1;
+  transition: transform 500ms;
+  line-height: 0.1;
+}
+
+.icon--moon {
+  transition-delay: 200ms;
+  color: #b4b4b4;
+}
+
+.icon--sun {
+  transform: scale(0);
+  color: #ffa500;
+}
+
+#theme-switch:checked+.icon--moon {
+  transform: rotate(360deg) scale(0);
+}
+
+#theme-switch:checked~.icon--sun {
+  transition-delay: 200ms;
+  transform: scale(1) rotate(360deg);
 }
 
 /* --- Logout button --- */
@@ -104,68 +254,87 @@ body{
   color: #ffa500;
 }
 
-#theme-switch:checked + .icon--moon {
+#theme-switch:checked+.icon--moon {
   transform: rotate(360deg) scale(0);
 }
 
-#theme-switch:checked ~ .icon--sun {
+#theme-switch:checked~.icon--sun {
   transition-delay: 200ms;
   transform: scale(1) rotate(360deg);
 }
 
-.delete-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: rgb(20, 20, 20);
+/* --- Botón logout más ancho y centrado --- */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 46px;               /* botón inicial redondo */
+  height: 46px;
   border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  background-color: rgb(255, 65, 65);
+}
+
+/* Ícono centrado */
+.sign {
+  width: 100%;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
-  cursor: pointer;
-  transition: 0.3s ease;
-  overflow: hidden;
-  position: relative;
-  text-decoration: none;
 }
 
-.svgIcon {
-  width: 14px;
-  transition: 0.3s;
+.sign svg {
+  width: 16px;
 }
 
-.svgIcon path {
+.sign svg path {
   fill: white;
 }
 
-.delete-button:hover {
-  width: 140px;
-  border-radius: 50px;
-  background-color: rgb(255, 69, 69);
-  align-items: center;
-}
-
-.delete-button:hover .svgIcon {
-  width: 50px;
-  transform: translateY(60%);
-  transition: 0.3s;
-}
-
-/* Texto flotante */
-.delete-button::before {
+/* Texto */
+.text {
   position: absolute;
-  top: -20px;
-  content: "Eliminar";
-  color: white;
-  font-size: 2px;
+  right: 0;
+  width: 0;
   opacity: 0;
-  transition: 0.3s;
+  color: white;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* evita salto */
 }
 
-.delete-button:hover::before {
-  font-size: 13px;
+/* Hover: expansión más amplia y proporcionada */
+.btn-logout:hover {
+  width: 155px;             /* 🔼 más ancho para simetría */
+  border-radius: 40px;
+}
+
+.btn-logout:hover .sign {
+  width: 28%;
+  padding-left: 14px;
+}
+
+.btn-logout:hover .text {
   opacity: 1;
-  transform: translateY(30px);
+  width: 72%;
+  padding-right: 10px;
 }
 
+.btn-logout:active {
+  transform: translate(2px, 2px);
+}
+
+/* Link dentro del texto */
+.btn-logout .text a {
+  color: #fff;
+  text-decoration: none;
+  font-size: inherit;
+  white-space: nowrap;
+}
