@@ -17,6 +17,7 @@
 
 body {
   font-family: "Poppins", sans-serif !important;
+  background-color: var(--paper) !important;
 }
 
 /* Offset para que no tape contenido */
@@ -268,7 +269,8 @@ html {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 46px;               /* botón inicial redondo */
+  width: 46px;
+  /* botón inicial redondo */
   height: 46px;
   border: none;
   border-radius: 50%;
@@ -307,12 +309,14 @@ html {
   font-size: 0.9em;
   font-weight: 600;
   transition: all 0.3s ease;
-  white-space: nowrap; /* evita salto */
+  white-space: nowrap;
+  /* evita salto */
 }
 
 /* Hover: expansión más amplia y proporcionada */
 .btn-logout:hover {
-  width: 155px;             /* 🔼 más ancho para simetría */
+  width: 155px;
+  /* 🔼 más ancho para simetría */
   border-radius: 40px;
 }
 
@@ -337,4 +341,253 @@ html {
   text-decoration: none;
   font-size: inherit;
   white-space: nowrap;
+}
+
+/* Servicios */
+.card-title {
+  color: #404040 !important;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
+}
+
+.card {
+  border: 0;
+  border-radius: 20px !important;
+  background: #fff;
+  transition: transform .6s cubic-bezier(0.15, 0.83, 0.66, 1), box-shadow .3s ease;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* ===== Form lado izquierdo ===== */
+.form-label {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--primary) 65%, #333);
+}
+
+.form-control,
+.form-select,
+textarea.form-control {
+  border-radius: 12px;
+  border: 1.6px solid #dfe5e9;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .03);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+input.form-control:focus,
+input.form-control:hover,
+input.form-select:focus,
+input.form-select:hover,
+textarea.form-control:focus,
+textarea.form-control:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 .2rem rgba(78, 196, 233, .20);
+}
+
+/* Botones del form con la misma estética */
+/* ===== Botones compactos con animación ===== */
+.btn-save,
+.btn-clean {
+  font-family: inherit;
+  font-size: .95rem;
+  /* más chico */
+  line-height: 1;
+  padding: .55em .9em;
+  /* más compacto */
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: background .25s ease, transform .2s ease, box-shadow .25s ease;
+  justify-content: center;
+}
+
+.btn-save {
+  background: var(--primary);
+  color: #fff;
+  fill: #dcdcdc;
+  box-shadow: 0 6px 16px rgba(5, 98, 114, .22);
+}
+
+.btn-save:hover {
+  background: #034750;
+}
+
+.btn-save:active {
+  transform: scale(.97);
+}
+
+.btn-clean {
+  background: #fff;
+  color: var(--primary);
+  fill: currentColor;
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(5, 98, 114, .10);
+}
+
+.btn-clean:hover {
+  background: rgba(78, 196, 233, .14);
+  border-color: var(--accent);
+  color: var(--primary);
+}
+
+.btn-clean:active {
+  transform: scale(.97);
+}
+
+/* animación compartida */
+.btn-save span,
+.btn-clean span {
+  transition: opacity .35s linear, transform .35s ease;
+  display: inline-block;
+  margin-left: 0.4em;
+  vertical-align: middle;
+}
+
+.btn-save svg,
+.btn-clean svg {
+  transform-origin: center;
+  transition: transform .28s ease, fill .28s ease;
+  display: block;
+
+}
+
+.svg-wrapper-1 {
+  display: flex;
+}
+
+.svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .45s linear;
+}
+
+.btn-save:hover .svg-wrapper,
+.btn-clean:hover .svg-wrapper {
+  transform: scale(1.25);
+}
+
+.btn-save:hover svg{
+  transform: translateX(.9em) scale(1.15);
+  fill: #fff;
+}
+.btn-clean:hover svg {
+  transform: translateX(.9em) scale(1.15);
+  fill: var(--accent);
+}
+
+.btn-save:hover span,
+.btn-clean:hover span {
+  opacity: 0;
+  transform: translateX(.15em);
+}
+
+/* ===== Buscador a “pill” ===== */
+.card .d-flex .form-control[type="search"] {
+  border-radius: 999px;
+}
+
+.btn.btn-outline-primary {
+  border-radius: 999px;
+  --bs-btn-color: var(--primary);
+  --bs-btn-border-color: var(--primary);
+}
+
+.btn.btn-outline-primary:hover {
+  background: rgba(78, 196, 233, .18);
+  border-color: var(--accent);
+  color: var(--primary);
+}
+
+/* ===== Tabla ===== */
+.table {
+  --row-hover: rgba(142, 230, 247, .14);
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background: var(--primary);
+  color: #fff;
+  border: 0 !important;
+}
+
+.table thead tr th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table thead tr th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table tbody tr:hover {
+  background: var(--row-hover);
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+/* Descripción: evita que “explote” el ancho en filas muy largas */
+.col-desc {
+  max-width: 520px;
+  overflow-wrap: anywhere;
+}
+
+/* Acciones compactas y redondas */
+.btn-sm {
+  border-radius: 10px;
+  padding: .3rem .55rem;
+}
+
+.btn-warning.btn-sm {
+  color: #404040;
+  background: var(--accent);
+  border: none;
+}
+
+.btn-warning.btn-sm:hover {
+  background: var(--accent-light);
+}
+
+.btn-dark.btn-sm {
+  color: #404040;
+  background: var(--coral);
+  border: none;
+}
+
+.btn-dark.btn-sm:hover {
+  color: #404040;
+  background-color: var(--light_coral);
+}
+
+/* Empty state más amable */
+.table tbody tr td.text-center.text-muted {
+  padding: 2.2rem 1rem;
+  font-weight: 600;
+  color: #6c7a86 !important;
+}
+
+/* Encabezado pegajoso en móvil para tablas largas */
+@media (max-width: 992px) {
+  .table-responsive {
+    position: relative;
+  }
+
+  .table thead {
+    position: sticky;
+    top: calc(var(--navbar-h) + 8px);
+    z-index: 1;
+  }
 }

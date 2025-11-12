@@ -17,662 +17,676 @@
 <body>
     {% include 'navbar.html' %}
     <main id="page-content-wrapper">
-    <!-- Sección principal con fondo completo -->
-    <section class="hero-section"></section>
+        <!-- Sección principal con fondo completo -->
+        <section class="hero-section"></section>
 
-    <!-- Nosotros -->
-    <section class="container my-5 section-nosotros">
-        <div class="row align-items-center justify-content-center g-4">
-            <!-- Imagen con aro degradado -->
-            <div class="col-lg-5 text-center">
-                <div class="avatar-circle mx-auto">
-                    <img src="{% static 'img/nosotros_vet.avif' %}" alt="Instalaciones de la veterinaria"
-                        class="avatar-img" />
+        <!-- Nosotros -->
+        <section class="container my-5 section-nosotros">
+            <div class="row align-items-center justify-content-center g-4">
+                <!-- Imagen con aro degradado -->
+                <div class="col-lg-5 text-center">
+                    <div class="avatar-circle mx-auto">
+                        <img src="{% static 'img/nosotros_vet.avif' %}" alt="Instalaciones de la veterinaria"
+                            class="avatar-img" />
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <h3 class="text-center mb-5" id="nosotros">NOSOTROS</h3>
+
+                    <div class="row g-4">
+                        <!-- Misión -->
+                        <div class="col-12 col-md-6">
+                            <div class="card-nosotros card-nosotros--mision h-100">
+                                <div class="icon-wrapper">
+                                    <i class="bi bi-heart-pulse-fill"></i>
+                                </div>
+                                <h5 class="fw-bold">MISIÓN</h5>
+                                <p>
+                                    "Brindar un servicio veterinario integral de la más alta calidad,
+                                    centrado en la salud y el bienestar de las mascotas. Nos comprometemos
+                                    a tratar a cada paciente con profesionalismo, ética y compasión,
+                                    reconociendo que son miembros valiosos de sus familias y merecen el mejor
+                                    cuidado posible."
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Visión -->
+                        <div class="col-12 col-md-6">
+                            <div class="card-nosotros card-nosotros--vision h-100">
+                                <div class="icon-wrapper">
+                                    <i class="bi bi-stars"></i>
+                                </div>
+                                <h5 class="fw-bold">VISIÓN</h5>
+                                <p>
+                                    "Ser la clínica veterinaria de referencia en nuestra comunidad, reconocida
+                                    por nuestra excelencia médica, innovación constante y por el vínculo de
+                                    confianza que construimos con nuestros clientes. Aspiramos a ser un pilar
+                                    para el bienestar animal y promover una cultura de tenencia responsable
+                                    para que más mascotas vivan vidas largas, plenas y felices."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="col-lg-7">
-                <h3 class="text-center mb-5" id="nosotros">NOSOTROS</h3>
+        <section class="container my-5 servicios-tabs">
+            <h3 class="mb-5 fw-bold text-center" id="servicios">NUESTROS SERVICIOS</h3>
 
-                <div class="row g-4">
-                    <!-- Misión -->
-                    <div class="col-12 col-md-6">
-                        <div class="card-nosotros card-nosotros--mision h-100">
-                            <div class="icon-wrapper">
-                                <i class="bi bi-heart-pulse-fill"></i>
+            <div class="row g-4 align-items-start">
+                <!-- Navegación izquierda -->
+                <div class="col-12 col-lg-4">
+                    <div class="list-group list-group-flush nav-servicios" id="servicios-list" role="tablist">
+                        {% for s in servicios %}
+                        <button
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if forloop.first %}active{% endif %}"
+                            id="tab-{{ s.id }}" data-bs-toggle="tab" data-bs-target="#pane-{{ s.id }}" type="button"
+                            role="tab" aria-controls="pane-{{ s.id }}"
+                            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                            <span class="nombre">{{ s.nombre }}</span>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Contenido derecha -->
+                <div class="col-12 col-lg-8">
+                    <div class="tab-content card detalle-servicio">
+                        {% for s in servicios %}
+                        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="pane-{{ s.id }}"
+                            role="tabpanel" aria-labelledby="tab-{{ s.id }}">
+                            <div class="p-4">
+                                <div class="mb-2 d-flex align-items-center gap-3">
+                                    <div class="icono-serv-md mb-4" aria-hidden="true">🐾</div>
+                                    <h4 class="mb-0 text-vet">{{ s.nombre }}</h4>
+                                </div>
+                                <p class="text-muted mb-4">{{ s.descripcion|default_if_none:''|escape }}</p>
+                                <span class="precio-xl fw-bold d-block mb-3">${{ s.precio|floatformat:2 }}</span>
                             </div>
-                            <h5 class="fw-bold">MISIÓN</h5>
-                            <p>
-                                "Brindar un servicio veterinario integral de la más alta calidad,
-                                centrado en la salud y el bienestar de las mascotas. Nos comprometemos
-                                a tratar a cada paciente con profesionalismo, ética y compasión,
-                                reconociendo que son miembros valiosos de sus familias y merecen el mejor
-                                cuidado posible."
-                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Botones fuera de la card -->
+                    <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center botones-servicios">
+                        <a href="#contacto" class="btn-servicio btn-agendar">
+                            <i class="bi bi-calendar-check me-2"></i> AGENDAR
+                        </a>
+                        <a href="#cotizacion" class="btn-servicio btn-cotizar">
+                            <i class="bi bi-currency-dollar me-2"></i> COTIZAR
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container-fluid py-4">
+
+            <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicadores -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+
+                <!-- Slides -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="4000">
+                        <img src="{% static 'img/carrusel1.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 1">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Juntos en la alegría</h5>
+                            <p>Juntos hacemos que su vida sea más feliz y saludable.</p>
                         </div>
                     </div>
 
-                    <!-- Visión -->
-                    <div class="col-12 col-md-6">
-                        <div class="card-nosotros card-nosotros--vision h-100">
-                            <div class="icon-wrapper">
-                                <i class="bi bi-stars"></i>
-                            </div>
-                            <h5 class="fw-bold">VISIÓN</h5>
-                            <p>
-                                "Ser la clínica veterinaria de referencia en nuestra comunidad, reconocida
-                                por nuestra excelencia médica, innovación constante y por el vínculo de
-                                confianza que construimos con nuestros clientes. Aspiramos a ser un pilar
-                                para el bienestar animal y promover una cultura de tenencia responsable
-                                para que más mascotas vivan vidas largas, plenas y felices."
-                            </p>
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/carrusel2.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 2">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Atención de primer nivel</h5>
+                            <p>Porque cada patita merece atención y cariño.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/carrusel3.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 3">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Tecnología de Vanguardia</h5>
+                            <p>Contamos con equipos modernos para un diagnóstico preciso y seguro.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/carrusel4.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 4">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Tratamientos Especializados</h5>
+                            <p>Ofrecemos soluciones adaptadas a cada necesidad de tu mascota.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/carrusel5.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 5">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Amor que Cuida</h5>
+                            <p>Cuidamos a tu mascota como parte de nuestra familia.</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Controles -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="container my-5 servicios-tabs">
-        <h3 class="mb-5 fw-bold text-center" id="servicios">NUESTROS SERVICIOS</h3>
-
-        <div class="row g-4 align-items-start">
-            <!-- Navegación izquierda -->
-            <div class="col-12 col-lg-4">
-                <div class="list-group list-group-flush nav-servicios" id="servicios-list" role="tablist">
-                    {% for s in servicios %}
-                    <button
-                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if forloop.first %}active{% endif %}"
-                        id="tab-{{ s.id }}" data-bs-toggle="tab" data-bs-target="#pane-{{ s.id }}" type="button"
-                        role="tab" aria-controls="pane-{{ s.id }}"
-                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-                        <span class="nombre">{{ s.nombre }}</span>
-                    </button>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Contenido derecha -->
-            <div class="col-12 col-lg-8">
-                <div class="tab-content card detalle-servicio">
-                    {% for s in servicios %}
-                    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="pane-{{ s.id }}"
-                        role="tabpanel" aria-labelledby="tab-{{ s.id }}">
-                        <div class="p-4">
-                            <div class="mb-2 d-flex align-items-center gap-3">
-                                <div class="icono-serv-md mb-4" aria-hidden="true">🐾</div>
-                                <h4 class="mb-0 text-vet">{{ s.nombre }}</h4>
-                            </div>
-                            <p class="text-muted mb-4">{{ s.descripcion|default_if_none:''|escape }}</p>
-                            <span class="precio-xl fw-bold d-block mb-3">${{ s.precio|floatformat:2 }}</span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Botones fuera de la card -->
-                <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center botones-servicios">
-                    <a href="#contacto" class="btn-servicio btn-agendar">
-                        <i class="bi bi-calendar-check me-2"></i> AGENDAR
-                    </a>
-                    <a href="#cotizacion" class="btn-servicio btn-cotizar">
-                        <i class="bi bi-currency-dollar me-2"></i> COTIZAR
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container-fluid py-4">
-
-        <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- Indicadores -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
-            </div>
-
-            <!-- Slides -->
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="4000">
-                    <img src="{% static 'img/carrusel1.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 1">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="{% static 'img/carrusel2.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 2">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="{% static 'img/carrusel3.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 3">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="{% static 'img/carrusel4.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 4">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="{% static 'img/carrusel5.jpg' %}" class="d-block w-100 carousel-img" alt="Slide 5">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-            </div>
+        <section class="container my-5 text-center section-cotizacion">
+            <h3 class="mb-5" id="cotizacion">COTIZACIÓN DE SERVICIOS</h3>
 
             <!-- Controles -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-            </button>
-        </div>
-    </section>
-
-    <section class="container my-5 text-center section-cotizacion">
-        <h3 class="mb-5" id="cotizacion">COTIZACIÓN DE SERVICIOS</h3>
-
-        <!-- Controles -->
-        <div class="row g-2 align-items-end mb-5 justify-content-center coti-toolbar anim-rise">
-            <div class="col-auto">
-                <label class="form-label mb-1">¿Cuántos servicios vas a cotizar?</label>
-                <input type="number" id="num-servicios" class="form-control form-control-sm coti-input" min="1"
-                    placeholder="Ej. 3">
-            </div>
-            <div class="col-auto">
-                <button type="button" id="btn-generar" class="btn btn-coti-primary">
-                    <i class="bi bi-magic"></i> Generar
-                </button>
-            </div>
-            <div class="col-auto">
-                <button type="button" id="btn-agregar" class="btn btn-coti-accent">
-                    <i class="bi bi-plus-circle"></i> Agregar servicio
-                </button>
-            </div>
-            <div class="col-auto">
-                <button type="button" id="btn-limpiar" class="btn btn-coti-outline">
-                    <i class="bi bi-eraser"></i> Limpiar
-                </button>
-            </div>
-        </div>
-
-        <!-- plantilla oculta -->
-        <select id="plantilla-servicio" class="form-select d-none">
-            <option value="">Selecciona un servicio</option>
-            {% for servicio in servicios %}
-            <option value="{{ servicio.id }}" data-precio="{{ servicio.precio|floatformat:2 }}"
-                data-desc="{{ servicio.descripcion|default_if_none:''|escape }}">
-                {{ servicio.nombre }}
-            </option>
-            {% endfor %}
-        </select>
-
-        <!-- tabla -->
-        <div id="tabla-wrap" class="table-responsive d-none coti-table-wrap anim-rise">
-            <table class="table align-middle coti-table" id="tabla-resultados">
-                <thead>
-                    <tr>
-                        <th style="width:30%">Servicio</th>
-                        <th style="width:10%">Cantidad</th>
-                        <th style="width:30%">Descripción</th>
-                        <th class="text-end" style="width:15%">Precio</th>
-                        <th class="text-end" style="width:15%">Subtotal</th>
-                        <th style="width:1%"></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr class="coti-desc-row">
-                        <td colspan="3"></td>
-                        <td class="text-end">
-                            <div class="form-check d-inline-flex align-items-center gap-2">
-                                <input class="form-check-input" type="checkbox" id="chk-desc">
-                                <label class="form-check-label" for="chk-desc">% Descuento</label>
-                            </div>
-                        </td>
-                        <td class="text-end">
-                            <input type="number" id="pct-desc" class="form-control form-control-sm text-end coti-input"
-                                min="0" max="100" value="0" disabled>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr class="coti-total-row">
-                        <td colspan="4" class="text-end fw-bold">TOTAL</td>
-                        <td class="text-end fw-bold" id="total">$0.00</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </section>
-
-    <section class="container-fluid my-5 text-center testimonios">
-        <h3 class="fw-bold mb-5" id="testimonios">TESTIMONIOS</h3>
-
-        <div class="testimonios-row d-flex flex-wrap justify-content-center gap-4">
-            <!-- Testimonio 1 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet1.webp' %}" alt="Cliente 1" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    Excelente servicio, mucha experiencia del personal, tienen estancia y buen equipo de trabajo.
-                    Atendieron excelente a mi perrita y quedó muy bien después de su accidente.
-                </p>
-                <div class="stars-svg stars-5">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
+            <div class="row g-2 align-items-end mb-5 justify-content-center coti-toolbar anim-rise">
+                <div class="col-auto">
+                    <label class="form-label mb-1">¿Cuántos servicios vas a cotizar?</label>
+                    <input type="number" id="num-servicios" class="form-control form-control-sm coti-input" min="1"
+                        placeholder="Ej. 3">
+                </div>
+                <div class="col-auto">
+                    <button type="button" id="btn-generar" class="btn btn-coti-primary">
+                        <i class="bi bi-magic"></i> Generar
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" id="btn-agregar" class="btn btn-coti-accent">
+                        <i class="bi bi-plus-circle"></i> Agregar servicio
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" id="btn-limpiar" class="btn btn-coti-outline">
+                        <i class="bi bi-eraser"></i> Limpiar
+                    </button>
                 </div>
             </div>
 
-            <!-- Testimonio 2 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet2.webp' %}" alt="Cliente 2" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    Me ayudaron con la esterilización de mi cachorrita y todo salió de maravilla.
-                    Ella regresó a casa como si nada hubiera pasado, los recomiendo 100%.
-                </p>
-                <div class="stars-svg stars-4">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
+            <!-- plantilla oculta -->
+            <select id="plantilla-servicio" class="form-select d-none">
+                <option value="">Selecciona un servicio</option>
+                {% for servicio in servicios %}
+                <option value="{{ servicio.id }}" data-precio="{{ servicio.precio|floatformat:2 }}"
+                    data-desc="{{ servicio.descripcion|default_if_none:''|escape }}">
+                    {{ servicio.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <!-- tabla -->
+            <div id="tabla-wrap" class="table-responsive d-none coti-table-wrap anim-rise">
+                <table class="table align-middle coti-table" id="tabla-resultados">
+                    <thead>
+                        <tr>
+                            <th style="width:30%">Servicio</th>
+                            <th style="width:10%">Cantidad</th>
+                            <th style="width:30%">Descripción</th>
+                            <th class="text-end" style="width:15%">Precio</th>
+                            <th class="text-end" style="width:15%">Subtotal</th>
+                            <th style="width:1%"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr class="coti-desc-row">
+                            <td colspan="3"></td>
+                            <td class="text-end">
+                                <div class="form-check d-inline-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="checkbox" id="chk-desc">
+                                    <label class="form-check-label" for="chk-desc">% Descuento</label>
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <input type="number" id="pct-desc"
+                                    class="form-control form-control-sm text-end coti-input" min="0" max="100" value="0"
+                                    disabled>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="coti-total-row">
+                            <td colspan="4" class="text-end fw-bold">TOTAL</td>
+                            <td class="text-end fw-bold" id="total">$0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
+        <section class="container-fluid my-5 text-center testimonios">
+            <h3 class="fw-bold mb-5" id="testimonios">TESTIMONIOS</h3>
+
+            <div class="testimonios-row d-flex flex-wrap justify-content-center gap-4">
+                <!-- Testimonio 1 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet1.webp' %}" alt="Cliente 1" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        Excelente servicio, mucha experiencia del personal, tienen estancia y buen equipo de trabajo.
+                        Atendieron excelente a mi perrita y quedó muy bien después de su accidente.
+                    </p>
+                    <div class="stars-svg stars-5">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet2.webp' %}" alt="Cliente 2" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        Me ayudaron con la esterilización de mi cachorrita y todo salió de maravilla.
+                        Ella regresó a casa como si nada hubiera pasado, los recomiendo 100%.
+                    </p>
+                    <div class="stars-svg stars-4">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet3.jpg' %}" alt="Cliente 3" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        Excelente veterinaria. El personal es muy amable y profesional.
+                        Explican todo con detalle, y me ayudaron a operar a mi gatita, ¡todo salió excelente!
+                    </p>
+                    <div class="stars-svg stars-5">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Testimonio 4 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet4.jpg' %}" alt="Cliente 3" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        "¡Operaron a mi gatita y todo salió perfecto! El personal te explica todo y la trataron con
+                        mucho
+                        amor. La recuperación fue excelente. ¡Un servicio de 10!"
+                    </p>
+                    <div class="stars-svg stars-5">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Testimonio 5 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet5.jpg' %}" alt="Cliente 3" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        "Llevé a Toby para su baño y corte, ¡y quedó guapísimo! El personal es súper amable y tienen
+                        mucha
+                        paciencia. Salió feliz y oliendo delicioso. ¡Excelente servicio de estética!"
+                    </p>
+                    <div class="stars-svg stars-5">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Testimonio 6 -->
+                <div class="testimonio">
+                    <img src="{% static 'img/vet6.jpg' %}" alt="Cliente 3" class="testimonial-img">
+                    <p class="text-muted small mt-3">
+                        "El personal es muy profesional y amable. Siempre atienden a mi gordinflon casi con tanto amor
+                        como
+                        yo le doy. Confío plenamente en ellos para su salud."
+                    </p>
+                    <div class="stars-svg stars-4">
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                        <svg>
+                            <use href="#star-icon"></use>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
-            <!-- Testimonio 3 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet3.jpg' %}" alt="Cliente 3" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    Excelente veterinaria. El personal es muy amable y profesional.
-                    Explican todo con detalle, y me ayudaron a operar a mi gatita, ¡todo salió excelente!
-                </p>
-                <div class="stars-svg stars-5">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Testimonio 4 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet4.jpg' %}" alt="Cliente 3" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    "¡Operaron a mi gatita y todo salió perfecto! El personal te explica todo y la trataron con mucho
-                    amor. La recuperación fue excelente. ¡Un servicio de 10!"
-                </p>
-                <div class="stars-svg stars-5">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Testimonio 5 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet5.jpg' %}" alt="Cliente 3" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    "Llevé a Toby para su baño y corte, ¡y quedó guapísimo! El personal es súper amable y tienen mucha
-                    paciencia. Salió feliz y oliendo delicioso. ¡Excelente servicio de estética!"
-                </p>
-                <div class="stars-svg stars-5">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Testimonio 6 -->
-            <div class="testimonio">
-                <img src="{% static 'img/vet6.jpg' %}" alt="Cliente 3" class="testimonial-img">
-                <p class="text-muted small mt-3">
-                    "El personal es muy profesional y amable. Siempre atienden a mi gordinflon casi con tanto amor como
-                    yo le doy. Confío plenamente en ellos para su salud."
-                </p>
-                <div class="stars-svg stars-4">
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                    <svg>
-                        <use href="#star-icon"></use>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Definición única del símbolo estrella -->
-        <svg style="display:none;">
-            <symbol id="star-icon" viewBox="0 0 576 512">
-                <path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3
+            <!-- Definición única del símbolo estrella -->
+            <svg style="display:none;">
+                <symbol id="star-icon" viewBox="0 0 576 512">
+                    <path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3
                     51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 
                     113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 
                     128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 
                     12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 
                     11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 
                     150.3 316.9 18z" />
-            </symbol>
-        </svg>
-    </section>
+                </symbol>
+            </svg>
+        </section>
 
-    <section class="container my-5 text-center">
-        <h3 class="mb-5" id="preguntas_titulo">PREGUNTAS FRECUENTES</h3>
+        <section class="container my-5 text-center">
+            <h3 class="mb-5" id="preguntas_titulo">PREGUNTAS FRECUENTES</h3>
 
-        <div class="row g-3 justify-content-center">
-            <!--Pregunta 1-->
-            <div class="col-12 col-md-4">
-                <div class="faq-card position-relative p-2 border rounded-4">
-                    <div
-                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
-                        ?
+            <div class="row g-3 justify-content-center">
+                <!--Pregunta 1-->
+                <div class="col-12 col-md-4">
+                    <div class="faq-card position-relative p-2 border rounded-4">
+                        <div
+                            class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                            ?
+                        </div>
+                        <div class="faq2">
+                            <input id="q1" type="checkbox" class="faq2__toggle ">
+                            <label for="q1" class="faq2__summary h6 fw-semibold">¿Atienden animales exóticos?</label>
+                            <div class="faq2__content">
+                                <p class="small text-muted mb-0">Sí, también podemos atender algunas especies pequeñas o
+                                    exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu
+                                    mascota.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="faq2">
-                        <input id="q1" type="checkbox" class="faq2__toggle ">
-                        <label for="q1" class="faq2__summary h6 fw-semibold">¿Atienden animales exóticos?</label>
-                        <div class="faq2__content">
-                            <p class="small text-muted mb-0">Sí, también podemos atender algunas especies pequeñas o
-                                exóticas. Te recomendamos contactarnos antes para confirmar la atención según tu
-                                mascota.</p>
+                </div>
+                <!--Pregunta 2-->
+                <div class="col-12 col-md-4">
+                    <div class="faq-card position-relative p-2 border rounded-4">
+                        <div
+                            class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                            ?
+                        </div>
+                        <div class="faq2">
+                            <input id="q2" type="checkbox" class="faq2__toggle ">
+                            <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya
+                                agendé?</label>
+                            <div class="faq2__content">
+                                <p class="small text-muted p-2 mb-0">¡Claro! Puedes editar tu cita desde nuestro
+                                    <i>Sitio
+                                        web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24
+                                    horas de
+                                    anticipación&#41;.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Pregunta 3-->
+                <div class="col-12 col-md-4">
+                    <div class="faq-card position-relative p-2 border rounded-4">
+                        <div
+                            class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
+                            ?
+                        </div>
+                        <div class="faq2">
+                            <input id="q3" type="checkbox" class="faq2__toggle ">
+                            <label for="q3" class="faq2__summary h6 fw-semibold">¿Qué debo llevar a la primera consulta
+                                de
+                                mi mascota?</label>
+                            <div class="faq2__content">
+                                <p class="small text-muted mb-0">Trae su cartilla de vacunación y su historial médico
+                                    &#40;si lo tienes&#41; y de preferencia tu mascota en un transportador.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--Pregunta 2-->
-            <div class="col-12 col-md-4">
-                <div class="faq-card position-relative p-2 border rounded-4">
-                    <div
-                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
-                        ?
-                    </div>
-                    <div class="faq2">
-                        <input id="q2" type="checkbox" class="faq2__toggle ">
-                        <label for="q2" class="faq2__summary h6 fw-semibold">¿Puedo editar una cita que ya
-                            agendé?</label>
-                        <div class="faq2__content">
-                            <p class="small text-muted p-2 mb-0">¡Claro! Puedes editar tu cita desde nuestro <i>Sitio
-                                    web&gt; Citas&gt; Editar Cita</i> o contactándonos directamente &#40;con 24 horas de
-                                anticipación&#41;.</p>
+        </section>
+
+        <section class="container my-5">
+            <div class="text-center">
+                <h3 class="mb-4" id="contacto">CONTÁCTANOS</h3>
+            </div>
+
+            <div class="postal-container">
+
+                <img src="{% static 'img/postal.png' %}" alt="Fondo de postal" class="postal-imagen-fondo">
+
+                <div class="formulario-card">
+                    <form id="formulario_datos" autocomplete="off">
+                        <div class="row">
+                            <!-- Columna izquierda -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="campoNombre" class="label">Nombre</label>
+                                    <input type="text" id="campoNombre" class="input" placeholder="Ej. Juan García"
+                                        required pattern="^[A-Za-z]+(\s[A-Za-z]+)+$" maxlength="100" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="campoCorreo" class="label">Correo</label>
+                                    <input type="email" id="campoCorreo" class="input" placeholder="tu@correo.com"
+                                        required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$"
+                                        maxlength="250" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="campoTelefono" class="label">Teléfono</label>
+                                    <input type="tel" id="campoTelefono" class="input" pattern="^\d{10}$" required
+                                        placeholder="10 dígitos sin espacios" maxlength="10" />
+                                </div>
+                            </div>
+
+                            <!-- Columna derecha -->
+                            <div class="col-md-6">
+                                <div class="mb-3 h-100 d-flex flex-column">
+                                    <label for="campoMensaje" class="label">Mensaje</label>
+                                    <textarea id="campoMensaje" class="textarea" required placeholder="Escribe aquí..."
+                                        style="flex-grow: 1; min-height: 200px;"></textarea>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Botón enviar -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn-vet-send">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
+                                                height="22">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path fill="currentColor"
+                                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <span>Enviar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!--Pregunta 3-->
-            <div class="col-12 col-md-4">
-                <div class="faq-card position-relative p-2 border rounded-4">
-                    <div
-                        class="faq-badge position-absolute rounded-circle d-flex align-items-center justify-content-center">
-                        ?
-                    </div>
-                    <div class="faq2">
-                        <input id="q3" type="checkbox" class="faq2__toggle ">
-                        <label for="q3" class="faq2__summary h6 fw-semibold">¿Qué debo llevar a la primera consulta de
-                            mi mascota?</label>
-                        <div class="faq2__content">
-                            <p class="small text-muted mb-0">Trae su cartilla de vacunación y su historial médico
-                                &#40;si lo tienes&#41; y de preferencia tu mascota en un transportador.</p>
-                        </div>
+        </section>
+
+
+        <section class="container my-5 contact-section">
+            <h3 class="text-center mb-4" id="contacto">DONDE ENCONTRARNOS</h3>
+
+            <div class="row g-4 align-items-start justify-content-center">
+                <!-- Mapa -->
+                <div class="col-12 col-lg-4 text-center">
+                    <div class="contact-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx"
+                            width="100%" height="260" style="border:0;" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade" aria-label="Mapa ubicación">
+                        </iframe>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="container my-5">
-        <div class="text-center">
-            <h3 class="mb-4" id="contacto">CONTÁCTANOS</h3>
-        </div>
-
-        <div class="postal-container">
-
-            <img src="{% static 'img/postal.png' %}" 
-                alt="Fondo de postal" 
-                class="postal-imagen-fondo">
-
-            <div class="formulario-card">
-                <form id="formulario_datos" autocomplete="off">
-                    <div class="row">
-                        <!-- Columna izquierda -->
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="campoNombre" class="label">Nombre</label>
-                                <input type="text" id="campoNombre" class="input" placeholder="Ej. Juan García" required
-                                    pattern="^[A-Za-z]+(\s[A-Za-z]+)+$" maxlength="100" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="campoCorreo" class="label">Correo</label>
-                                <input type="email" id="campoCorreo" class="input" placeholder="tu@correo.com" required
-                                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" maxlength="250" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="campoTelefono" class="label">Teléfono</label>
-                                <input type="tel" id="campoTelefono" class="input" pattern="^\d{10}$" required
-                                    placeholder="10 dígitos sin espacios" maxlength="10" />
+                <!-- Datos -->
+                <div class="col-12 col-lg-8">
+                    <div class="row g-4">
+                        <!-- Dirección -->
+                        <div class="col-12 col-md-4">
+                            <div class="contact-card-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                        <path
+                                            d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+                                    </svg>
+                                </div>
+                                <h6>Dirección</h6>
+                                <p class="small text-muted mb-0">
+                                    Ave. Universidad, Ciudad Universitaria.<br>
+                                    San Nicolás de los Garza, Nuevo León. C.P. 66455.
+                                </p>
                             </div>
                         </div>
 
-                        <!-- Columna derecha -->
-                        <div class="col-md-6">
-                            <div class="mb-3 h-100 d-flex flex-column">
-                                <label for="campoMensaje" class="label">Mensaje</label>
-                                <textarea id="campoMensaje" class="textarea" required placeholder="Escribe aquí..."
-                                    style="flex-grow: 1; min-height: 200px;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Botón enviar -->
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <button type="submit" class="btn-vet-send">
-                                <div class="svg-wrapper-1">
-                                    <div class="svg-wrapper">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
-                                            <path fill="none" d="M0 0h24v24H0z"></path>
-                                            <path fill="currentColor"
-                                                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
-                                            </path>
+                        <!-- Correo -->
+                        <div class="col-12 col-md-6">
+                            <div class="contact-card-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                        <path
+                                            d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5z" />
+                                    </svg>
+                                </div>
+                                <h6>Correo</h6>
+                                <a href="mailto:contactopcare@petcare.com.mx" class="contact-link">
+                                    contactopcare@petcare.com.mx
+                                </a>
+                                <div class="mt-4">
+                                    <div class="contact-icon">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                            <path
+                                                d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.25 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.25 1.01l-2.2 2.2z" />
                                         </svg>
                                     </div>
+                                    <h6>Teléfono</h6>
+                                    <p class="small text-muted mb-0">
+                                        <a href="tel:+525512345678" class="contact-link">(55) 1234-5678</a> Ext. 01 y 02
+                                    </p>
                                 </div>
-                                <span>Enviar</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="container my-5 contact-section">
-        <h3 class="text-center mb-4" id="contacto">DONDE ENCONTRARNOS</h3>
-
-        <div class="row g-4 align-items-start justify-content-center">
-            <!-- Mapa -->
-            <div class="col-12 col-lg-4 text-center">
-                <div class="contact-map">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1797.1648323115248!2d-100.30879064356266!3d25.726609510658232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86629455cbd814cb%3A0x30a7c1e92734c946!2sAvenida%20Universidad%2C%20Ni%C3%B1os%20H%C3%A9roes%2C%20Ciudad%20Universitaria%2C%2066455%20San%20Nicol%C3%A1s%20de%20los%20Garza%2C%20N.L.!5e0!3m2!1ses!2smx!4v1762820988616!5m2!1ses!2smx"
-                        width="100%" height="260" style="border:0;" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade" aria-label="Mapa ubicación">
-                    </iframe>
-                </div>
-            </div>
-
-            <!-- Datos -->
-            <div class="col-12 col-lg-8">
-                <div class="row g-4">
-                    <!-- Dirección -->
-                    <div class="col-12 col-md-4">
-                        <div class="contact-card-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path
-                                        d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
-                                </svg>
                             </div>
-                            <h6>Dirección</h6>
-                            <p class="small text-muted mb-0">
-                                Ave. Universidad, Ciudad Universitaria.<br>
-                                San Nicolás de los Garza, Nuevo León. C.P. 66455.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Correo -->
-                    <div class="col-12 col-md-4">
-                        <div class="contact-card-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path
-                                        d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5z" />
-                                </svg>
-                            </div>
-                            <h6>Correo</h6>
-                            <a href="mailto:contactopcare@petcare.com.mx" class="contact-link">
-                                contactopcare@petcare.com.mx
-                            </a>
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path
-                                        d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.25 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.25 1.01l-2.2 2.2z" />
-                                </svg>
-                            </div>
-                            <h6>Teléfono</h6>
-                            <p class="small text-muted mb-0">
-                                <a href="tel:+525512345678" class="contact-link">(55) 1234-5678</a> Ext. 01 y 02
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="site-footer py-3 text-center small">
-        © Elaborado por Equipo 1
-    </footer>
+        <footer class="site-footer py-3 text-center small">
+            © Elaborado por Equipo 1
+        </footer>
 
-    {% include 'alertas.html' %}
-    {% block content %}{% endblock %}
-    <script src="{% static 'js/envioFormulario.js' %}"></script>
+        {% include 'alertas.html' %}
+        {% block content %}{% endblock %}
+        <script src="{% static 'js/envioFormulario.js' %}"></script>
 
-    <script>
-        // Inicializa desde memoria
-        const themeSwitch = document.getElementById('theme-switch');
-        const saved = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', saved);
-        themeSwitch.checked = saved === 'dark';
+        <script>
+            // Inicializa desde memoria
+            const themeSwitch = document.getElementById('theme-switch');
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            themeSwitch.checked = saved === 'dark';
 
-        // Cambia tema al click
-        themeSwitch.addEventListener('change', () => {
-            const mode = themeSwitch.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', mode);
-            localStorage.setItem('theme', mode);
-        });
-    </script>
+            // Cambia tema al click
+            themeSwitch.addEventListener('change', () => {
+                const mode = themeSwitch.checked ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', mode);
+                localStorage.setItem('theme', mode);
+            });
+        </script>
 
     </main>
 
     <div class="zoom-controls">
         <button id="btn-zoom-in" class="zoom-btn" aria-label="Aumentar zoom"><i class="bi bi-zoom-in"></i></button>
-        <button id="btn-zoom-out" class="zoom-btn" aria-label="Reducir zoom"><i class="bi bi-zoom-out"></i></button></button>
+        <button id="btn-zoom-out" class="zoom-btn" aria-label="Reducir zoom"><i
+                class="bi bi-zoom-out"></i></button></button>
         <button id="btn-zoom-reset" class="zoom-btn" aria-label="Reiniciar zoom">
             &#x21BB;
         </button>
     </div>
 
-<script src="{% static 'js/zoomPagina.js' %}"></script>
+    <script src="{% static 'js/zoomPagina.js' %}"></script>
 </body>
 
 </html>
