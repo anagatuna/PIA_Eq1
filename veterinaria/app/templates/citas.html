@@ -28,94 +28,111 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre del Dueño</label>
-                                <input type="text" name="nombre_dueño" class="form-control" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
-                                    maxlength="200" required value="{{ cita.nombre_dueño|default_if_none:'' }}">
+                                <input type="text" name="nombre_dueño" class="form-control"
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="200" required
+                                    value="{{ cita.nombre_dueño|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Nombre de la Mascota</label>
-                                <input type="text" name="nombre_mascota" class="form-control" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
-                                    maxlength="100" required value="{{ cita.nombre_mascota|default_if_none:'' }}">
+                                <input type="text" name="nombre_mascota" class="form-control"
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="100" required
+                                    value="{{ cita.nombre_mascota|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Especie</label>
-                                <select name="especie_select" id="especie_select" class="form-select" required>
+                                <select name="especie_select" id="especie_select" class="form-select" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                                     <option value="">Seleccione una especie</option>
                                     <option value="Perro" {% if cita.especie == "Perro" %}selected{% endif %}>Perro</option>
                                     <option value="Gato" {% if cita.especie == "Gato" %}selected{% endif %}>Gato</option>
                                     <option value="Ave" {% if cita.especie == "Ave" %}selected{% endif %}>Ave</option>
-                                    <option value="Otro" {% if cita.especie not in "Perro,Gato,Ave" %}selected{% endif %}>Otro</option>
+                                    <option value="Otro" {% if cita.especie and cita.especie not in "Perro,Gato,Ave" %}selected{% endif %}>Otro</option>
                                 </select>
                             </div>
 
                             <div class="mb-3" id="otro_especie_div" style="display: none;">
                                 <label class="form-label">Especifique la especie</label>
                                 <input type="text" name="especie_otro" id="especie_otro" class="form-control"
-                                    pattern="[A-Za-z\s]+" maxlength="100" value="{% if cita.especie not in 'Perro,Gato,Ave' %}{{ cita.especie }}{% endif %}">
+                                    pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" maxlength="100"
+                                    value="{% if cita.especie and cita.especie not in 'Perro,Gato,Ave' %}{{ cita.especie }}{% endif %}"
+                                    {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label" for="id_fecha_cita">Fecha Cita</label>
-                                <input type="datetime-local" name="fecha_cita" class="form-control" 
-                                    id="id_fecha_cita" 
-                                    value="{{ cita.fecha_cita|date:'Y-m-d\TH:i'|default_if_none:'' }}"
-                                    {% if not editando %}min="{{ ahora_str }}"{% endif %}
-                                    {% if editando and cita_pasada %}readonly{% endif %} required>
+                              <label for="fecha_cita" class="form-label">Fecha Cita</label>
+                              <div class="d-flex gap-2">
+                                <input type="date"
+                                       class="form-control"
+                                       id="fecha_cita"
+                                       name="fecha_cita"
+                                       min="{{ min_fecha }}"
+                                       value="{{ sel_fecha }}"
+                                       required>
+                            
+                                <select class="form-select" id="hora_cita" name="hora_cita" required>
+                                  {% for h in slots %}
+                                    <option value="{{ h }}" {% if sel_hora == h %}selected{% endif %}>{{ h }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                              <small class="text-muted">Selecciona fecha y hora en bloques de 30 minutos.</small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Motivo</label>
-                                <textarea name="motivo" class="form-control" maxlength="255"
-                                    required>{{ cita.motivo|default_if_none:'' }}</textarea>
+                                <textarea name="motivo" class="form-control" maxlength="255" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>{{ cita.motivo|default_if_none:'' }}</textarea>
                             </div>
 
-                            {% if editando %}
-                                <div class="mb-3">
+                            <!-- Estatus -->
+                            <div class="mb-3">
                                 <label class="form-label">Estatus</label>
-                                
-                                {% if cita_pasada %}
-                                    {# La cita ya pasó: solo No asistió o Completada #}
-                                    <select name="estatus" class="form-select" required>
-                                        <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>Completada</option>
-                                        <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No asistió</option>
-                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
-                                    </select>
-                                    <small class="text-muted">La fecha de la cita ya pasó. Solo puedes marcar Completada, No asistió o Cancelada.</small>
-                                {% else %}
-                                    {# La cita aún no pasa: solo Pendiente o Cancelada #}
-                                    <select name="estatus" class="form-select" required>
-                                        <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>Pendiente</option>
-                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
-                                    </select>
-                                    <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y Cancelada.</small>
-                                {% endif %}
-                                </div>
-                                {% else %}
+
+                                {% if not editando %}
                                 <input type="hidden" name="estatus" value="Pendiente">
-                                <div class="mb-3">
-                                    <label class="form-label">Estatus</label>
-                                    <input type="text" class="form-control" value="Pendiente" disabled>
-                                    <small class="text-muted">Se asigna automáticamente al crear.</small>
-                                </div>
-                            {% endif %}
+                                <input type="text" class="form-control" value="Pendiente" disabled>
+                                <small class="text-muted">Se asigna automáticamente al crear.</small>
+
+                                {% elif bloqueada_total %}
+                                <input type="text" class="form-control" value="Completada" disabled>
+                                <small class="text-muted">Esta cita está completada y no puede editarse.</small>
+
+                                {% elif solo_estatus %}
+                                <select name="estatus" class="form-select" required>
+                                    <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>
+                                        Completada</option>
+                                    <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No
+                                        asistió</option>
+                                </select>
+                                <small class="text-muted">La cita ya pasó: solo puedes marcar Completada o No
+                                    asistió.</small>
+
+                                {% else %}
+                                <select name="estatus" class="form-select" required>
+                                    <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>
+                                        Pendiente</option>
+                                    <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>
+                                        Cancelada</option>
+                                </select>
+                                <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y
+                                    Cancelada.</small>
+                                {% endif %}
+                            </div>
 
                             <div class="mb-3">
                                 <label for="servicio" class="form-label">Servicio</label>
-                                <select name="servicio" id="servicio" class="form-control">
+                                <select name="servicio" id="servicio" class="form-select" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                                     <option value="">Selecciona un servicio</option>
                                     {% for servicio in servicios %}
-                                    <option value="{{ servicio.id }}" {% if cita and cita.servicio_id == servicio.id %}
-                                        selected{% endif %}>
+                                    <option value="{{ servicio.id }}" {% if cita and cita.servicio_id == servicio.id %}selected{% endif %}>
                                         {{ servicio.nombre }}
                                     </option>
                                     {% endfor %}
                                 </select>
-
                             </div>
 
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-success" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                                     {% if editando %}Actualizar{% else %}Guardar{% endif %}
                                 </button>
                                 {% if editando %}
@@ -137,7 +154,7 @@
                             <h4 class="m-0">Lista de Citas</h4>
                             <form class="d-flex" method="get" action="{% url 'citas' %}">
                                 <input class="form-control me-2" type="search" placeholder="Buscar…" name="q"
-                                    value="{{ q }}">
+                                    value="{{ request.GET.q|default_if_none:'' }}">
                                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
                             </form>
                         </div>
@@ -161,17 +178,23 @@
                                     <td>{{ cita.nombre_dueño }}</td>
                                     <td>{{ cita.nombre_mascota }}</td>
                                     <td>{{ cita.especie }}</td>
-                                    <td>{{ cita.fecha_cita }}</td>
+                                    <td>{{ cita.fecha_cita|date:"d/m/Y H:i" }}</td>
                                     <td>{{ cita.motivo }}</td>
                                     <td>{{ cita.estatus }}</td>
                                     <td>{{ cita.servicio }}</td>
                                     <td class="text-end">
                                         <div class="d-inline-flex gap-2">
+                                            {% if cita.estatus != 'Completada' %}
                                             <a class="btn btn-warning btn-sm" href="{% url 'citas_edit' cita.id %}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
+                                            {% else %}
+                                            <button class="btn btn-warning btn-sm" disabled title="Cita completada">
+                                                <i class="bi bi-lock"></i>
+                                            </button>
+                                            {% endif %}
                                             <a class="btn btn-dark btn-sm" href="{% url 'citas_eliminar' cita.id %}"
-                                                onclick="return confirm('¿Eliminar este cita?')">
+                                                onclick="return confirm('¿Eliminar esta cita?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
@@ -184,39 +207,79 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <body>
-        {% include 'alertas.html' %}
-        {% block content %}{% endblock %}
-    </body>
+    {% include 'alertas.html' %}
+    {% block content %}{% endblock %}
+
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader-spinner"></div>
+    </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const select = document.getElementById("especie_select");
-        const otroDiv = document.getElementById("otro_especie_div");
-        const otroInput = document.getElementById("especie_otro");
+        // Mostrar/Ocultar campo "Otro" especie
+        document.addEventListener("DOMContentLoaded", function () {
+            const select = document.getElementById("especie_select");
+            const otroDiv = document.getElementById("otro_especie_div");
+            const otroInput = document.getElementById("especie_otro");
 
-        function toggleOtro() {
-            if (select.value === "Otro") {
-                otroDiv.style.display = "block";
-                otroInput.required = true;
-            } else {
-                otroDiv.style.display = "none";
-                otroInput.required = false;
-                otroInput.value = "";
+            function toggleOtro() {
+                if (!select) return;
+                if (select.disabled) {
+                    otroDiv.style.display = "none";
+                    if (otroInput) otroInput.required = false;
+                    return;
+                }
+                if (select.value === "Otro") {
+                    otroDiv.style.display = "block";
+                    if (otroInput) otroInput.required = true;
+                } else {
+                    otroDiv.style.display = "none";
+                    if (otroInput) { otroInput.required = false; otroInput.value = ""; }
+                }
             }
-        }
+            if (select) {
+                select.addEventListener("change", toggleOtro);
+                toggleOtro();
+            }
+        });
 
-        select.addEventListener("change", toggleOtro);
-        toggleOtro(); // ejecutar al cargar la página por si ya hay valor
-    });
-</script>
+        // Snap fecha a media hora
+        (function () {
+            const dt = document.getElementById('id_fecha_cita');
+            if (!dt) return;
+            function snapToHalfHour() {
+                if (!dt.value) return;
+                const d = new Date(dt.value);
+                if (isNaN(d)) return;
+                const mins = d.getMinutes();
+                const snapped = mins < 15 ? 0 : (mins < 45 ? 30 : 60);
+                if (snapped === 60) { d.setHours(d.getHours() + 1); d.setMinutes(0); }
+                else { d.setMinutes(snapped); }
+                d.setSeconds(0); d.setMilliseconds(0);
+                const pad = n => String(n).padStart(2, '0');
+                const val = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                dt.value = val;
+            }
+            dt.addEventListener('change', snapToHalfHour);
+            dt.addEventListener('blur', snapToHalfHour);
+        })();
+
+        document.querySelector('form').addEventListener('submit', e => {
+            const fecha = document.getElementById('fecha_cita').value;
+            const hora = document.getElementById('hora_cita').value;
+            const datetimeInput = document.createElement('input');
+            datetimeInput.type = 'hidden';
+            datetimeInput.name = 'fecha_cita';
+            datetimeInput.value = `${fecha}T${hora}`;
+            e.target.appendChild(datetimeInput);
+        });
+    </script>
 </body>
 
 </html>
