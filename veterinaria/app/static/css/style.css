@@ -139,21 +139,43 @@ body {
 [data-theme="dark"] .navbar-petcare .nav-link:hover {
   color: var(--accent-light);
 }
-
-
-/* Hero a pantalla completa */
+/* Banner ajustado para mostrar todo el texto */
 .hero-section {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: clamp(400px, 70vh, 740px); /* 🔼 más alto para mostrar completo */
   background-image: url("../img/banner_bienvenida.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
+
+  /* 🔽 foco centrado en el texto */
+  --focal-y: 48%;
+  background-position: 50% var(--focal-y);
+
+  position: relative;
+  overflow: hidden;
 }
 
-.overlay {
-  width: 100%;
-  height: 100%;
+/* Responsive */
+@media (max-width: 992px) {
+  .hero-section {
+    --focal-y: 58%;
+    height: 55vh;
+  }
+}
+@media (max-width: 576px) {
+  .hero-section {
+    --focal-y: 54%;
+    height: 48vh;
+  }
+}
+
+/* Oscurecido leve para contraste */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  pointer-events: none;
 }
 
 :root {
