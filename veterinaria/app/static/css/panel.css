@@ -391,25 +391,20 @@ textarea.form-control:hover {
 }
 
 /* Botones del form con la misma estética */
-/* ===== Botones compactos con animación ===== */
 .btn-save,
 .btn-clean {
-  font-family: inherit;
-  font-size: .95rem;
-  /* más chico */
   line-height: 1;
   padding: .55em .9em;
-  /* más compacto */
   display: inline-flex;
   align-items: center;
   gap: .35rem;
   border: none;
   border-radius: 12px;
-  font-weight: 800;
   letter-spacing: .2px;
   cursor: pointer;
   transition: background .25s ease, transform .2s ease, box-shadow .25s ease;
   justify-content: center;
+  min-width: 130px
 }
 
 .btn-save {
@@ -448,10 +443,11 @@ textarea.form-control:hover {
 /* animación compartida */
 .btn-save span,
 .btn-clean span {
-  transition: opacity .35s linear, transform .35s ease;
+  transition: opacity .35s ease, font-size .35s ease, margin-left .35s ease;
   display: inline-block;
   margin-left: 0.4em;
   vertical-align: middle;
+  white-space: nowrap; 
 }
 
 .btn-save svg,
@@ -478,19 +474,17 @@ textarea.form-control:hover {
   transform: scale(1.25);
 }
 
-.btn-save:hover svg{
-  transform: translateX(.9em) scale(1.15);
-  fill: #fff;
-}
-.btn-clean:hover svg {
-  transform: translateX(.9em) scale(1.15);
-  fill: var(--accent);
-}
-
 .btn-save:hover span,
 .btn-clean:hover span {
   opacity: 0;
   transform: translateX(.15em);
+  margin-left: 0;
+  font-size: 0;
+}
+
+a.btn-save,
+a.btn-clean {
+  text-decoration: none;
 }
 
 /* ===== Buscador a “pill” ===== */
