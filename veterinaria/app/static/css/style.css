@@ -193,7 +193,7 @@ html {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.15);
   pointer-events: none;
 }
 
@@ -299,8 +299,7 @@ html {
   }
 }
 
-/* ====== Avatar circular con aro según paleta ====== */
-/* ====== Avatar circular con aro estático elegante ====== */
+/* Circulo */
 .avatar-circle {
   --ring-size: 12px;
   position: relative;
@@ -667,8 +666,7 @@ html {
   width: 100%;
   margin: 0;
   padding: 4.5rem;
-  padding-inline: 0;
-  overflow-x: hidden;
+
 }
 
 .testimonios h3 {
@@ -678,60 +676,58 @@ html {
   display: inline-block;
   padding-bottom: 0.4rem;
 }
-
-/* ===== Fila tipo cinta ===== */
+/* ===== Fila (CORREGIDA) ===== */
 .testimonios-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  /* ✅ todas las tarjetas misma altura */
-  gap: 4rem;
-  row-gap: 5rem;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: stretch; 
+    gap: 2.5rem; /* Antes era 4rem */
+    row-gap: 3.5rem; /* Antes era 5rem */
 }
 
-/* ===== Cada testimonio ===== */
+/* ===== Cada testimonio (CORREGIDO) ===== */
 .testimonio {
-  max-width: 280px;
-  flex: 1 1 260px;
-  /* ✅ se adaptan sin romper */
-  text-align: center;
-  margin-inline: 1rem;
-  display: flex;
-  flex-direction: column;
-  /* ✅ permite distribuir contenido verticalmente */
-  justify-content: space-between;
+    /* MÁS PEQUEÑO: Hacemos la tarjeta un poco más angosta */
+    max-width: 270px; /* Antes era 280px */
+    flex: 1 1 250px; /* Antes era 1 1 260px */
+    
+    text-align: center;
+    margin-inline: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* ===== Imagen ===== */
-.testimonial-img {
-  width: 180px;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 28px;
-  transition: all 0.5s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
+/* ===== Círculo (CORREGIDO) ===== */
+/* Ajusta el tamaño del círculo para la tarjeta.
+  Se fuerza el width y height para ASEGURAR que sea un círculo.
+*/
+.testimonio .avatar-circle {
+    width: 160px; 
+    height: 160px; /* ✅ FUERZA la altura para ser un círculo */
+    aspect-ratio: 1/1; /* Redundante pero seguro */
+    --ring-size: 8px;  /* Anillo más delgado */
+    margin: 0 auto 1rem auto; /* Centrado y con margen inferior */
+    
+    /* Resetea el clamp() de la regla base */
+    min-width: 160px; 
 }
 
-.testimonial-img:hover {
-  transform: scale(1.07);
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  filter: brightness(1.05);
+.testimonio .avatar-circle::before {
+    inset: 4px; /* Ajusta el borde interno */
 }
 
-/* ===== Texto ===== */
+/* ===== Texto (Sin cambios) ===== */
 .testimonio p {
-  color: #404040;
-  font-size: 0.95rem;
-  margin: 1rem auto;
-  max-width: 240px;
-  flex-grow: 1;
-  /* ✅ ocupa espacio para igualar alturas */
+    color: #404040;
+    font-size: 0.95rem;
+    margin: 1rem auto;
+    max-width: 240px;
+    flex-grow: 1;
 }
 
 /* ===== Estrellas SVG ===== */
-/* ===== Estrellas SVG (estable y sin recortes) ===== */
 .stars-svg {
   display: flex;
   justify-content: center;
@@ -791,21 +787,14 @@ html {
   }
 }
 
-/* si quieres activarlo, descomenta: */
-
-/* ===== Responsivo ===== */
+/* ===== Responsivo (Simple) ===== */
 @media (max-width: 768px) {
-  .testimonios-row {
-    gap: 2.5rem;
-    row-gap: 3.5rem;
-  }
-
-  .testimonial-img {
-    width: 160px;
-    height: 200px;
-  }
+    .testimonios-row {
+        gap: 2.5rem;
+        row-gap: 3.5rem;
+    }
+    /* No se necesita más, el flex-wrap hace el trabajo */
 }
-
 
 /* FAQ */
 .faq-card {

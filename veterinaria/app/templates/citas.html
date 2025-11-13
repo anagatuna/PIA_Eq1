@@ -63,17 +63,18 @@
                                 <label for="fecha_cita" class="form-label">Fecha Cita</label>
                                 <div class="d-flex gap-2">
                                     <input type="date"
-                                        class="form-control"
-                                        id="fecha_cita"
-                                        name="fecha_cita"
-                                        min="{{ min_fecha }}"
-                                        value="{{ sel_fecha }}"
-                                        required>
-                                
-                                    <select class="form-select" id="hora_cita" name="hora_cita" required>
-                                    {% for h in slots %}
-                                        <option value="{{ h }}" {% if sel_hora == h %}selected{% endif %}>{{ h }}</option>
-                                    {% endfor %}
+                                           class="form-control"
+                                           id="fecha_cita"
+                                           name="fecha_cita"
+                                           min="{{ min_fecha }}"
+                                           value="{{ sel_fecha }}"
+                                           required
+                                           {% if bloqueada_total or solo_estatus %}disabled{% endif %}>                      
+                                    <select class="form-select" id="hora_cita" name="hora_cita" required
+                                            {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                        {% for h in slots %}
+                                            <option value="{{ h }}" {% if sel_hora == h %}selected{% endif %}>{{ h }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <small class="text-muted">Selecciona fecha y hora en bloques de 30 minutos.</small>
@@ -221,19 +222,36 @@
                                             <td>{{ cita.servicio }}</td>
                                             <td class="text-end">
                                                 <div class="d-inline-flex gap-2">
-                                                    {% if cita.estatus != 'Completada' %}
-                                                    <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
+                                                    {% if es_admin %}
+                                                        {# ADMIN #}
+                                                        {% if cita.estatus == 'Pendiente' %}
+                                                            <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}" title="Editar cita">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </a>
+                                                        {% else %}
+                                                            <button class="btn btn-warning btn-sm" disabled title="Cita cerrada">
+                                                                <i class="bi bi-lock"></i>
+                                                            </button>
+                                                        {% endif %}
+                                                        
+                                                        {% if cita.estatus == 'Pendiente' %}
+                                                            <a class="btn-accion btn-delete" href="{% url 'citas_eliminar' cita.id %}"
+                                                               onclick="return confirm('¿Eliminar esta cita?')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </a>
+                                                        {% endif %}
                                                     {% else %}
-                                                    <button class="btn btn-warning btn-sm" disabled title="Cita completada">
-                                                        <i class="bi bi-lock"></i>
-                                                    </button>
+                                                        {# EMPLEADO: solo puede cambiar estatus mientras no esté cerrada #}
+                                                        {% if cita.estatus not in 'Completada,Cancelada' %}
+                                                            <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}" title="Cambiar estatus">
+                                                                <i class="bi bi-check2-square"></i>
+                                                            </a>
+                                                        {% else %}
+                                                            <button class="btn btn-warning btn-sm" disabled title="Cita cerrada">
+                                                                <i class="bi bi-lock"></i>
+                                                            </button>
+                                                        {% endif %}
                                                     {% endif %}
-                                                    <a class="btn-accion btn-delete" href="{% url 'citas_eliminar' cita.id %}"
-                                                        onclick="return confirm('¿Eliminar esta cita?')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>

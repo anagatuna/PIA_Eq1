@@ -73,41 +73,43 @@ def index(request):
 
 # Servicios
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_employee_or_admin)
 def servicios_panel(request, id=None):
+    es_admin = is_admin(request.user)
     servicio = get_object_or_404(SERVICIO, id=id) if id else None
 
-    if request.method == "POST":
-        nombre = request.POST.get("nombre", "").strip().capitalize()
-        precio = request.POST.get("precio", "").strip()
-        descripcion = request.POST.get("descripcion", "").strip().capitalize()
-
-        # No aceptar duplicados nombre o descripcion
-        duplicate_query = Q(nombre=nombre) | Q(descripcion=descripcion)
-
-        if servicio:  # editar
-            # Buscamos si existe otro servicio (excluyendo el actual) que coincida
-            if SERVICIO.objects.filter(duplicate_query).exclude(id=servicio.id).exists():
-                messages.error(request, "Ya existe OTRO servicio con ese nombre o descripción.")
-            else:
-                servicio.nombre = nombre
-                servicio.precio = precio or 0
-                servicio.descripcion = descripcion
-                servicio.save()
-                messages.success(request, "Servicio actualizado correctamente.")
-                return redirect("servicios") # <-- Se mueve aquí
+    if request.method == "POST" and not es_admin:
+        messages.error(request, "No tienes permisos para modificar servicios.")
+        return redirect("servicios")
+        
+    nombre = request.POST.get("nombre", "").strip().capitalize()
+    precio = request.POST.get("precio", "").strip()
+    descripcion = request.POST.get("descripcion", "").strip().capitalize()
+    # No aceptar duplicados nombre o descripcion
+    duplicate_query = Q(nombre=nombre) | Q(descripcion=descripcion)
+    if servicio:  # editar
+        # Buscamos si existe otro servicio (excluyendo el actual) que coincida
+        if SERVICIO.objects.filter(duplicate_query).exclude(id=servicio.id).exists():
+            messages.error(request, "Ya existe OTRO servicio con ese nombre o descripción.")
         else:
-            # Buscamos si existe otro servicio (excluyendo el actual) que coincida
-            if SERVICIO.objects.filter(duplicate_query).exists():
-                messages.error(request, "Ya existe un servicio con ese nombre o descripción.")
-            else:
-                SERVICIO.objects.create(
-                    nombre=nombre,
-                    precio=precio or 0,
-                    descripcion=descripcion
-                )
-                messages.success(request, "Servicio creado correctamente.")
-                return redirect("servicios") # <-- Se mueve aquí
+            servicio.nombre = nombre
+            servicio.precio = precio or 0
+            servicio.descripcion = descripcion
+            servicio.save()
+            messages.success(request, "Servicio actualizado correctamente.")
+            return redirect("servicios") # <-- Se mueve aquí
+    else:
+        # Buscamos si existe otro servicio (excluyendo el actual) que coincida
+        if SERVICIO.objects.filter(duplicate_query).exists():
+            messages.error(request, "Ya existe un servicio con ese nombre o descripción.")
+        else:
+            SERVICIO.objects.create(
+                nombre=nombre,
+                precio=precio or 0,
+                descripcion=descripcion
+            )
+            messages.success(request, "Servicio creado correctamente.")
+            return redirect("servicios") # <-- Se mueve aquí
 
     # 1. Obtener el término de búsqueda (q) de la URL
     q = request.GET.get('q', '').strip()
@@ -136,7 +138,8 @@ def servicios_panel(request, id=None):
         "servicio": servicio, 
         "editando": bool(servicio),
         "form_data": request.POST if request.method == "POST" else {}, # Para que no se borre el formulario en caso de error
-        "q": q
+        "q": q,
+        "es_admin": es_admin,
     }
     return render(request, "servicios.html", ctx)
 
@@ -154,23 +157,16 @@ def listar_servicios(request):
     servicios = SERVICIO.objects.all()
     return render(request, 'servicios.html', {'servicios': servicios})
 
-# Citas
 @login_required
 @user_passes_test(is_employee_or_admin)
 def citas_panel(request, id=None):
-    """
-    Reglas clave:
-    - Al crear: estatus SIEMPRE 'Pendiente' y no permitir fecha/hora pasada.
-    - Si la cita está 'Completada': NO se puede editar nada.
-    - Si la fecha ya pasó (<= ahora): SOLO se puede cambiar estatus a {'Completada','No asistió'}.
-    - Bloqueo por bloques de 30 minutos para el MISMO servicio (evitar choques).
-    - Filtros GET: q, estatus, servicio, desde, hasta.
-    """
+    es_admin = is_admin(request.user)
+
     cita = get_object_or_404(CITA_VETERINARIA, pk=id) if id else None
     servicios = SERVICIO.objects.all()
     ahora_local = timezone.localtime()
 
-    # Slots de 30 min (ajusta horario a lo que maneje tu clínica)
+    # Slots de 30 min de 8 am a 6 pm
     slots = build_half_hour_slots("08:00", "18:00")
 
     # Valores por defecto para date+select
@@ -182,33 +178,60 @@ def citas_panel(request, id=None):
         sel_hora = next_slot.strftime("%H:%M")
         sel_fecha = next_slot.strftime("%Y-%m-%d")
 
-    # --- Bloqueo total si Completada ---
-    if request.method == "POST" and cita and cita.estatus == "Completada":
-        messages.error(request, "Esta cita ya está completada y no puede editarse.")
-        return redirect("citas")
+    # --- Flags de estado de la cita ---
+    cita_pasada_bool = bool(cita and timezone.localtime(cita.fecha_cita) <= ahora_local)
+    # Completada o Cancelada = bloqueada total para TODOS
+    bloqueada_total = bool(cita and cita.estatus in ["Completada", "Cancelada"])
+    # Solo estatus por fecha (ya pasó) para admin
+    solo_estatus_fecha = bool(cita and cita_pasada_bool and not bloqueada_total)
+    # Solo estatus por rol (empleado nunca edita campos, solo estatus)
+    solo_estatus_rol = bool(cita and (not es_admin) and not bloqueada_total)
+    # Flag global para template
+    solo_estatus = solo_estatus_fecha or solo_estatus_rol
 
-    # Si la cita existe, evaluar si su fecha ya pasó (para permitir solo estatus)
-    cita_pasada = bool(cita and timezone.localtime(cita.fecha_cita) <= ahora_local)
-
+    # Crear y editar
     if request.method == "POST":
-        # Siempre procesar estatus del POST (por si solo actualizamos estatus)
         estatus_post = (request.POST.get("estatus") or "").strip().capitalize()
 
-        # Recuperar la fecha/hora del formulario de forma robusta
-        # Puede venir:
-        #   - como ISO en un hidden 'fecha_cita' (YYYY-MM-DDTHH:MM)
-        #   - como <input type="date" name="fecha_cita"> + <select name="hora_cita">
-        #   - o si renombraste el date a 'fecha_dia', también lo soporta
+        # Si está Completada o Cancelada nadie puede editar nada
+        if cita and bloqueada_total:
+            messages.error(request, "Esta cita ya está cerrada (Completada o Cancelada) y no puede editarse.")
+            return redirect("citas")
+
+        # Empleado solo cambia estatus
+        if not es_admin:
+            if not cita:
+                messages.error(request, "No tienes permisos para crear citas.")
+                return redirect("citas")
+
+            cita_pasada = cita_pasada_bool
+
+            if cita_pasada:
+                permitidos = ["Completada", "No asistió"]
+                msg_regla = "La cita ya pasó: solo puedes marcar Completada o No asistió."
+            else:
+                permitidos = ["Pendiente", "Cancelada"]
+                msg_regla = "La cita aún no ocurre: solo puedes alternar entre Pendiente y Cancelada."
+
+            if estatus_post not in permitidos:
+                messages.error(request, msg_regla)
+                return redirect("citas")
+
+            cita.estatus = estatus_post
+            cita.save()
+            messages.success(request, "Estatus actualizado.")
+            return redirect("citas")
+
+        # Solo admin todo lo que sigue
+        # Recuperar la fecha/hora enviada
         fecha_cita_raw = ""
         vals_fc = request.POST.getlist("fecha_cita")
         if vals_fc:
-            # Si hay varios, priorizamos el que contenga 'T' (el hidden ISO)
             for v in reversed(vals_fc):
                 if "T" in v:
                     fecha_cita_raw = v.strip()
                     break
             if not fecha_cita_raw:
-                # Combina último valor de fecha con hora_cita
                 fecha_cita_raw = f"{vals_fc[-1].strip()}T{(request.POST.get('hora_cita') or '00:00').strip()}"
         else:
             dia = (request.POST.get("fecha_dia") or request.POST.get("fecha_cita") or "").strip()
@@ -216,8 +239,8 @@ def citas_panel(request, id=None):
             if dia and hora:
                 fecha_cita_raw = f"{dia}T{hora}"
 
-        # ----- Caso: la fecha ya pasó -> solo actualizar ESTATUS permitido -----
-        if cita and cita_pasada:
+        # ADMIN con cita pasada solo modifica el estatus
+        if cita and cita_pasada_bool:
             permitidos = ["Completada", "No asistió"]
             if estatus_post not in permitidos:
                 messages.error(request, "La cita ya pasó: solo puedes elegir 'Completada' o 'No asistió'.")
@@ -227,7 +250,6 @@ def citas_panel(request, id=None):
             messages.success(request, "Estatus actualizado.")
             return redirect("citas")
 
-        # ----- Flujo normal (crear o editar futura) -----
         nombre_dueño   = (request.POST.get("nombre_dueño") or "").strip().title()
         nombre_mascota = (request.POST.get("nombre_mascota") or "").strip().title()
         motivo         = (request.POST.get("motivo") or "").strip().capitalize()
@@ -238,7 +260,6 @@ def citas_panel(request, id=None):
         especie_otro   = (request.POST.get("especie_otro") or "").strip()
         if not especie_select:
             messages.error(request, "Selecciona una especie.")
-            # Mantener selección usuario en caso de error
             if fecha_cita_raw:
                 try_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
                 sel_fecha = try_dt.strftime("%Y-%m-%d")
@@ -250,7 +271,11 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
                 "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                 "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                "cita_pasada": cita_pasada,
+                "cita_pasada": cita_pasada_bool,
+                "bloqueada_total": bloqueada_total,
+                "solo_estatus": solo_estatus,
+                "es_admin": es_admin,
+                "form_data": request.POST,  
             })
         elif especie_select == "Otro":
             if not especie_otro:
@@ -266,7 +291,11 @@ def citas_panel(request, id=None):
                     "servicios": servicios,
                     "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                     "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                    "cita_pasada": cita_pasada,
+                    "cita_pasada": cita_pasada_bool,
+                    "bloqueada_total": bloqueada_total,
+                    "solo_estatus": solo_estatus,
+                    "es_admin": es_admin,
+                    "form_data": request.POST,  
                 })
             especie_final = especie_otro.capitalize()
         else:
@@ -285,7 +314,11 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
                 "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                 "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                "cita_pasada": cita_pasada,
+                "cita_pasada": cita_pasada_bool,
+                "bloqueada_total": bloqueada_total,
+                "solo_estatus": solo_estatus,
+                "es_admin": es_admin,
+                "form_data": request.POST,  
             })
 
         ser_obj = get_object_or_404(SERVICIO, pk=servicio_id)
@@ -314,10 +347,13 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
                 "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                 "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                "cita_pasada": cita_pasada,
+                "cita_pasada": cita_pasada_bool,
+                "bloqueada_total": bloqueada_total,
+                "solo_estatus": solo_estatus,
+                "es_admin": es_admin,
             })
 
-        # Validación de estatus coherente a la fecha (solo aplica si edita futura)
+        # Validación de estatus coherente a la fecha para admin
         if fecha_cita_dt <= ahora_local:
             permitidos = ["Completada", "No asistió"]
             msg_regla = "Solo puedes elegir 'Completada' o 'No asistió' (la cita ya pasó)."
@@ -325,7 +361,7 @@ def citas_panel(request, id=None):
             permitidos = ["Pendiente", "Cancelada"]
             msg_regla = "Solo puedes elegir 'Pendiente' o 'Cancelada' (la cita aún no ocurre)."
 
-        # Al crear, forzar 'Pendiente' sin importar POST
+        # Al crear, forzar 'Pendiente'
         estatus_final = "Pendiente" if not cita else estatus_post
         if cita and estatus_final not in permitidos:
             messages.error(request, msg_regla)
@@ -340,7 +376,10 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
                 "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                 "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                "cita_pasada": cita_pasada,
+                "cita_pasada": cita_pasada_bool,
+                "bloqueada_total": bloqueada_total,
+                "solo_estatus": solo_estatus,
+                "es_admin": es_admin,
             })
 
         # Bloqueo por media hora (slot)
@@ -366,10 +405,13 @@ def citas_panel(request, id=None):
                 "servicios": servicios,
                 "slots": slots, "sel_hora": sel_hora, "sel_fecha": sel_fecha,
                 "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-                "cita_pasada": cita_pasada,
+                "cita_pasada": cita_pasada_bool,
+                "bloqueada_total": bloqueada_total,
+                "solo_estatus": solo_estatus,
+                "es_admin": es_admin,
             })
 
-        # Guardar
+        # Guardar admin
         if cita:
             cita.nombre_dueño   = nombre_dueño
             cita.nombre_mascota = nombre_mascota
@@ -393,7 +435,7 @@ def citas_panel(request, id=None):
             messages.success(request, "La cita se registró correctamente.")
         return redirect("citas")
 
-    # ------- FILTROS GET -------
+    # Filtrar
     qs = CITA_VETERINARIA.objects.all().select_related('servicio').order_by('fecha_cita')
 
     estatus_f = (request.GET.get('estatus') or '').strip()
@@ -427,34 +469,35 @@ def citas_panel(request, id=None):
             Q(motivo__icontains=q)
         )
 
-    # --- Flags para el template ---
-    bloqueada_total = bool(cita and cita.estatus == "Completada")
-    cita_pasada_bool = bool(cita and timezone.localtime(cita.fecha_cita) <= timezone.localtime())
-    solo_estatus = bool(cita and cita_pasada_bool and not bloqueada_total)
-
     ctx = {
         "citas": qs,
         "cita": cita,
         "editando": bool(cita),
         "servicios": servicios,
-        # para el date+select
         "slots": slots,
         "sel_hora": sel_hora,
         "sel_fecha": sel_fecha,
         "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-        # otros
         "ahora_str": ahora_local.strftime("%Y-%m-%dT%H:%M"),
         "cita_pasada": cita_pasada_bool,
-        "q": q,
         "bloqueada_total": bloqueada_total,
         "solo_estatus": solo_estatus,
+        "q": q,
+        "es_admin": es_admin,
+        "form_data": request.POST if request.method == "POST" else {},   
     }
     return render(request, "citas.html", ctx)
 
+# Eliminar citas
 @login_required
 @user_passes_test(is_admin)
 def eliminar_cita(request, id):
     cita = get_object_or_404(CITA_VETERINARIA, id=id)
+
+    if cita.estatus in ["Completada", "Cancelada"]:
+        messages.error(request, "No puedes eliminar una cita Completada o Cancelada.")
+        return redirect('citas')
+
     cita.delete()
     messages.error(request, "Se eliminó correctamente la cita.")
     return redirect('citas')
