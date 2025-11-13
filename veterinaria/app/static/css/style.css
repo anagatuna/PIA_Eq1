@@ -480,6 +480,7 @@ html {
   color: #404040;
   font-weight: bold;
   display: inline-block;
+  padding: 3rem;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 3px solid #F47F76;
@@ -644,6 +645,7 @@ html {
 .testimonios h3 {
   color: #404040;
   text-transform: uppercase;
+  padding: 3rem;
   border-bottom: 3px solid #F47F76;
   display: inline-block;
   padding-bottom: 0.4rem;
@@ -835,6 +837,7 @@ html {
   color: #404040;
   font-weight: bold;
   display: inline-block;
+  padding: 3rem;
   padding-bottom: .5rem;
   margin-bottom: 1.5rem;
   border-bottom: 4px solid #F47F76;
@@ -855,7 +858,6 @@ html {
     0 4px 8px rgba(0, 0, 0, 0.18);
   border-radius: 23px;
   padding: 2rem 2rem 1.7rem 1.5rem;
-  /* Tu padding original */
   transition: transform 0.6s cubic-bezier(0.15, 0.83, 0.66, 1),
     box-shadow 0.3s ease;
   cursor: pointer;
@@ -1165,13 +1167,14 @@ textarea.textarea:-webkit-autofill {
   color: #404040;
   font-weight: bold;
   display: inline-block;
+  padding: 3rem;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 3px solid #F47F76;
 }
 
 .faq-card {
-  transition: .2s ease;
+  transition: 1s ease;
 }
 
 .faq-card:hover {
@@ -1180,12 +1183,21 @@ textarea.textarea:-webkit-autofill {
 }
 
 .faq-badge {
-  transition: .2s ease;
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%;
+    transition: 1s ease;
+    transform-origin: center center;
+    flex-shrink: 0;
 }
 
 .faq-card:hover .faq-badge {
   background-color: #056272;
   color: #ddd;
+  animation: pulse-icon;
 }
 
 summary {
@@ -1215,23 +1227,23 @@ summary::marker {
   cursor: pointer;
   font-weight: 600;
   user-select: none;
-  display: block;
   border: none;
 }
 
 /* Animar respuesta */
 .faq2__content {
   max-height: 0;
-  overflow: hidden;
   opacity: 0;
-  transition: max-height .2s ease, opacity .3s ease;
+  transition: transform 0.6s cubic-bezier(0.15, 0.83, 0.66, 1),
+    box-shadow 0.3s ease;
 }
 
 /* Abierto */
-.faq2__toggle:checked~.faq2__content {
-  max-height: 600px;
-  /* ajusta al tamaño de tu contenido */
-  opacity: 1;
+.faq-card:hover .faq2__content {
+ max-height: 600px;
+ opacity: 1;
+ transition: transform 0.6s cubic-bezier(0.15, 0.83, 0.66, 1),
+    box-shadow 0.3s ease;
 }
 
 .zoom-controls {
@@ -1260,4 +1272,16 @@ summary::marker {
 .zoom-btn:hover {
   background-color: #4EC4E9;
   transform: scale(1.1);
+}
+
+@keyframes pulse-icon {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15); /* "Crece" un 15% */
+  }
+  100% {
+    transform: scale(1);
+  }
 }
