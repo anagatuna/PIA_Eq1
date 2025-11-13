@@ -120,9 +120,10 @@
                                     <select name="estatus" class="form-select" required>
                                         <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>Completada</option>
                                         <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No asistió</option>
+                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
                                     </select>
                                     <small class="text-muted">
-                                        La cita ya pasó: solo puedes marcar Completada o No asistió.
+                                        La cita ya pasó: solo puedes marcar Completada, No asistió o Cancelada.
                                     </small>
                                 
                                 {% else %}

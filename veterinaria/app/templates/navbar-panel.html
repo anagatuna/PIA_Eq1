@@ -83,7 +83,6 @@
     </nav>
     <script>
         (function () {
-            // ===== Altura real de la navbar -> CSS var para padding-top
             const nav = document.querySelector('.navbar-petcare');
             const setNavbarVar = () => {
                 const h = nav ? nav.offsetHeight : 64;
@@ -92,9 +91,9 @@
             setNavbarVar();
             window.addEventListener('resize', setNavbarVar);
 
-            // ===== Activo por URL (no por anclas; Admin navega por vistas)
+            // ===== Marcar link activo según URL
             const navLinks = Array.from(document.querySelectorAll('.navbar-petcare .nav-link'));
-            const path = location.pathname.replace(/\/+$/, ''); // sin trailing slash
+            const path = location.pathname.replace(/\/+$/, '');
             const norm = (url) => {
                 try {
                     const u = new URL(url, location.origin);
@@ -113,7 +112,6 @@
                 }
             });
 
-            // Si ninguna coincidió exactamente, intenta startsWith por sección
             if (!marked) {
                 navLinks.some(a => {
                     const hrefPath = norm(a.getAttribute('href'));
@@ -124,8 +122,23 @@
                     return false;
                 });
             }
+
+            // ===== Cerrar el collapse al hacer click en un link (MÓVIL)
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav && window.bootstrap) {
+                const bsCollapse = new bootstrap.Collapse(navbarNav, { toggle: false });
+
+                navLinks.forEach(a => {
+                    a.addEventListener('click', () => {
+                        if (window.innerWidth < 992) { // solo en móvil / tablet
+                            bsCollapse.hide();
+                        }
+                    });
+                });
+            }
         })();
     </script>
+
 
 </body>
 
