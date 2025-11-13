@@ -1,285 +1,323 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Citas</title>
-    {% include 'referencias.html' %}
-    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Citas</title>
+        {% include 'referencias.html' %}
+        <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+    </head>
 
-<body>
-    {% include 'navbar-panel.html' %}
+    <body>
+        {% include 'navbar-panel.html' %}
 
-    <main class="container mt-5">
-        <div class="row g-4">
-            <!-- Columna izquierda: Formulario crear/editar -->
-            <div class="col-12 col-lg-4">
-                <div class="card glass-card">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">
-                            {% if editando %}Editar cita{% else %}Crear cita{% endif %}
-                        </h5>
+        <main class="container-fluid mt-5 mb-5 p-3">
+            <div class="row g-4">
+                <!-- Columna izquierda: Formulario crear/editar -->
+                <div class="col-12 col-lg-4">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                {% if editando %}Editar cita{% else %}Crear cita{% endif %}
+                            </h5>
 
-                        <form method="post" autocomplete="off"
-                            action="{% if editando %}{% url 'citas_edit' cita.id %}{% else %}{% url 'citas' %}{% endif %}">
-                            {% csrf_token %}
+                            <form method="post" autocomplete="off"
+                                action="{% if editando %}{% url 'citas_edit' cita.id %}{% else %}{% url 'citas' %}{% endif %}">
+                                {% csrf_token %}
 
-                            <div class="mb-3">
-                                <label class="form-label">Nombre del Dueño</label>
-                                <input type="text" name="nombre_dueño" class="form-control"
-                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="200" required
-                                    value="{{ cita.nombre_dueño|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre del Dueño</label>
+                                    <input type="text" name="nombre_dueño" class="form-control"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="200" required
+                                        value="{{ cita.nombre_dueño|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Nombre de la Mascota</label>
-                                <input type="text" name="nombre_mascota" class="form-control"
-                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="100" required
-                                    value="{{ cita.nombre_mascota|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre de la Mascota</label>
+                                    <input type="text" name="nombre_mascota" class="form-control"
+                                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" maxlength="100" required
+                                        value="{{ cita.nombre_mascota|default_if_none:'' }}" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Especie</label>
-                                <select name="especie_select" id="especie_select" class="form-select" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                                    <option value="">Seleccione una especie</option>
-                                    <option value="Perro" {% if cita.especie == "Perro" %}selected{% endif %}>Perro</option>
-                                    <option value="Gato" {% if cita.especie == "Gato" %}selected{% endif %}>Gato</option>
-                                    <option value="Ave" {% if cita.especie == "Ave" %}selected{% endif %}>Ave</option>
-                                    <option value="Otro" {% if cita.especie and cita.especie not in "Perro,Gato,Ave" %}selected{% endif %}>Otro</option>
-                                </select>
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Especie</label>
+                                    <select name="especie_select" id="especie_select" class="form-select" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                        <option value="">Seleccione una especie</option>
+                                        <option value="Perro" {% if cita.especie == "Perro" %}selected{% endif %}>Perro</option>
+                                        <option value="Gato" {% if cita.especie == "Gato" %}selected{% endif %}>Gato</option>
+                                        <option value="Ave" {% if cita.especie == "Ave" %}selected{% endif %}>Ave</option>
+                                        <option value="Otro" {% if cita.especie and cita.especie not in "Perro,Gato,Ave" %}selected{% endif %}>Otro</option>
+                                    </select>
+                                </div>
 
-                            <div class="mb-3" id="otro_especie_div" style="display: none;">
-                                <label class="form-label">Especifique la especie</label>
-                                <input type="text" name="especie_otro" id="especie_otro" class="form-control"
-                                    pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" maxlength="100"
-                                    value="{% if cita.especie and cita.especie not in 'Perro,Gato,Ave' %}{{ cita.especie }}{% endif %}"
-                                    {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                            </div>
+                                <div class="mb-3" id="otro_especie_div" style="display: none;">
+                                    <label class="form-label">Especifique la especie</label>
+                                    <input type="text" name="especie_otro" id="especie_otro" class="form-control"
+                                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" maxlength="100"
+                                        value="{% if cita.especie and cita.especie not in 'Perro,Gato,Ave' %}{{ cita.especie }}{% endif %}"
+                                        {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                </div>
 
-                            <div class="mb-3">
-                              <label for="fecha_cita" class="form-label">Fecha Cita</label>
-                              <div class="d-flex gap-2">
-                                <input type="date"
-                                       class="form-control"
-                                       id="fecha_cita"
-                                       name="fecha_cita"
-                                       min="{{ min_fecha }}"
-                                       value="{{ sel_fecha }}"
-                                       required>
-                            
-                                <select class="form-select" id="hora_cita" name="hora_cita" required>
-                                  {% for h in slots %}
-                                    <option value="{{ h }}" {% if sel_hora == h %}selected{% endif %}>{{ h }}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                              <small class="text-muted">Selecciona fecha y hora en bloques de 30 minutos.</small>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Motivo</label>
-                                <textarea name="motivo" class="form-control" maxlength="255" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>{{ cita.motivo|default_if_none:'' }}</textarea>
-                            </div>
-
-                            <!-- Estatus -->
-                            <div class="mb-3">
-                                <label class="form-label">Estatus</label>
-
-                                {% if not editando %}
-                                <input type="hidden" name="estatus" value="Pendiente">
-                                <input type="text" class="form-control" value="Pendiente" disabled>
-                                <small class="text-muted">Se asigna automáticamente al crear.</small>
-
-                                {% elif bloqueada_total %}
-                                <input type="text" class="form-control" value="Completada" disabled>
-                                <small class="text-muted">Esta cita está completada y no puede editarse.</small>
-
-                                {% elif solo_estatus %}
-                                <select name="estatus" class="form-select" required>
-                                    <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>
-                                        Completada</option>
-                                    <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No
-                                        asistió</option>
-                                </select>
-                                <small class="text-muted">La cita ya pasó: solo puedes marcar Completada o No
-                                    asistió.</small>
-
-                                {% else %}
-                                <select name="estatus" class="form-select" required>
-                                    <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>
-                                        Pendiente</option>
-                                    <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>
-                                        Cancelada</option>
-                                </select>
-                                <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y
-                                    Cancelada.</small>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="servicio" class="form-label">Servicio</label>
-                                <select name="servicio" id="servicio" class="form-select" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                                    <option value="">Selecciona un servicio</option>
-                                    {% for servicio in servicios %}
-                                    <option value="{{ servicio.id }}" {% if cita and cita.servicio_id == servicio.id %}selected{% endif %}>
-                                        {{ servicio.nombre }}
-                                    </option>
+                                <div class="mb-3">
+                                <label for="fecha_cita" class="form-label">Fecha Cita</label>
+                                <div class="d-flex gap-2">
+                                    <input type="date"
+                                        class="form-control"
+                                        id="fecha_cita"
+                                        name="fecha_cita"
+                                        min="{{ min_fecha }}"
+                                        value="{{ sel_fecha }}"
+                                        required>
+                                
+                                    <select class="form-select" id="hora_cita" name="hora_cita" required>
+                                    {% for h in slots %}
+                                        <option value="{{ h }}" {% if sel_hora == h %}selected{% endif %}>{{ h }}</option>
                                     {% endfor %}
-                                </select>
-                            </div>
+                                    </select>
+                                </div>
+                                <small class="text-muted">Selecciona fecha y hora en bloques de 30 minutos.</small>
+                                </div>
 
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-success" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
-                                    {% if editando %}Actualizar{% else %}Guardar{% endif %}
-                                </button>
-                                {% if editando %}
-                                <a href="{% url 'citas' %}" class="btn btn-secondary">Cancelar</a>
-                                {% else %}
-                                <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
-                                {% endif %}
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Motivo</label>
+                                    <textarea name="motivo" class="form-control" maxlength="255" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>{{ cita.motivo|default_if_none:'' }}</textarea>
+                                </div>
 
-            <!-- Columna derecha: Buscador + Lista -->
-            <div class="col-12 col-lg-8">
-                <div class="card glass-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="m-0 card-title">Lista de Citas</h4>
-                            <form class="d-flex" method="get" action="{% url 'citas' %}">
-                                <input class="form-control me-2" type="search" placeholder="Buscar…" name="q"
-                                    value="{{ request.GET.q|default_if_none:'' }}">
-                                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                                <!-- Estatus -->
+                                <div class="mb-3">
+                                    <label class="form-label">Estatus</label>
+
+                                    {% if not editando %}
+                                    <input type="hidden" name="estatus" value="Pendiente">
+                                    <input type="text" class="form-control" value="Pendiente" disabled>
+                                    <small class="text-muted">Se asigna automáticamente al crear.</small>
+
+                                    {% elif bloqueada_total %}
+                                    <input type="text" class="form-control" value="Completada" disabled>
+                                    <small class="text-muted">Esta cita está completada y no puede editarse.</small>
+
+                                    {% elif solo_estatus %}
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>
+                                            Completada</option>
+                                        <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No
+                                            asistió</option>
+                                    </select>
+                                    <small class="text-muted">La cita ya pasó: solo puedes marcar Completada o No
+                                        asistió.</small>
+
+                                    {% else %}
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>
+                                            Pendiente</option>
+                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>
+                                            Cancelada</option>
+                                    </select>
+                                    <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y
+                                        Cancelada.</small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="servicio" class="form-label">Servicio</label>
+                                    <select name="servicio" id="servicio" class="form-select" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                        <option value="">Selecciona un servicio</option>
+                                        {% for servicio in servicios %}
+                                        <option value="{{ servicio.id }}" {% if cita and cita.servicio_id == servicio.id %}selected{% endif %}>
+                                            {{ servicio.nombre }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="d-flex gap-2 justify-content-center mt-4">
+                                    <button type="submit" class="btn-save" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                        <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z" />
+                                                    <path
+                                                        d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>{% if editando %}Actualizar{% else %}Guardar{% endif %}</span>
+                                    </button>
+                                    {% if editando %}
+                                    <a href="{% url 'citas' %}" class="btn-clean"><div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                                    fill="currentColor" class="bi bi-x-circle" viewBox="0 0 18 18">
+                                                    <path
+                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                    <path
+                                                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Cancelar</span>
+                                    </a>
+                                    {% else %}
+                                    <button type="reset" class="btn-clean" aria-label="Limpiar" id="btn-limpiar">
+                                        <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <!-- borrador -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
+                                                    height="22" class="icon">
+                                                    <path
+                                                        d="M3.6 14.8l6.9-6.9a2 2 0 0 1 2.8 0l3.7 3.7a2 2 0 0 1 0 2.8l-4.9 4.9a2 2 0 0 1-1.4.6H6.4a2 2 0 0 1-1.4-.6l-1.4-1.4a2 2 0 0 1 0-2.8z" />
+                                                    <path d="M14.2 4.8l2-2 3.9 3.9-2 2z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Limpiar</span>
+                                    </button>
+                                    {% endif %}
+                                </div>
                             </form>
                         </div>
+                    </div>
+                </div>
 
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Nombre Dueño</th>
-                                    <th>Nombre Mascota</th>
-                                    <th>Especie</th>
-                                    <th>Fecha Cita</th>
-                                    <th>Motivo</th>
-                                    <th>Estatus</th>
-                                    <th>Servicio</th>
-                                    <th class="text-end">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for cita in citas %}
-                                <tr>
-                                    <td>{{ cita.nombre_dueño }}</td>
-                                    <td>{{ cita.nombre_mascota }}</td>
-                                    <td>{{ cita.especie }}</td>
-                                    <td>{{ cita.fecha_cita|date:"d/m/Y H:i" }}</td>
-                                    <td>{{ cita.motivo }}</td>
-                                    <td>{{ cita.estatus }}</td>
-                                    <td>{{ cita.servicio }}</td>
-                                    <td class="text-end">
-                                        <div class="d-inline-flex gap-2">
-                                            {% if cita.estatus != 'Completada' %}
-                                            <a class="btn btn-warning btn-sm" href="{% url 'citas_edit' cita.id %}">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            {% else %}
-                                            <button class="btn btn-warning btn-sm" disabled title="Cita completada">
-                                                <i class="bi bi-lock"></i>
-                                            </button>
-                                            {% endif %}
-                                            <a class="btn btn-dark btn-sm" href="{% url 'citas_eliminar' cita.id %}"
-                                                onclick="return confirm('¿Eliminar esta cita?')">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted">Sin información disponible</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                <!-- Columna derecha: Buscador + Lista -->
+                <div class="col-12 col-lg-8">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="m-0 card-title mb-3">Lista de Citas</h4>
+                                <form class="d-flex" method="get" action="{% url 'citas' %}">
+                                    <input class="form-control me-2" type="search" placeholder="Buscar" name="q"
+                                        value="{{ q }}">
+                                    <button class="btn btn-outline" type="submit"><i class="bi bi-search"></i></button>
+                                </form>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table tabla-servicios align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre Dueño</th>
+                                            <th>Nombre Mascota</th>
+                                            <th>Especie</th>
+                                            <th>Fecha Cita</th>
+                                            <th>Motivo</th>
+                                            <th>Estatus</th>
+                                            <th>Servicio</th>
+                                            <th class="text-end">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cita in citas %}
+                                        <tr>
+                                            <td>{{ cita.nombre_dueño }}</td>
+                                            <td>{{ cita.nombre_mascota }}</td>
+                                            <td>{{ cita.especie }}</td>
+                                            <td>{{ cita.fecha_cita|date:"d/m/Y H:i" }}</td>
+                                            <td class="col-desc">{{ cita.motivo }}</td>
+                                            <td>{{ cita.estatus }}</td>
+                                            <td>{{ cita.servicio }}</td>
+                                            <td class="text-end">
+                                                <div class="d-inline-flex gap-2">
+                                                    {% if cita.estatus != 'Completada' %}
+                                                    <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                    {% else %}
+                                                    <button class="btn btn-warning btn-sm" disabled title="Cita completada">
+                                                        <i class="bi bi-lock"></i>
+                                                    </button>
+                                                    {% endif %}
+                                                    <a class="btn-accion btn-delete" href="{% url 'citas_eliminar' cita.id %}"
+                                                        onclick="return confirm('¿Eliminar esta cita?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="8" class="text-center text-muted">Sin información disponible</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </main>
+
+        {% include 'alertas.html' %}
+        {% block content %}{% endblock %}
+
+        <!-- Loader -->
+        <div id="loader" class="loader-overlay">
+            <div class="loader-spinner"></div>
         </div>
-    </main>
 
-    {% include 'alertas.html' %}
-    {% block content %}{% endblock %}
+        <script>
+            // Mostrar/Ocultar campo "Otro" especie
+            document.addEventListener("DOMContentLoaded", function () {
+                const select = document.getElementById("especie_select");
+                const otroDiv = document.getElementById("otro_especie_div");
+                const otroInput = document.getElementById("especie_otro");
 
-    <!-- Loader -->
-    <div id="loader" class="loader-overlay">
-        <div class="loader-spinner"></div>
-    </div>
-
-    <script>
-        // Mostrar/Ocultar campo "Otro" especie
-        document.addEventListener("DOMContentLoaded", function () {
-            const select = document.getElementById("especie_select");
-            const otroDiv = document.getElementById("otro_especie_div");
-            const otroInput = document.getElementById("especie_otro");
-
-            function toggleOtro() {
-                if (!select) return;
-                if (select.disabled) {
-                    otroDiv.style.display = "none";
-                    if (otroInput) otroInput.required = false;
-                    return;
+                function toggleOtro() {
+                    if (!select) return;
+                    if (select.disabled) {
+                        otroDiv.style.display = "none";
+                        if (otroInput) otroInput.required = false;
+                        return;
+                    }
+                    if (select.value === "Otro") {
+                        otroDiv.style.display = "block";
+                        if (otroInput) otroInput.required = true;
+                    } else {
+                        otroDiv.style.display = "none";
+                        if (otroInput) { otroInput.required = false; otroInput.value = ""; }
+                    }
                 }
-                if (select.value === "Otro") {
-                    otroDiv.style.display = "block";
-                    if (otroInput) otroInput.required = true;
-                } else {
-                    otroDiv.style.display = "none";
-                    if (otroInput) { otroInput.required = false; otroInput.value = ""; }
+                if (select) {
+                    select.addEventListener("change", toggleOtro);
+                    toggleOtro();
                 }
-            }
-            if (select) {
-                select.addEventListener("change", toggleOtro);
-                toggleOtro();
-            }
-        });
+            });
 
-        // Snap fecha a media hora
-        (function () {
-            const dt = document.getElementById('id_fecha_cita');
-            if (!dt) return;
-            function snapToHalfHour() {
-                if (!dt.value) return;
-                const d = new Date(dt.value);
-                if (isNaN(d)) return;
-                const mins = d.getMinutes();
-                const snapped = mins < 15 ? 0 : (mins < 45 ? 30 : 60);
-                if (snapped === 60) { d.setHours(d.getHours() + 1); d.setMinutes(0); }
-                else { d.setMinutes(snapped); }
-                d.setSeconds(0); d.setMilliseconds(0);
-                const pad = n => String(n).padStart(2, '0');
-                const val = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-                dt.value = val;
-            }
-            dt.addEventListener('change', snapToHalfHour);
-            dt.addEventListener('blur', snapToHalfHour);
-        })();
+            // Snap fecha a media hora
+            (function () {
+                const dt = document.getElementById('id_fecha_cita');
+                if (!dt) return;
+                function snapToHalfHour() {
+                    if (!dt.value) return;
+                    const d = new Date(dt.value);
+                    if (isNaN(d)) return;
+                    const mins = d.getMinutes();
+                    const snapped = mins < 15 ? 0 : (mins < 45 ? 30 : 60);
+                    if (snapped === 60) { d.setHours(d.getHours() + 1); d.setMinutes(0); }
+                    else { d.setMinutes(snapped); }
+                    d.setSeconds(0); d.setMilliseconds(0);
+                    const pad = n => String(n).padStart(2, '0');
+                    const val = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                    dt.value = val;
+                }
+                dt.addEventListener('change', snapToHalfHour);
+                dt.addEventListener('blur', snapToHalfHour);
+            })();
 
-        document.querySelector('form').addEventListener('submit', e => {
-            const fecha = document.getElementById('fecha_cita').value;
-            const hora = document.getElementById('hora_cita').value;
-            const datetimeInput = document.createElement('input');
-            datetimeInput.type = 'hidden';
-            datetimeInput.name = 'fecha_cita';
-            datetimeInput.value = `${fecha}T${hora}`;
-            e.target.appendChild(datetimeInput);
-        });
-    </script>
-</body>
+            document.querySelector('form').addEventListener('submit', e => {
+                const fecha = document.getElementById('fecha_cita').value;
+                const hora = document.getElementById('hora_cita').value;
+                const datetimeInput = document.createElement('input');
+                datetimeInput.type = 'hidden';
+                datetimeInput.name = 'fecha_cita';
+                datetimeInput.value = `${fecha}T${hora}`;
+                e.target.appendChild(datetimeInput);
+            });
+        </script>
+    </body>
 
-</html>
+    </html>

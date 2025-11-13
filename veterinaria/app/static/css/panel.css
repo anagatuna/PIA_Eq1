@@ -553,6 +553,8 @@ a.btn-clean {
   margin-bottom: 0;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .thead {
@@ -660,6 +662,12 @@ a.btn-clean {
   padding: 2.2rem 1rem;
   font-weight: 600;
   color: #6c7a86 !important;
+}
+
+/* Esto está en tu CSS */
+.tabla-servicios .col-desc {
+  max-width: 520px;
+  overflow-wrap: anywhere;
 }
 
 /* Encabezado pegajoso en móvil para tablas largas */
