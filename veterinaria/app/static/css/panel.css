@@ -1,10 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-  color-scheme: light;
-}
-
-:root {
   --primary: #056272;
   --accent: #4EC4E9;
   --accent-light: #8FE6F7;
@@ -694,3 +690,168 @@ a.btn-clean {
     z-index: 1;
   }
 }
+
+/* ====================================================================== */
+/* 🌙 MODO OSCURO (Panel Admin) LIMPIO */
+/* ====================================================================== */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #050b10;
+  --ink: #e1e3e5;
+  --light_coral: #f5a39a;
+}
+
+/* Fondo general */
+html[data-theme="dark"] body {
+  background-color: var(--paper) !important;
+  color: var(--ink) !important;
+}
+
+/* Navbar */
+html[data-theme="dark"] .navbar-petcare {
+  background: color-mix(in srgb, #0f172a 80%, transparent);
+  border-bottom-color: #1f2933;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .65);
+}
+html[data-theme="dark"] .navbar-petcare .navbar-brand {
+  color: var(--accent-light);
+}
+html[data-theme="dark"] .navbar-petcare .nav-link {
+  color: #cbd5e1;
+}
+html[data-theme="dark"] .navbar-petcare .nav-link:hover {
+  color: var(--accent-light);
+}
+html[data-theme="dark"] .navbar-petcare .nav-link.active {
+  color: #ffffff !important;
+}
+html[data-theme="dark"] .navbar-petcare .navbar-toggler {
+  border-color: #1f2933;
+}
+
+/* Cards / glass-card */
+html[data-theme="dark"] .glass-card,
+html[data-theme="dark"] .card {
+  background: radial-gradient(circle at top left, #172a3a, #050b10);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .8);
+}
+
+html[data-theme="dark"] .glass-card::before {
+  opacity: .35;
+}
+
+html[data-theme="dark"] .glass-card .card-body {
+  background: #0b1220 !important;
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .card-title {
+  color: var(--ink) !important;
+  border-bottom-color: var(--coral);
+}
+
+/* Labels y campos del formulario */
+html[data-theme="dark"] .form-label {
+  color: var(--accent-light) !important;
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] textarea.form-control {
+  background-color: #111827 !important;
+  color: var(--ink) !important;
+  border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .form-control::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* focus / hover inputs */
+html[data-theme="dark"] input.form-control:focus,
+html[data-theme="dark"] input.form-control:hover,
+html[data-theme="dark"] select.form-select:focus,
+html[data-theme="dark"] select.form-select:hover,
+html[data-theme="dark"] textarea.form-control:focus,
+html[data-theme="dark"] textarea.form-control:hover {
+  border-color: var(--accent);
+  background-color: #111827 !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 0 .18rem rgba(78, 196, 233, .28);
+}
+
+/* Botón limpiar */
+html[data-theme="dark"] .btn-clean {
+  background: #0b1220;
+  color: var(--accent-light);
+  border-color: var(--accent-light);
+  fill: var(--accent-light);
+}
+html[data-theme="dark"] .btn-clean:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #020617;
+}
+
+/* Buscador / botón outline */
+html[data-theme="dark"] .btn.btn-outline {
+  --bs-btn-color: var(--accent-light);
+  --bs-btn-border-color: var(--accent-light);
+  --bs-btn-hover-color: #020617;
+  --bs-btn-hover-bg: var(--accent-light);
+  --bs-btn-hover-border-color: var(--accent-light);
+}
+
+/* Tabla */
+html[data-theme="dark"] .tabla-servicios thead th {
+  background: #020617;
+  border-bottom: 1px solid #111827 !important;
+}
+
+html[data-theme="dark"] .tabla-servicios td {
+  color: var(--ink) !important;
+  border-color: #111827;
+  background-color: #020617;
+}
+
+html[data-theme="dark"] .tabla-servicios tbody tr:hover {
+  background: #020817;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Estado vacío */
+html[data-theme="dark"] .tabla-servicios tbody tr td.text-center.text-muted {
+  color: #9ca3af !important;
+  background-color: #020617;
+}
+
+/* Botones acción */
+html[data-theme="dark"] .btn-edit {
+  background: rgba(78, 196, 233, 0.18);
+  color: var(--accent-light);
+}
+html[data-theme="dark"] .btn-edit:hover {
+  background: var(--accent);
+  color: #020617;
+}
+
+html[data-theme="dark"] .btn-delete {
+  background: rgba(244, 127, 118, 0.18);
+  color: #fca5a5;
+}
+html[data-theme="dark"] .btn-delete:hover {
+  background: var(--coral);
+  color: #ffffff;
+}
+
+/* Logout: igual, solo que el texto se vea bien en fondo oscuro */
+html[data-theme="dark"] .btn-logout {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .8);
+}
+html[data-theme="dark"] .btn-logout .text a {
+  color: #fff;
+}
+

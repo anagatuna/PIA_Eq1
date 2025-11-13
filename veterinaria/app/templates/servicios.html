@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 
     <main class="container-fluid mt-5 mb-5 p-4">
         <div class="row g-4">
-            <!-- Columna izquierda: Formulario crear/editar -->
+            {% if es_admin %}
             <div class="col-12 col-lg-4">
                 <div class="card glass-card">
                     <div class="card-body p-4">
@@ -82,7 +82,6 @@
                                 <button type="button" class="btn-clean" aria-label="Limpiar" id="btn-limpiar">
                                     <div class="svg-wrapper-1">
                                         <div class="svg-wrapper">
-                                            <!-- borrador -->
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22"
                                                 height="22" class="icon">
                                                 <path
@@ -96,14 +95,16 @@
                                 {% endif %}
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
+            {% endif %}
 
-            <!-- Columna derecha: Buscador + Lista -->
-            <div class="col-12 col-lg-8">
+            <div class="col-12 {% if es_admin %}col-lg-8{% else %}col-lg-12{% endif %}">
                 <div class="card glass-card">
                     <div class="card-body p-4">
+
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 class="m-0 card-title mb-3">Lista de Servicios</h4>
                             <form class="d-flex" method="get" action="{% url 'servicios' %}">
@@ -119,39 +120,51 @@
                                     <th>Nombre</th>
                                     <th>Precio</th>
                                     <th>Descripción</th>
+                                    {% if es_admin %}
                                     <th class="text-end">Acciones</th>
+                                    {% endif %}
                                 </tr>
                             </thead>
+
                             <tbody>
                                 {% for servicio in servicios %}
                                 <tr>
                                     <td>{{ servicio.nombre }}</td>
                                     <td>${{ servicio.precio|floatformat:2 }}</td>
                                     <td>{{ servicio.descripcion }}</td>
+
+                                    {% if es_admin %}
                                     <td class="text-end">
                                         <div class="d-inline-flex gap-2">
                                             <a class="btn-accion btn-edit"
                                                 href="{% url 'servicios_edit' servicio.id %}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
+
                                             <a class="btn-accion btn-delete" href="{% url 'eliminar' servicio.id %}"
-                                                onclick="return confirm('¿Eliminar este servicio?')">
+                                                onclick="return confirm('¿Eliminar este servicio?');">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
                                     </td>
+                                    {% endif %}
                                 </tr>
+
                                 {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">Sin información disponible</td>
+                                    <td colspan="{% if es_admin %}4{% else %}3{% endif %}"
+                                        class="text-center text-muted">
+                                        Sin información disponible
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                        </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 
@@ -159,6 +172,7 @@
     {% block content %}{% endblock %}
 
     <script>
+        // limpiar formulario (solo admin)
         document.addEventListener("DOMContentLoaded", function () {
             var btnLimpiar = document.getElementById("btn-limpiar");
             if (btnLimpiar) {
@@ -169,7 +183,28 @@
                 });
             }
         });
-    </script>
+
+        (function () {
+          const checkbox = document.getElementById("theme-switch");
+          if (!checkbox) return;
+        
+          // leer preferencia guardada / sistema
+          const saved = localStorage.getItem("pcare-theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const initial = saved || (prefersDark ? "dark" : "light");
+        
+          document.documentElement.setAttribute("data-theme", initial);
+          checkbox.checked = initial === "dark";
+        
+          checkbox.addEventListener("change", (e) => {
+            const theme = e.target.checked ? "dark" : "light";
+            document.documentElement.setAttribute("data-theme", theme);
+            localStorage.setItem("pcare-theme", theme);
+          });
+        })();
+</script>
+
+
 </body>
 
 </html>

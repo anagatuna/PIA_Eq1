@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-petcare navbar-light bg-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-petcare">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'img/logo.png' %}" alt="logo" class="logo-navbar">
@@ -32,7 +32,7 @@
                 <!-- derecha -->
                 <div class="ms-auto d-flex align-items-center gap-3">
                     <!-- Toggle tema -->
-                    <label for="theme-switch" class="toggle" title="Cambiar tema">
+                    <label class="toggle ms-2">
                         <input type="checkbox" class="input" id="theme-switch" />
                         <div class="icon icon--moon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28"
@@ -123,40 +123,6 @@
                     }
                     return false;
                 });
-            }
-
-            // ===== Tema claro/oscuro (reusa tu lógica y storage)
-            const STORAGE_KEY = "petcare-theme";
-            const switchEl = document.getElementById("theme-switch");
-            const saved = localStorage.getItem(STORAGE_KEY);
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const initialTheme = saved || (prefersDark ? "dark" : "light");
-
-            setTheme(initialTheme);
-            // En tu switch: checked = muestra sol cuando es "light"
-            if (switchEl) switchEl.checked = (initialTheme === "light");
-            updateNavbarClasses(initialTheme);
-
-            switchEl?.addEventListener("change", () => {
-                const newTheme = switchEl.checked ? "light" : "dark";
-                setTheme(newTheme);
-                updateNavbarClasses(newTheme);
-                localStorage.setItem(STORAGE_KEY, newTheme);
-            });
-
-            function setTheme(theme) {
-                document.body.setAttribute("data-bs-theme", theme); // Bootstrap 5.3
-            }
-
-            function updateNavbarClasses(theme) {
-                const nav = document.querySelector("nav.navbar");
-                if (!nav) return;
-                nav.classList.remove("bg-dark", "navbar-dark", "bg-light", "navbar-light");
-                if (theme === "dark") {
-                    nav.classList.add("bg-dark", "navbar-dark");
-                } else {
-                    nav.classList.add("bg-light", "navbar-light");
-                }
             }
         })();
     </script>

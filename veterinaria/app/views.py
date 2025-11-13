@@ -11,6 +11,18 @@ import unicodedata
 from .models import SERVICIO, CITA_VETERINARIA
 
 # Grupos para los roles
+ROLE_ADMIN = "Administrador"
+ROLE_EMP = "Empleado"
+
+def es_admin_user(user):
+    return user.is_authenticated and user.groups.filter(name=ROLE_ADMIN).exists()
+
+def es_empleado_user(user):
+    return user.is_authenticated and user.groups.filter(name=ROLE_EMP).exists()
+
+def es_empleado_o_admin_user(user):
+    return es_admin_user(user) or es_empleado_user(user)
+
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name='Administrador').exists()
 
@@ -73,7 +85,7 @@ def index(request):
 
 # Servicios
 @login_required
-@user_passes_test(is_employee_or_admin)
+@user_passes_test(es_empleado_o_admin_user)
 def servicios_panel(request, id=None):
     es_admin = is_admin(request.user)
     servicio = get_object_or_404(SERVICIO, id=id) if id else None
@@ -145,13 +157,15 @@ def servicios_panel(request, id=None):
     return render(request, "servicios.html", ctx)
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(es_admin_user)
 def eliminar_servicio(request, id):
     servicio = get_object_or_404(SERVICIO, id=id)
     servicio.delete()
     messages.success(request, "Se eliminó correctamente el servicio.") # <-- CORREGIDO
     return redirect('servicios')
 
+@login_required
+@user_passes_test(es_empleado_o_admin_user)
 @login_required
 @user_passes_test(is_employee_or_admin)
 def citas_panel(request, id=None):
@@ -171,12 +185,45 @@ def citas_panel(request, id=None):
         sel_fecha = ""
 
     cita_pasada_bool = bool(cita and timezone.localtime(cita.fecha_cita) <= ahora_local)
-    bloqueada_total = bool(cita and cita.estatus in ["Completada", "Cancelada"])
+    bloqueada_total = bool(cita and cita.estatus in ["Completada", "Cancelada", "No asistió"])
     solo_estatus_fecha = bool(cita and cita_pasada_bool and not bloqueada_total)
     solo_estatus_rol = bool(cita and (not es_admin) and not bloqueada_total)
     solo_estatus = solo_estatus_fecha or solo_estatus_rol
 
+    qs = CITA_VETERINARIA.objects.all().select_related('servicio').order_by('fecha_cita')
+    q = (request.GET.get('q') or '').strip()
+
+    if q:
+        q_normal = strip_accents(q.lower())
+        qs = [
+            c for c in qs
+            if q_normal in strip_accents(c.nombre_dueño.lower())
+            or q_normal in strip_accents(c.nombre_mascota.lower())
+            or q_normal in strip_accents(c.especie.lower())
+            or q_normal in strip_accents(c.estatus.lower())
+            or q_normal in strip_accents(c.servicio.nombre.lower())
+        ]
+
+    ctx = {
+        "citas": qs,
+        "cita": cita,
+        "editando": bool(cita),
+        "servicios": servicios,
+        "slots": slots,
+        "sel_hora": sel_hora,
+        "sel_fecha": sel_fecha,
+        "min_fecha": ahora_local.strftime("%Y-%m-%d"),
+        "cita_pasada": cita_pasada_bool,
+        "bloqueada_total": bloqueada_total,
+        "solo_estatus": solo_estatus,
+        "q": q,
+        "es_admin": es_admin,
+        "form_data": {},
+    }
+
     if request.method == "POST":
+        ctx["form_data"] = request.POST # Rellenamos form_data para repoblar en caso de error
+        
         estatus_post = (request.POST.get("estatus") or "").strip()
 
         if cita and bloqueada_total:
@@ -239,17 +286,17 @@ def citas_panel(request, id=None):
 
         if not especie_select:
             messages.error(request, "Selecciona una especie.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         if especie_select == "Otro" and not especie_otro:
             messages.error(request, "Indica la especie en el campo 'Especifique la especie'.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         especie_final = especie_otro.capitalize() if especie_select == "Otro" else especie_select.capitalize()
 
         if not servicio_id:
             messages.error(request, "Selecciona un servicio.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         ser_obj = get_object_or_404(SERVICIO, pk=servicio_id)
 
@@ -257,14 +304,14 @@ def citas_panel(request, id=None):
             fecha_cita_dt = datetime.strptime(fecha_cita_raw, "%Y-%m-%dT%H:%M")
         except Exception:
             messages.error(request, "Formato de fecha inválido.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         if timezone.is_naive(fecha_cita_dt):
             fecha_cita_dt = timezone.make_aware(fecha_cita_dt, timezone.get_current_timezone())
 
         if not cita and fecha_cita_dt <= ahora_local:
             messages.error(request, "La fecha y hora de la cita debe ser en el futuro.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         if fecha_cita_dt <= ahora_local:
             permitidos = ["Completada", "No asistió"]
@@ -275,7 +322,7 @@ def citas_panel(request, id=None):
 
         if cita and estatus_final not in permitidos:
             messages.error(request, "Estatus no válido para la fecha seleccionada.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         slot_inicio = floor_to_half_hour(fecha_cita_dt)
         slot_fin = slot_inicio + timedelta(minutes=30)
@@ -284,7 +331,7 @@ def citas_panel(request, id=None):
             choque = choque.exclude(pk=cita.pk)
         if choque.exists():
             messages.error(request, "Ya existe una cita para ese servicio en ese bloque de 30 minutos.")
-            return redirect("citas")
+            return render(request, "citas.html", ctx)
 
         if cita:
             cita.nombre_dueño = nombre_dueño
@@ -308,49 +355,18 @@ def citas_panel(request, id=None):
             )
             messages.success(request, "La cita se registró correctamente.")
         return redirect("citas")
-
-    qs = CITA_VETERINARIA.objects.all().select_related('servicio').order_by('fecha_cita')
-    q = (request.GET.get('q') or '').strip()
-
-    if q:
-        q_normal = strip_accents(q.lower())
-        qs = [
-            c for c in qs
-            if q_normal in strip_accents(c.nombre_dueño.lower())
-            or q_normal in strip_accents(c.nombre_mascota.lower())
-            or q_normal in strip_accents(c.especie.lower())
-            or q_normal in strip_accents(c.estatus.lower())
-            or q_normal in strip_accents(c.servicio.nombre.lower())
-        ]
-
-    ctx = {
-        "citas": qs,
-        "cita": cita,
-        "editando": bool(cita),
-        "servicios": servicios,
-        "slots": slots,
-        "sel_hora": sel_hora,
-        "sel_fecha": sel_fecha,
-        "min_fecha": ahora_local.strftime("%Y-%m-%d"),
-        "cita_pasada": cita_pasada_bool,
-        "bloqueada_total": bloqueada_total,
-        "solo_estatus": solo_estatus,
-        "q": q,
-        "es_admin": es_admin,
-        "form_data": request.POST if request.method == "POST" else {},
-    }
     return render(request, "citas.html", ctx)
 
 # Eliminar citas
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(es_admin_user)
 def eliminar_cita(request, id):
     cita = get_object_or_404(CITA_VETERINARIA, id=id)
 
-    if cita.estatus in ["Completada", "Cancelada"]:
-        messages.error(request, "No puedes eliminar una cita Completada o Cancelada.")
+    if cita.estatus in ["Completada", "Cancelada", "No asistió"]:
+        messages.error(request, "No puedes eliminar una cita Completada, Cancelada o No asistió.")
         return redirect('citas')
 
     cita.delete()
-    messages.success(request, "Se eliminó correctamente la cita.") # <-- CORREGIDO
+    messages.success(request, "Se eliminó correctamente la cita.") 
     return redirect('citas')
