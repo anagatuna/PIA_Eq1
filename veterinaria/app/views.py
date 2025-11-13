@@ -236,9 +236,11 @@ def citas_panel(request, id=None):
                 return redirect("citas")
 
             if cita_pasada_bool:
-                permitidos = ["Completada", "No asistió"]
-                msg_regla = "La cita ya pasó: solo puedes marcar Completada o No asistió."
+                # Ya pasó: permitir Completada / No asistió / Cancelada
+                permitidos = ["Completada", "No asistió", "Cancelada"]
+                msg_regla = "La cita ya pasó: solo puedes marcar Completada, No asistió o Cancelada."
             else:
+                # A futuro: solo Pendiente / Cancelada
                 permitidos = ["Pendiente", "Cancelada"]
                 msg_regla = "La cita aún no ocurre: solo puedes alternar entre Pendiente y Cancelada."
 
@@ -252,9 +254,12 @@ def citas_panel(request, id=None):
             return redirect("citas")
 
         if cita and cita_pasada_bool and not bloqueada_total:
-            permitidos = ["Completada", "No asistió"]
+            permitidos = ["Completada", "No asistió", "Cancelada"]
             if estatus_post not in permitidos:
-                messages.error(request, "La cita ya pasó: solo puedes elegir 'Completada' o 'No asistió'.")
+                messages.error(
+                    request,
+                    "La cita ya pasó: solo puedes elegir 'Completada', 'No asistió' o 'Cancelada'."
+                )
                 return redirect("citas")
             cita.estatus = estatus_post
             cita.save()
@@ -314,9 +319,12 @@ def citas_panel(request, id=None):
             return render(request, "citas.html", ctx)
 
         if fecha_cita_dt <= ahora_local:
-            permitidos = ["Completada", "No asistió"]
+            # Si estás guardando una cita en pasado, debe quedar en uno de estos estatus cerrados
+            permitidos = ["Completada", "No asistió", "Cancelada"]
         else:
+            # Si la cita es a futuro, solo tiene sentido Pendiente o Cancelada
             permitidos = ["Pendiente", "Cancelada"]
+
 
         estatus_final = "Pendiente" if not cita else estatus_post
 
