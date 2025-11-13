@@ -110,7 +110,7 @@ def servicios_panel(request, id=None):
         "servicios": servicios, 
         "servicio": servicio, 
         "editando": bool(servicio),
-        "form_data": request.POST if request.method == "POST" else None # Para que no se borre el formulario en caso de error
+        "form_data": request.POST if request.method == "POST" else {} # Para que no se borre el formulario en caso de error
         }
     return render(request, "servicios.html", ctx)
 
