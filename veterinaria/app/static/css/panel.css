@@ -530,6 +530,18 @@ a.btn-clean {
   text-decoration: none;
 }
 
+.btn-view {
+  background: rgba(100, 149, 237, 0.16);
+  color: #1f4fa0;
+}
+
+.btn-view:hover {
+  background: #1f4fa0;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(31, 79, 160, 0.45);
+  transform: scale(1.06);
+}
+
 /* Buscador */
 .card .d-flex .form-control[type="search"] {
   border-radius: 999px;

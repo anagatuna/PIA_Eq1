@@ -12,14 +12,20 @@
 <body>
     {% include 'navbar-panel.html' %}
 
-    <main class="container-fluid mt-5 mb-5 p-3">
+    <main class="container-fluid mt-5 mb-5 p-5">
         <div class="row g-4">
             <!-- Columna izquierda: Formulario crear/editar -->
             <div class="col-12 col-lg-4">
                 <div class="card glass-card">
                     <div class="card-body">
                         <h5 class="card-title mb-4">
-                            {% if editando %}Editar cita{% else %}Crear cita{% endif %}
+                            {% if cita and bloqueada_total %}
+                                Ver cita
+                            {% elif editando %}
+                                Editar cita
+                            {% else %}
+                                Crear cita
+                            {% endif %}
                         </h5>
 
                         <form method="post" autocomplete="off"
@@ -44,28 +50,22 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Especie</label>
-                                <select name="especie_select" id="especie_select" class="form-select" required {% if
-                                    bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                <select name="especie_select" id="especie_select" class="form-select" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                                     <option value="">Seleccione una especie</option>
 
-                                    <option value="Perro" {% if form_data.especie_select=="Perro" %} selected {% elif
-                                        not form_data.especie_select and cita.especie=="Perro" %} selected {% endif %}>
+                                    <option value="Perro" {% if form_data.especie_select == "Perro" %} selected {% elif not form_data.especie_select and cita.especie == "Perro" %} selected {% endif %}>
                                         Perro
                                     </option>
 
-                                    <option value="Gato" {% if form_data.especie_select=="Gato" %} selected {% elif not
-                                        form_data.especie_select and cita.especie=="Gato" %} selected {% endif %}>
+                                    <option value="Gato" {% if form_data.especie_select == "Gato" %} selected {% elif not form_data.especie_select and cita.especie == "Gato" %} selected {% endif %}>
                                         Gato
                                     </option>
 
-                                    <option value="Ave" {% if form_data.especie_select=="Ave" %} selected {% elif not
-                                        form_data.especie_select and cita.especie=="Ave" %} selected {% endif %}>
+                                    <option value="Ave" {% if form_data.especie_select == "Ave" %} selected {% elif not form_data.especie_select and cita.especie == "Ave" %} selected {% endif %}>
                                         Ave
                                     </option>
 
-                                    <option value="Otro" {% if form_data.especie_select=="Otro" %} selected {% elif not
-                                        form_data.especie_select and cita.especie and cita.especie not
-                                        in "Perro,Gato,Ave" %} selected {% endif %}>
+                                    <option value="Otro" {% if form_data.especie_select == "Otro" %} selected {% elif not form_data.especie_select and cita.especie and cita.especie not in "Perro,Gato,Ave" %} selected {% endif %}>
                                         Otro
                                     </option>
                                 </select>
@@ -82,13 +82,12 @@
                             <div class="mb-3">
                                 <label for="fecha_cita" class="form-label">Fecha Cita</label>
                                 <div class="d-flex gap-2">
-                                    <input type="date" class="form-control" id="fecha_cita" name="fecha_cita"
-                                        min="{{ min_fecha }}" value="{{ sel_fecha }}" required {% if bloqueada_total or
-                                        solo_estatus %}disabled{% endif %}>
-                                    <select class="form-select" id="hora_cita" name="hora_cita" required {% if
-                                        bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                    <input type="date" class="form-control" id="fecha_cita" name="fecha_cita" min="{{ min_fecha }}" value="{% if form_data.fecha_cita %}{{ form_data.fecha_cita }}{% elif cita %}{{ sel_fecha }}{% else %}{% endif %}" required
+                                            {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                    <select class="form-select" id="hora_cita" name="hora_cita" required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
+                                        <option value="" {% if not form_data.hora_cita and not sel_hora %}selected{% endif %}disabled hidden>Selecciona una hora</option>
                                         {% for h in slots %}
-                                        <option value="{{ h }}" {% if sel_hora==h %}selected{% endif %}>{{ h }}</option>
+                                            <option value="{{ h }}" {% if form_data.hora_cita == h %}selected{% elif not form_data.hora_cita and sel_hora == h %}selected{% endif %}>{{ h }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -97,10 +96,9 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Motivo</label>
-                                <textarea name="motivo" class="form-control" maxlength="255" required {% if
-                                    bloqueada_total or solo_estatus %}disabled{% endif %}>
-    {% if form_data.motivo %}{{ form_data.motivo }}{% else %}{{ cita.motivo|default_if_none:'' }}{% endif %}
-</textarea>
+                                <textarea name="motivo" class="form-control" maxlength="255" 
+                                    required {% if bloqueada_total or solo_estatus %}disabled{% endif %}>{% if form_data.motivo %}{{ form_data.motivo }}{% else %}{{ cita.motivo|default_if_none:'' }}{% endif %}
+                                </textarea>
                             </div>
 
                             <!-- Estatus -->
@@ -108,46 +106,42 @@
                                 <label class="form-label">Estatus</label>
 
                                 {% if not editando %}
-                                <input type="hidden" name="estatus" value="Pendiente">
-                                <input type="text" class="form-control" value="Pendiente" disabled>
-                                <small class="text-muted">Se asigna automáticamente al crear.</small>
+                                    <input type="hidden" name="estatus" value="Pendiente">
+                                    <input type="text" class="form-control" value="Pendiente" disabled>
+                                    <small class="text-muted">Se asigna automáticamente al crear.</small>
 
                                 {% elif bloqueada_total %}
-                                <input type="text" class="form-control" value="Completada" disabled>
-                                <small class="text-muted">Esta cita está completada y no puede editarse.</small>
-
+                                    <input type="text" class="form-control" value="{{ cita.estatus }}" disabled>
+                                    <small class="text-muted">
+                                        Esta cita está {{ cita.estatus|lower }} y no puede editarse.
+                                    </small>
+                                
                                 {% elif solo_estatus %}
-                                <select name="estatus" class="form-select" required>
-                                    <option value="Completada" {% if cita.estatus=="Completada" %}selected{% endif %}>
-                                        Completada</option>
-                                    <option value="No asistió" {% if cita.estatus=="No asistió" %}selected{% endif %}>No
-                                        asistió</option>
-                                </select>
-                                <small class="text-muted">La cita ya pasó: solo puedes marcar Completada o No
-                                    asistió.</small>
-
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Completada" {% if cita.estatus == "Completada" %}selected{% endif %}>Completada</option>
+                                        <option value="No asistió" {% if cita.estatus == "No asistió" %}selected{% endif %}>No asistió</option>
+                                    </select>
+                                    <small class="text-muted">
+                                        La cita ya pasó: solo puedes marcar Completada o No asistió.
+                                    </small>
+                                
                                 {% else %}
-                                <select name="estatus" class="form-select" required>
-                                    <option value="Pendiente" {% if cita.estatus=="Pendiente" %}selected{% endif %}>
-                                        Pendiente</option>
-                                    <option value="Cancelada" {% if cita.estatus=="Cancelada" %}selected{% endif %}>
-                                        Cancelada</option>
-                                </select>
-                                <small class="text-muted">Antes de la fecha: solo puedes alternar entre Pendiente y
-                                    Cancelada.</small>
+                                    <select name="estatus" class="form-select" required>
+                                        <option value="Pendiente" {% if cita.estatus == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                                        <option value="Cancelada" {% if cita.estatus == "Cancelada" %}selected{% endif %}>Cancelada</option>
+                                    </select>
+                                    <small class="text-muted">
+                                        Antes de la fecha: solo puedes alternar entre Pendiente y Cancelada.
+                                    </small>
                                 {% endif %}
                             </div>
 
                             <div class="mb-3">
                                 <label for="servicio" class="form-label">Servicio</label>
-                                <select name="servicio" id="servicio" class="form-select" {% if bloqueada_total or
-                                    solo_estatus %}disabled{% endif %}>
+                                <select name="servicio" id="servicio" class="form-select" {% if bloqueada_total or solo_estatus %}disabled{% endif %}>
                                     <option value="">Selecciona un servicio</option>
                                     {% for servicio in servicios %}
-                                    <option value="{{ servicio.id }}" {% if
-                                        form_data.servicio==servicio.id|stringformat:"s" %} selected {% elif not
-                                        form_data.servicio and cita and cita.servicio_id==servicio.id %} selected {%
-                                        endif %}>
+                                    <option value="{{ servicio.id }}" {% if form_data.servicio == servicio.id|stringformat:"s" %} selected {% elif not form_data.servicio and cita and cita.servicio_id == servicio.id %} selected {% endif %}>
                                         {{ servicio.nombre }}
                                     </option>
                                     {% endfor %}
@@ -155,8 +149,7 @@
                             </div>
 
                             <div class="d-flex gap-2 justify-content-center mt-4">
-                                <button type="submit" class="btn-save" {% if bloqueada_total or solo_estatus
-                                    %}disabled{% endif %}>
+                                <button type="submit" class="btn-save" {% if bloqueada_total %}disabled{% endif %}>
                                     <div class="svg-wrapper-1">
                                         <div class="svg-wrapper">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -247,38 +240,37 @@
                                         <td class="text-end">
                                             <div class="d-inline-flex gap-2">
                                                 {% if es_admin %}
-                                                {# ADMIN #}
-                                                {% if cita.estatus == 'Pendiente' %}
-                                                <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}"
-                                                    title="Editar cita">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
+                                                    {# ADMIN #}
+                                                    {% if cita.estatus == 'Pendiente' %}
+                                                        <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}" title="Editar cita">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="btn-accion btn-view" href="{% url 'citas_edit' cita.id %}" title="Ver cita">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    
+                                                    {% if cita.estatus == 'Pendiente' %}
+                                                        <a class="btn-accion btn-delete"
+                                                           href="{% url 'citas_eliminar' cita.id %}"
+                                                           onclick="return confirm('¿Eliminar esta cita?')">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                    {% endif %}
                                                 {% else %}
-                                                <button class="btn btn-warning btn-sm" disabled title="Cita cerrada">
-                                                    <i class="bi bi-lock"></i>
-                                                </button>
+                                                    {# EMPLEADO #}
+                                                    {% if cita.estatus == 'Completada' or cita.estatus == 'Cancelada' %}
+                                                        <a class="btn-accion btn-view" href="{% url 'citas_edit' cita.id %}" title="Ver cita">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}" title="Cambiar estatus">
+                                                            <i class="bi bi-check2-square"></i>
+                                                        </a>
+                                                    {% endif %}
                                                 {% endif %}
 
-                                                {% if cita.estatus == 'Pendiente' %}
-                                                <a class="btn-accion btn-delete"
-                                                    href="{% url 'citas_eliminar' cita.id %}"
-                                                    onclick="return confirm('¿Eliminar esta cita?')">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                                {% endif %}
-                                                {% else %}
-                                                {# EMPLEADO: solo puede cambiar estatus mientras no esté cerrada #}
-                                                {% if cita.estatus not in 'Completada,Cancelada' %}
-                                                <a class="btn-accion btn-edit" href="{% url 'citas_edit' cita.id %}"
-                                                    title="Cambiar estatus">
-                                                    <i class="bi bi-check2-square"></i>
-                                                </a>
-                                                {% else %}
-                                                <button class="btn btn-warning btn-sm" disabled title="Cita cerrada">
-                                                    <i class="bi bi-lock"></i>
-                                                </button>
-                                                {% endif %}
-                                                {% endif %}
                                             </div>
                                         </td>
                                     </tr>

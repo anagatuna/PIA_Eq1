@@ -1219,9 +1219,9 @@ textarea.textarea:-webkit-autofill {
 
 /* Footer */
 .site-footer {
-  color: #7c8a96;
-  border-top: 1px solid #eef1f4;
-  background: linear-gradient(to bottom, #fff, #fbfcfd);
+  color: var(--primary);
+
+  background: linear-gradient(to bottom, #ffffff,#a6f2ff);
 }
 
 /* Evita que se salga el texto del correo */
@@ -1373,4 +1373,371 @@ summary::marker {
   100% {
     transform: scale(1);
   }
+}
+
+/* ============================================= */
+/* ===== 🌙 MODO OSCURO (COMPLETO) 🌙 ===== */
+/* ============================================= */
+
+/* --- 1. Definición de Colores --- */
+[data-theme="dark"] {
+  --dark-bg: #0F2027;        /* Fondo principal (azul muy oscuro) */
+  --dark-surface: #1d2b34;  /* Fondo de tarjetas */
+  --dark-surface-light: #2c3e4a; /* Hover/activo en superficies */
+  --dark-text: #e1e3e5;      /* Texto principal */
+  --dark-text-muted: #98a9b4; /* Texto secundario */
+  --dark-border: #3a4f5c;     /* Bordes */
+  --dark-table-header: #142a35; /* Encabezado de tabla oscuro */
+}
+
+/* --- 2. Estilos Base --- */
+[data-theme="dark"] body {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] html {
+  scrollbar-color: var(--accent) var(--dark-bg);
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 10px;
+  border: 3px solid var(--dark-bg);
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-light);
+}
+
+/* --- 3. Títulos de Sección --- */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] #nosotros,
+[data-theme="dark"] #servicios,
+[data-theme="dark"] #cotizacion,
+[data-theme="dark"] #testimonios,
+[data-theme="dark"] #preguntas_titulo,
+[data-theme="dark"] #contacto {
+  color: var(--dark-text);
+}
+
+/* --- 4. Texto General y Navbar --- */
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .testimonio p {
+  color: var(--dark-text-muted) !important;
+}
+
+[data-theme="dark"] .navbar-petcare {
+  background: color-mix(in srgb, var(--dark-surface) 90%, transparent);
+  border-bottom-color: var(--dark-border);
+}
+
+[data-theme="dark"] .navbar-petcare .nav-link {
+  color: var(--dark-text-muted);
+}
+
+[data-theme="dark"] .navbar-petcare .nav-link:hover {
+  color: var(--accent-light);
+}
+
+[data-theme="dark"] .navbar-petcare .nav-link.active {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .navbar-petcare .navbar-toggler {
+  border-color: var(--dark-border);
+}
+
+/* --- 5. Sección Nosotros --- */
+[data-theme="dark"] .avatar-circle::before {
+  background: radial-gradient(120% 120% at 20% 100%,
+      color-mix(in srgb, var(--accent-light) 10%, var(--dark-surface)),
+      transparent 70%),
+    var(--dark-surface);
+}
+
+[data-theme="dark"] .card-nosotros {
+  background:
+    radial-gradient(178.94% 106.41% at 26.42% 106.41%,
+      color-mix(in srgb, var(--accent) 25%, transparent) 0%,
+      rgba(255, 255, 255, 0) 72%),
+    var(--dark-surface);
+  color: var(--dark-text);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* --- 6. Sección Servicios (CORREGIDO) --- */
+[data-theme="dark"] .nav-servicios .list-group-item {
+  background: var(--dark-surface);
+  color: var(--dark-text);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  border: 1px solid var(--dark-border);
+  border-left: 4px solid transparent; /* Ahora el borde izquierdo es transparente por defecto */
+  border-radius: .5rem; /* Aseguramos un border-radius para las esquinas */
+  margin-bottom: .5rem; /* Espacio entre items */
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+[data-theme="dark"] .nav-servicios .list-group-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .2);
+  background-color: var(--dark-surface-light);
+  border-color: var(--dark-border); /* Mantenemos borde oscuro en hover */
+  border-left-color: var(--dark-border); /* Borde izq oscuro en hover */
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .nav-servicios .list-group-item.active {
+  background: var(--dark-surface-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  border-color: var(--dark-border);
+  border-left-color: var(--accent); /* <-- AHORA ESTE BORDE RESPETARÁ EL RADIUS */
+  color: var(--accent-light);
+  transform: none; /* Asegura que no se mueva a la derecha si está activo */
+}
+
+[data-theme="dark"] .detalle-servicio {
+  background-color: var(--dark-surface);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--dark-border);
+}
+
+/* El icono circular (se mantiene igual) */
+[data-theme="dark"] .detalle-servicio .icono-serv-md {
+  background: color-mix(in srgb, var(--accent) 30%, var(--dark-surface-light));
+  color: var(--accent-light);
+  border: 1px solid var(--accent);
+}
+
+[data-theme="dark"] .text-vet {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .precio-xl {
+  color: var(--accent-light);
+}
+/* --- 7. Carrusel --- */
+[data-theme="dark"] .carousel-caption {
+  color: #fff; /* Asegura que el texto sea legible */
+}
+
+/* --- 8. Cotización (CORREGIDO) --- */
+[data-theme="dark"] .coti-input,
+[data-theme="dark"] .coti-toolbar .form-control {
+  background-color: var(--dark-surface-light);
+  color: var(--dark-text);
+  border-color: var(--dark-border) !important;
+}
+
+/* =================================================================== */
+/* ===== ⬇️ NUEVA REGLA PARA PLACEHOLDER ⬇️ ===== */
+/* =================================================================== */
+[data-theme="dark"] .coti-toolbar .form-control::placeholder {
+  color: var(--dark-text-muted);
+  opacity: 0.8;
+}
+[data-theme="dark"] .coti-toolbar .form-control::-moz-placeholder {
+  color: var(--dark-text-muted);
+  opacity: 0.8;
+}
+[data-theme="dark"] .coti-toolbar .form-control::-ms-input-placeholder {
+  color: var(--dark-text-muted);
+  opacity: 0.8;
+}
+[data-theme="dark"] .coti-toolbar .form-control::-webkit-input-placeholder {
+  color: var(--dark-text-muted);
+  opacity: 0.8;
+}
+/* =================================================================== */
+
+[data-theme="dark"] .coti-table-wrap {
+  background: var(--dark-surface);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 30px 30px -7px;
+  border: 1px solid var(--dark-border);
+}
+
+[data-theme="dark"] .coti-table thead {
+  background-color: var(--dark-table-header);
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .coti-table thead th {
+  border-bottom: 1px solid var(--dark-border);
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .coti-table tbody td {
+  color: var(--dark-text);
+  border-color: var(--dark-border);
+  background-color: var(--dark-surface);
+}
+
+[data-theme="dark"] .coti-table tbody tr:nth-of-type(odd) td {
+  background-color: color-mix(in srgb, var(--dark-surface) 90%, var(--dark-bg));
+}
+
+[data-theme="dark"] .coti-table tbody tr:hover td {
+  background: var(--dark-surface-light);
+}
+
+[data-theme="dark"] .coti-table select.form-select,
+[data-theme="dark"] .coti-table input[type="number"].form-control {
+  background-color: var(--dark-text);
+  color: var(--dark-bg);
+  border-color: var(--dark-border);
+}
+
+/* =================================================================== */
+/* ===== ⬇️ REGLAS TFOOT CORREGIDAS PARA EL TOTAL ⬇️ ===== */
+/* =================================================================== */
+
+/* Fila Descuento */
+[data-theme="dark"] .coti-table tfoot .coti-desc-row td {
+  color: var(--dark-text);
+  border-color: var(--dark-border);
+  background-color: var(--dark-surface-light);
+}
+
+/* Fila Total - El TR mantiene su gradiente original (no necesita override) */
+
+/* Fila Total - Sus TD internos deben ser transparentes */
+[data-theme="dark"] .coti-table tfoot .coti-total-row td {
+  color: #fff; /* Texto blanco */
+  background-color: transparent; /* <-- LA CLAVE */
+  border-color: var(--primary); /* Borde que combine (opcional) */
+}
+
+/* --- 9. Testimonios --- */
+[data-theme="dark"] .testimonios {
+  background: var(--dark-bg); /* Quita el fondo azul claro */
+}
+
+/* --- 10. Preguntas Frecuentes (FAQ) --- */
+[data-theme="dark"] .faq-card {
+  border-color: var(--accent);
+  background-color: var(--dark-surface);
+}
+
+[data-theme="dark"] .faq-badge {
+  background: var(--dark-surface-light);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .faq-card:hover .faq-badge {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] summary,
+[data-theme="dark"] .faq2__summary {
+  color: var(--accent-light);
+}
+
+/* --- 11. Formulario (Postal) --- */
+[data-theme="dark"] .postal-container {
+  background-color: #1c2a2f; /* Fondo oscuro para la postal */
+}
+
+[data-theme="dark"] .postal-imagen-fondo {
+  opacity: 0.5; /* Reduce la opacidad de la imagen de postal */
+  filter: grayscale(0.2);
+}
+
+[data-theme="dark"] .formulario-card {
+  background: var(--dark-surface);
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .formulario-card .label {
+  color: var(--accent-light);
+}
+
+[data-theme="dark"] .formulario-card input.input,
+[data-theme="dark"] .formulario-card .input,
+[data-theme="dark"] .formulario-card textarea.textarea,
+[data-theme="dark"] .formulario-card #campoMensaje.form-control {
+  background: var(--dark-surface-light) !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+
+[data-theme="dark"] .formulario-card input.input::placeholder,
+[data-theme="dark"] .formulario-card textarea::placeholder {
+  color: var(--dark-text-muted);
+}
+
+/* --- 12. Contacto (Mapa y tarjetas - CORREGIDO) --- */
+[data-theme="dark"] .contact-map {
+  filter: invert(1) grayscale(0.7) brightness(0.8) contrast(1.2); /* Invertir, más gris y menos brillo */
+  transition: filter .4s ease;
+  border-radius: .5rem; /* Asegurar bordes redondeados */
+  overflow: hidden; /* Ocultar desbordamiento si el mapa no encaja */
+}
+
+[data-theme="dark"] .contact-map:hover {
+  filter: invert(1) grayscale(0.3) brightness(1.0); /* Menos gris en hover */
+}
+
+[data-theme="dark"] .contact-card-item {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+}
+
+[data-theme="dark"] .contact-card-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .contact-icon {
+  background: color-mix(in srgb, var(--accent) 30%, var(--dark-surface-light));
+  color: var(--accent-light);
+}
+
+[data-theme="dark"] .contact-card-item h6 {
+  color: var(--accent-light);
+}
+
+[data-theme="dark"] .contact-link {
+  color: var(--dark-text);
+  border-bottom-color: var(--dark-text-muted);
+}
+
+[data-theme="dark"] .contact-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* --- 13. Footer (CORREGIDO) --- */
+[data-theme="dark"] .site-footer {
+  background: linear-gradient(to bottom, var(--dark-bg), #0f1c22);
+  color: var(--dark-text-muted); /* Texto del footer más sutil */
+}
+
+[data-theme="dark"] .site-footer a {
+  color: var(--accent-light); /* Enlaces del footer */
+}
+
+[data-theme="dark"] .site-footer a:hover {
+  color: var(--accent);
+}
+
+/* --- 14. Botones de Zoom --- */
+[data-theme="dark"] .zoom-btn {
+  background-color: var(--accent);
+  color: #0F2027;
+}
+
+[data-theme="dark"] .zoom-btn:hover {
+  background-color: var(--accent-light);
 }
