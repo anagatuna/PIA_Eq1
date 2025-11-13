@@ -75,23 +75,43 @@ def servicios_panel(request, id=None):
         precio = request.POST.get("precio", "").strip()
         descripcion = request.POST.get("descripcion", "").strip().capitalize()
 
+        # No aceptar duplicados nombre o descripcion
+        duplicate_query = Q(nombre=nombre) | Q(descripcion=descripcion)
+
         if servicio:  # editar
-            servicio.nombre = nombre
-            servicio.precio = precio or 0
-            servicio.descripcion = descripcion
-            servicio.save()
-            messages.success(request, "Servicio actualizado correctamente.")
+            # Buscamos si existe otro servicio (excluyendo el actual) que coincida
+            if SERVICIO.objects.filter(duplicate_query).exclude(id=servicio.id).exists():
+                messages.error(request, "Ya existe OTRO servicio con ese nombre o descripción.")
+            else:
+                servicio.nombre = nombre
+                servicio.precio = precio or 0
+                servicio.descripcion = descripcion
+                servicio.save()
+                messages.success(request, "Servicio actualizado correctamente.")
+                return redirect("servicios") # <-- Se mueve aquí
         else:
-            SERVICIO.objects.create(
-                nombre=nombre,
-                precio=precio or 0,
-                descripcion=descripcion
-            )
-            messages.success(request, "Servicio creado correctamente.")
-        return redirect("servicios")
+            # Buscamos si existe otro servicio (excluyendo el actual) que coincida
+            if SERVICIO.objects.filter(duplicate_query).exists():
+                messages.error(request, "Ya existe un servicio con ese nombre o descripción.")
+            else:
+                SERVICIO.objects.create(
+                    nombre=nombre,
+                    precio=precio or 0,
+                    descripcion=descripcion
+                )
+                messages.success(request, "Servicio creado correctamente.")
+                return redirect("servicios") # <-- Se mueve aquí
+
+    # Si el método es GET, o si el POST falló la validación (duplicado),
+    # el código continúa aquí y renderiza la plantilla con los mensajes.
 
     servicios = SERVICIO.objects.all().order_by("nombre")
-    ctx = {"servicios": servicios, "servicio": servicio, "editando": bool(servicio)}
+    ctx = {
+        "servicios": servicios, 
+        "servicio": servicio, 
+        "editando": bool(servicio),
+        "form_data": request.POST if request.method == "POST" else None # Para que no se borre el formulario en caso de error
+        }
     return render(request, "servicios.html", ctx)
 
 @login_required
