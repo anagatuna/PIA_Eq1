@@ -365,6 +365,81 @@ html {
   transform: translateY(-4px);
 }
 
+/* Servicios */
+.card-title {
+  color: #404040 !important;
+  font-weight: bold;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #F47F76;
+}
+
+/* Card con borde animado */
+.glass-card {
+  position: relative;
+  border-radius: 20px !important;
+  background: transparent;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  transition: transform .6s cubic-bezier(0.15, 0.83, 0.66, 1),
+    box-shadow .3s ease;
+}
+
+/* Borde animado tipo rayo corto y continuo */
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,        /* tramo sin color */
+    var(--accent) 310deg,      /* empieza el rayo */
+    var(--accent-light) 325deg,
+    var(--primary) 340deg,     /* termina el rayo */
+    transparent 360deg
+  );
+
+  animation: spin-border 4s linear infinite;
+}
+
+/* Grosor del borde interno */
+.glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 5px;   /* ⭐ grosor ideal para no romper la esquina */
+  border-radius: inherit;
+  background: #ffffff;
+}
+
+/* Contenido por encima de todo */
+.glass-card .card-body {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+/* Hover igual que antes */
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 24px 24px 70px #b0b0b0,
+    -20px -20px 60px #ffffff;
+}
+
+/* Animación: el gradiente gira y parece que la línea recorre la orilla */
+@keyframes spin-border {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* ===== Form lado izquierdo ===== */
 .form-label {
   font-weight: 600;
@@ -447,7 +522,7 @@ textarea.form-control:hover {
   display: inline-block;
   margin-left: 0.4em;
   vertical-align: middle;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .btn-save svg,
