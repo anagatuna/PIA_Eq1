@@ -386,34 +386,37 @@ html {
     box-shadow .3s ease;
 }
 
-/* Borde animado tipo rayo corto y continuo */
+/* Borde animado más visible */
 .glass-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
 
+  /* Arco de ~80°: se nota bien en las esquinas */
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 300deg,        /* tramo sin color */
-    var(--accent) 310deg,      /* empieza el rayo */
-    var(--accent-light) 325deg,
-    var(--primary) 340deg,     /* termina el rayo */
-    transparent 360deg
+    transparent 280deg,          /* sin color */
+    var(--accent) 295deg,        /* empieza el rayo */
+    var(--accent-light) 315deg,
+    var(--primary) 335deg,       /* tramo más intenso */
+    var(--primary) 350deg,
+    transparent 360deg           /* vuelve a transparente */
   );
 
-  animation: spin-border 4s linear infinite;
+  animation: spin-border 6s linear infinite; /* un poco más lento */
 }
 
-/* Grosor del borde interno */
+/* Grosor del borde */
 .glass-card::after {
   content: "";
   position: absolute;
-  inset: 5px;   /* ⭐ grosor ideal para no romper la esquina */
+  inset: 4px;                   
   border-radius: inherit;
   background: #ffffff;
 }
+
 
 /* Contenido por encima de todo */
 .glass-card .card-body {
