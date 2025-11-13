@@ -5,6 +5,20 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scrollbar-color: #056272 #FFFDFA;
+  scrollbar-width: auto;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #FFFDFA;
+  border-radius: 10px;
+}
+
 /* Reseteo básico */
 body {
   margin: 0;
@@ -407,18 +421,32 @@ html {
 }
 
 /* Responsive: la lista se vuelve carrusel horizontal */
-@media (max-width: 992px) {
-  .nav-servicios {
-    display: flex;
-    overflow-x: auto;
-    gap: .6rem;
-    padding-bottom: .25rem;
-  }
+@media (max-width: 767px) {
 
-  .nav-servicios .list-group-item {
-    flex: 0 0 auto;
-    min-width: 260px;
-  }
+    .nav-servicios {
+        display: flex;         
+        flex-wrap: nowrap;    
+        overflow-x: auto; 
+        white-space: nowrap;
+        --focal-y: 58%;
+        padding-bottom: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .nav-servicios .list-group-item {
+        width: flex;
+        flex-shrink: 0;
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+
+    .nav-servicios {
+        scrollbar-width: none;
+    }
+    
+    .nav-servicios::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* Botones fuera de la card */
@@ -480,6 +508,7 @@ html {
   color: #404040;
   font-weight: bold;
   display: inline-block;
+  margin-top: 3.5rem;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 3px solid #F47F76;
@@ -637,6 +666,7 @@ html {
 .testimonios {
   width: 100%;
   margin: 0;
+  padding: 4.5rem;
   padding-inline: 0;
   overflow-x: hidden;
 }
@@ -836,7 +866,8 @@ html {
   font-weight: bold;
   display: inline-block;
   padding-bottom: .5rem;
-  margin-bottom: 1.5rem;
+  gap: 3rem;
+  margin-bottom: 0.5rem;
   border-bottom: 4px solid #F47F76;
 }
 
@@ -972,7 +1003,7 @@ textarea.textarea:-webkit-autofill {
   top: 0;
   left: 0;
   object-fit: contain;
-  border-radius: 15px;
+  border-radius: 30px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   user-select: none;
   pointer-events: none;
@@ -981,6 +1012,52 @@ textarea.textarea:-webkit-autofill {
 #campoMensaje {
   resize: vertical;
   max-height: 400px;
+}
+
+@media (max-width: 767px) {
+
+    /* 1. Título "CONTACTANOS" */
+    /* Hacemos el padding más pequeño en móvil */
+    #contacto {
+        padding-top: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* 2. El Contenedor de la Postal */
+    .postal-container {
+        /* - Quitamos el alto mínimo y el aspect-ratio.
+         - Dejamos que el alto se ajuste al formulario.
+         - Hacemos el padding más pequeño.
+        */
+        min-height: auto;
+        height: auto;
+        aspect-ratio: unset;
+        padding: 15px;
+        
+        /* Hacemos la imagen de fondo más simple */
+        background-size: cover; 
+    }
+
+    /* 3. La Tarjeta del Formulario */
+    .formulario-card {
+        /* - ¡LA CLAVE! Le decimos que ocupe el 100%
+           del contenedor (ya no el 70%).
+         - Quitamos el margen '50px' de arriba.
+         - Hacemos el padding interno más pequeño.
+        */
+        width: 100%;
+        margin: 0;
+        padding: 1.5rem;
+    }
+
+    /* 4. El Textarea */
+    /* Hacemos que la altura mínima sea menor en móvil */
+    .formulario-card textarea.textarea,
+    .formulario-card #campoMensaje.form-control {
+        min-height: 150px;
+    }
 }
 
 /* ===== Botón avión (misma paleta, solo animación) ===== */
@@ -1170,7 +1247,7 @@ textarea.textarea:-webkit-autofill {
 }
 
 .faq-card {
-  transition: .2s ease;
+  transition: .6s ease-in-out;
   border: 2px solid #056272; 
   border-radius:12px;
 
