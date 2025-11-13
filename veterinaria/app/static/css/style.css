@@ -676,27 +676,60 @@ html {
   display: inline-block;
   padding-bottom: 0.4rem;
 }
-/* ===== Fila (CORREGIDA) ===== */
+/* ===== Fila tipo cinta (AHORA SÍ, HORIZONTAL) ===== */
+/* ===== Fila tipo cinta (CENTRADAS) ===== */
 .testimonios-row {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: nowrap;          
+    
+    /* ✅ CAMBIO: Centra las tarjetas en la pantalla */
     justify-content: center;
-    align-items: stretch; 
-    gap: 2.5rem; /* Antes era 4rem */
-    row-gap: 3.5rem; /* Antes era 5rem */
+    
+    overflow-x: auto;          /* Habilita el scroll si no caben */
+    align-items: stretch;
+    gap: 2.5rem; 
+
+    /* Ajusta el padding para que se vea bien al scrollear */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    
+    /* Un poco de padding a los lados para que no pegue */
+    padding-inline: 2.5rem; 
 }
 
-/* ===== Cada testimonio (CORREGIDO) ===== */
+/* ===== Cada testimonio (TAMAÑO FIJO) ===== */
 .testimonio {
-    /* MÁS PEQUEÑO: Hacemos la tarjeta un poco más angosta */
-    max-width: 270px; /* Antes era 280px */
-    flex: 1 1 250px; /* Antes era 1 1 260px */
+    /* Un ancho fijo para que el scroll se vea ordenado */
+    width: 250px;
+    flex: 0 0 250px; /* No crecer, No encoger, base de 250px */
     
     text-align: center;
-    margin-inline: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* ===== Responsivo ===== */
+/* En tablets y móviles (<= 991.98px) SÍ queremos que se apilen */
+@media (max-width: 991.98px) {
+    .testimonios-row {
+        /* Vuelve a apilarse */
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-x: hidden; /* Oculta scroll */
+        padding: 0;          /* Resetea padding */
+        
+        /* Mantiene el gap más pequeño */
+        gap: 2.5rem;
+        row-gap: 3.5rem;
+    }
+    
+    .testimonio {
+        /* Vuelve a ser flexible */
+        width: auto;
+        flex: 1 1 260px;
+        max-width: 280px;
+    }
 }
 
 /* ===== Círculo (CORREGIDO) ===== */
@@ -785,15 +818,6 @@ html {
   50% {
     filter: drop-shadow(0 0 12px rgba(255, 158, 11, .8));
   }
-}
-
-/* ===== Responsivo (Simple) ===== */
-@media (max-width: 768px) {
-    .testimonios-row {
-        gap: 2.5rem;
-        row-gap: 3.5rem;
-    }
-    /* No se necesita más, el flex-wrap hace el trabajo */
 }
 
 /* FAQ */

@@ -463,11 +463,20 @@ def citas_panel(request, id=None):
         except Exception:
             pass
     if q:
-        qs = qs.filter(
-            Q(nombre_dueño__icontains=q) |
-            Q(nombre_mascota__icontains=q) |
-            Q(motivo__icontains=q)
-        )
+        q_normal = strip_accents(q.lower())
+        citas_filtradas = []
+
+        for c in qs:
+            dueno_norm   = strip_accents(c.nombre_dueño.lower())
+            mascota_norm = strip_accents(c.nombre_mascota.lower())
+            motivo_norm  = strip_accents(c.motivo.lower())
+
+            if (q_normal in dueno_norm or
+                q_normal in mascota_norm or
+                q_normal in motivo_norm):
+                citas_filtradas.append(c)
+
+        qs = citas_filtradas
 
     ctx = {
         "citas": qs,
