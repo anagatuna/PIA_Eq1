@@ -353,28 +353,6 @@ html {
   border-bottom: 3px solid #F47F76;
 }
 
-.card {
-  border: 0;
-  border-radius: 20px !important;
-  background: #fff;
-  transition: transform .6s cubic-bezier(0.15, 0.83, 0.66, 1), box-shadow .3s ease;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-}
-
-/* Servicios */
-.card-title {
-  color: #404040 !important;
-  font-weight: bold;
-  display: inline-block;
-  padding-bottom: 0.3rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 3px solid #F47F76;
-}
-
 /* Card con borde animado */
 .glass-card {
   position: relative;
@@ -423,13 +401,6 @@ html {
   position: relative;
   z-index: 2;
   background: transparent;
-}
-
-/* Hover igual que antes */
-.glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 24px 24px 70px #b0b0b0,
-    -20px -20px 60px #ffffff;
 }
 
 /* Animación: el gradiente gira y parece que la línea recorre la orilla */

@@ -102,16 +102,24 @@ def servicios_panel(request, id=None):
                 messages.success(request, "Servicio creado correctamente.")
                 return redirect("servicios") # <-- Se mueve aquí
 
-    # Si el método es GET, o si el POST falló la validación (duplicado),
-    # el código continúa aquí y renderiza la plantilla con los mensajes.
+    # 1. Obtener el término de búsqueda (q) de la URL
+    q = request.GET.get('q', '').strip()
+    qs = SERVICIO.objects.all()
 
-    servicios = SERVICIO.objects.all().order_by("nombre")
+    if q:
+        qs = qs.filter(
+            Q(nombre__icontains=q) |
+            Q(descripcion__icontains=q)
+        )
+        
+    servicios = qs.order_by("nombre")
     ctx = {
         "servicios": servicios, 
         "servicio": servicio, 
         "editando": bool(servicio),
-        "form_data": request.POST if request.method == "POST" else {} # Para que no se borre el formulario en caso de error
-        }
+        "form_data": request.POST if request.method == "POST" else {}, # Para que no se borre el formulario en caso de error
+        "q": q
+    }
     return render(request, "servicios.html", ctx)
 
 @login_required
