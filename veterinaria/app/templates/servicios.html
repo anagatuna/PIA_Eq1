@@ -110,11 +110,11 @@
                             <form class="d-flex" method="get" action="{% url 'servicios' %}">
                                 <input class="form-control me-2" type="search" placeholder="Buscar" name="q"
                                     value="{{ q }}">
-                                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                                <button class="btn btn-outline" type="submit"><i class="bi bi-search"></i></button>
                             </form>
                         </div>
 
-                        <table class="table table-hover align-middle">
+                        <table class="table tabla-servicios align-middle">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -131,11 +131,11 @@
                                     <td>{{ servicio.descripcion }}</td>
                                     <td class="text-end">
                                         <div class="d-inline-flex gap-2">
-                                            <a class="btn btn-warning btn-sm"
+                                            <a class="btn-accion btn-edit"
                                                 href="{% url 'servicios_edit' servicio.id %}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a class="btn btn-dark btn-sm" href="{% url 'eliminar' servicio.id %}"
+                                            <a class="btn-accion btn-delete" href="{% url 'eliminar' servicio.id %}"
                                                 onclick="return confirm('¿Eliminar este servicio?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
@@ -149,6 +149,7 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

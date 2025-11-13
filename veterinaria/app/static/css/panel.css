@@ -353,62 +353,56 @@ html {
   border-bottom: 3px solid #F47F76;
 }
 
-/* Card con borde animado */
-.glass-card {
+.glass-card, .card {
   position: relative;
   border-radius: 20px !important;
-  background: transparent;
   overflow: hidden;
+  padding: 4px;
+  
+  background: conic-gradient(
+    from 90deg,
+    var(--primary) 0%,
+    var(--primary) 25%,
+    var(--accent-light) 45%,
+    var(--accent) 50%,
+    var(--accent-light) 55%,
+    var(--primary) 75%,
+    var(--primary) 100%
+  );
+  
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   transition: transform .6s cubic-bezier(0.15, 0.83, 0.66, 1),
     box-shadow .3s ease;
 }
 
-/* Borde animado más visible */
 .glass-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-
-  /* Arco de ~80°: se nota bien en las esquinas */
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 280deg,          /* sin color */
-    var(--accent) 295deg,        /* empieza el rayo */
-    var(--accent-light) 315deg,
-    var(--primary) 335deg,       /* tramo más intenso */
-    var(--primary) 350deg,
-    transparent 360deg           /* vuelve a transparente */
+    transparent 280deg,
+    rgba(255, 255, 255, 0.7) 310deg,
+    rgba(255, 255, 255, 0.7) 320deg,
+    transparent 360deg
   );
-
-  animation: spin-border 6s linear infinite; /* un poco más lento */
+  animation: spin-border 4s linear infinite;
 }
 
-/* Grosor del borde */
-.glass-card::after {
-  content: "";
-  position: absolute;
-  inset: 4px;                   
-  border-radius: inherit;
-  background: #ffffff;
-}
-
-
-/* Contenido por encima de todo */
 .glass-card .card-body {
   position: relative;
   z-index: 2;
-  background: transparent;
+  background: #ffffff;
+  border-radius: 16px; 
+  padding: 1.5rem;
 }
 
-/* Animación: el gradiente gira y parece que la línea recorre la orilla */
 @keyframes spin-border {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
@@ -431,8 +425,8 @@ textarea.form-control {
 
 input.form-control:focus,
 input.form-control:hover,
-input.form-select:focus,
-input.form-select:hover,
+select.form-select:focus,
+select.form-select:hover,
 textarea.form-control:focus,
 textarea.form-control:hover {
   border-color: var(--accent);
@@ -536,83 +530,129 @@ a.btn-clean {
   text-decoration: none;
 }
 
-/* ===== Buscador a “pill” ===== */
+/* Buscador */
 .card .d-flex .form-control[type="search"] {
   border-radius: 999px;
 }
 
-.btn.btn-outline-primary {
+.btn.btn-outline {
   border-radius: 999px;
   --bs-btn-color: var(--primary);
   --bs-btn-border-color: var(--primary);
 }
 
-.btn.btn-outline-primary:hover {
+.btn.btn-outline:hover, 
+.btn.btn-outline:active {
   background: rgba(78, 196, 233, .18);
   border-color: var(--accent);
   color: var(--primary);
 }
 
-/* ===== Tabla ===== */
-.table {
-  --row-hover: rgba(142, 230, 247, .14);
+/* Tabla Servicios */
+.tabla-servicios {
   margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table thead th {
+.thead {
+  background: none;
+}
+
+.tabla-servicios thead th {
   background: var(--primary);
-  color: #fff;
+  color: #ffffff;
   border: 0 !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
 }
 
-.table thead tr th:first-child {
-  border-top-left-radius: 12px;
+/* Esquinas redondas solo en los extremos */
+.tabla-servicios thead th:first-child {
+  border-top-left-radius: 10px;
 }
 
-.table thead tr th:last-child {
-  border-top-right-radius: 12px;
+.tabla-servicios thead th:last-child {
+  border-top-right-radius: 10px;
 }
 
-.table tbody tr:hover {
-  background: var(--row-hover);
+
+/* Hover fila */
+.tabla-servicios tbody tr:hover {
+  background: rgba(142, 230, 247, 0.10);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
 }
 
-.table td,
-.table th {
+/* Celdas con más respiro */
+.tabla-servicios td {
+  vertical-align: middle;
+  padding: 1.1rem 1.4rem;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.tabla-servicios th {
   vertical-align: middle;
 }
 
-/* Descripción: evita que “explote” el ancho en filas muy largas */
-.col-desc {
+/* Columna descripción */
+.tabla-servicios .col-desc {
   max-width: 520px;
   overflow-wrap: anywhere;
 }
 
-/* Acciones compactas y redondas */
-.btn-sm {
-  border-radius: 10px;
-  padding: .3rem .55rem;
+/* Estado vacío */
+.tabla-servicios tbody tr td.text-center.text-muted {
+  padding: 2.2rem 1rem;
+  font-weight: 500;
+  color: #7a8792 !important;
 }
 
-.btn-warning.btn-sm {
-  color: #404040;
+.btn-accion {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease,
+    transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Editar */
+.btn-edit {
+  background: rgba(78, 196, 233, 0.16);
+  color: var(--primary);
+}
+
+.btn-edit:hover {
   background: var(--accent);
-  border: none;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(78, 196, 233, 0.45);
+  transform: scale(1.06);
+  /* 🔹 sin translateY */
 }
 
-.btn-warning.btn-sm:hover {
-  background: var(--accent-light);
+/* Eliminar */
+.btn-delete {
+  background: rgba(244, 127, 118, 0.13);
+  color: #c64d43;
 }
 
-.btn-dark.btn-sm {
-  color: #404040;
+.btn-delete:hover {
   background: var(--coral);
-  border: none;
-}
-
-.btn-dark.btn-sm:hover {
-  color: #404040;
-  background-color: var(--light_coral);
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(244, 127, 118, 0.45);
+  transform: scale(1.06);
+  /* 🔹 sin translateY */
 }
 
 /* Empty state más amable */

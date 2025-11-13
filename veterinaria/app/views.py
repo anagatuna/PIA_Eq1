@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
+import unicodedata
 
 from .models import SERVICIO, CITA_VETERINARIA
 
@@ -38,6 +39,12 @@ def ceil_to_half_hour(dt):
     if m < 30:
         return dt.replace(minute=30, second=0, microsecond=0)
     return (dt + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
+
+# Helper para filtrar
+def strip_accents(text):
+    text = unicodedata.normalize('NFD', text)
+    text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
+    return text
 
 # Log in 
 def login_view(request):
@@ -104,15 +111,26 @@ def servicios_panel(request, id=None):
 
     # 1. Obtener el término de búsqueda (q) de la URL
     q = request.GET.get('q', '').strip()
-    qs = SERVICIO.objects.all()
+    qs = SERVICIO.objects.all().order_by("nombre")
 
     if q:
-        qs = qs.filter(
-            Q(nombre__icontains=q) |
-            Q(descripcion__icontains=q)
-        )
+        # Normalizar el término de búsqueda (minúsculas y sin acentos)
+        q_normal = strip_accents(q.lower())
         
-    servicios = qs.order_by("nombre")
+        servicios_filtrados = []
+        for s in qs:
+            # Normalizar los campos del modelo para comparar
+            nombre_normal = strip_accents(s.nombre.lower())
+            desc_normal = strip_accents(s.descripcion.lower())
+            
+            # Comprobar si el término de búsqueda está en los campos normalizados
+            if q_normal in nombre_normal or q_normal in desc_normal:
+                servicios_filtrados.append(s)
+        
+        servicios = servicios_filtrados 
+    else:
+        servicios = qs 
+        
     ctx = {
         "servicios": servicios, 
         "servicio": servicio, 
