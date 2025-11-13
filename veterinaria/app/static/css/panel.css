@@ -855,3 +855,36 @@ html[data-theme="dark"] .btn-logout .text a {
   color: #fff;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Un gris muy claro para modo light */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent); /* Color acento */
+  border-radius: 10px;
+  border: 1px solid var(--paper); /* Pequeño borde del color del fondo */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary); /* Color primario al pasar el mouse */
+}
+
+/* Adaptación para Modo Oscuro */
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #111827; /* Un fondo oscuro del tema */
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-color: #111827;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-light); /* Un hover más claro */
+}
